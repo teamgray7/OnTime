@@ -21,6 +21,15 @@
     <string name="btnOrange">Orange</string>
     <string name="btnRed">Red</string>
 
+    <string name="pillNameHint">Pill name</string>
+    <string name="pillAmountHint">Amount</string>
+    <string name="btnPillSave">Save</string>
+    <string name="btnPillCancel">Cancel</string>
+    <string name="radioMorning">Morning</string>
+    <string name="radioAfternoon">Afternoon</string>
+    <string name="radioEvening">Evening</string>
+
     <string name="logoContentDescription">Logo of OnTime</string>
     <string name="statisticsDescription">Statistics</string>
+    <string name="pillContentDescription">Picture of Pill</string>
 </resources>
