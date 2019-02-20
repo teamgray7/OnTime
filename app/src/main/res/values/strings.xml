@@ -12,6 +12,15 @@
     <string name="btnLogin">Login</string>
     <string name="btnForgetPassword">Forgot Password</string>
     <string name="btnRegister">Register</string>
+    
+    <string name="onTimeCount">Pills taken on time : 89</string>
+    <string name="delayedCount">Pills taken delayed : 10</string>
+    <string name="missedCount">Pills missed : 1</string>
+    <string name="statisticsDate"><u>January, 2019</u></string>
+    <string name="btnGreen">Green</string>
+    <string name="btnOrange">Orange</string>
+    <string name="btnRed">Red</string>
 
     <string name="logoContentDescription">Logo of OnTime</string>
+    <string name="statisticsDescription">Statistics</string>
 </resources>
