@@ -1,4 +1,4 @@
-package com.example.ontime;
+package com.unioulu.ontime;
 
 import org.junit.Test;
 

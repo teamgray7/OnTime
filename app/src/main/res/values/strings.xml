@@ -1,17 +1,28 @@
 <resources>
     <string name="app_name">OnTime</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="tab_text_1">Today</string>
-    <string name="tab_text_2">Emergency</string>
-    <string name="tab_text_3">Login</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_today">Today</string>
+    <string name="tab_stat">Statistics</string>
+    <string name="tab_emerg">Emergency</string>
+    <string name="tab_login">Login</string>
+    <string name="tab_addPill">New pill</string>
     <string name="usernameHint">Username</string>
     <string name="passwordHint">Password</string>
     <string name="btnLogin">Login</string>
     <string name="btnForgetPassword">Forgot Password</string>
     <string name="btnRegister">Register</string>
     
+    <string name="nextPill">Next pill</string>
+    <string name="alreadyTakenPills">Already taken pills</string>
+
     <string name="onTimeCount">Pills taken on time : 89</string>
     <string name="delayedCount">Pills taken delayed : 10</string>
     <string name="missedCount">Pills missed : 1</string>
