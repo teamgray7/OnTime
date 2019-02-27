@@ -3,6 +3,8 @@ package com.unioulu.ontime;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +23,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -151,6 +154,11 @@ public class MainActivity extends AppCompatActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        private final String TAG = "Today fragment";
+        private RecyclerView nextPillsRV;
+        private  RecyclerView alreadyTakenPillsRV;
+        private TextView textView;
+
         public TodayFragment() {
             // Empty constructor
         }
@@ -170,6 +178,16 @@ public class MainActivity extends AppCompatActivity
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_today, container, false);
+
+            textView = (TextView) rootView.findViewById(R.id.nextPillsTextView);
+
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "text view");
+                }
+            });
+
             return rootView;
         }
     }
