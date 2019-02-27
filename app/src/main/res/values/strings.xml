@@ -19,7 +19,7 @@
     <string name="btnLogin">Login</string>
     <string name="btnForgetPassword">Forgot Password</string>
     <string name="btnRegister">Register</string>
-    
+
     <string name="nextPill">Next pill</string>
     <string name="alreadyTakenPills">Already taken pills</string>
 
@@ -38,6 +38,9 @@
     <string name="radioMorning">Morning</string>
     <string name="radioAfternoon">Afternoon</string>
     <string name="radioEvening">Evening</string>
+
+    <string name="medicineTime">Medicine time</string>
+    <string name="snooze">Snooze</string>
 
     <string name="logoContentDescription">Logo of OnTime</string>
     <string name="statisticsDescription">Statistics</string>

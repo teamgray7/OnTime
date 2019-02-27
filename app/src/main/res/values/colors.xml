@@ -7,4 +7,11 @@
     <color name="colorGreen">#5B8930</color>
     <color name="colorOrange">#FFA631</color>
     <color name="colorRed">#CF000F</color>
+    <color name="colorWrite">#FFFFFF</color>
+    <!--  Material design colors-->
+    <!-- Check available here: https://www.materialui.co/colors -->
+    <color name="colorRedMD">#d50000</color>
+    <color name="colorGreenMD">#388E3C</color>
+    <color name="colorYellowMD">#FBC02D</color>
+
 </resources>
