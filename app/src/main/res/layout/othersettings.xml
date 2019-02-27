@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <Button
+        android:id="@+id/bluetooth_settings_btn"
+        android:layout_marginTop="@dimen/marginXL"
+        android:layout_marginHorizontal="@dimen/marginXL"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:drawableLeft="@android:drawable/stat_sys_data_bluetooth"
+        android:drawablePadding="@dimen/marginL"
+        android:text="bluetooth settings"
+        android:textSize="22dp"
+        android:textAlignment="textStart"
+        />
+    <Button
+        android:id="@+id/emergency_settings_btn"
+        android:layout_marginTop="@dimen/marginXL"
+        android:layout_marginHorizontal="@dimen/marginXL"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:drawableLeft="@drawable/pill_icon"
+        android:drawablePadding="@dimen/marginL"
+        android:text="emergency settings"
+        android:textSize="22dp"
+        android:textAlignment="textStart"
+        />
+    <Button
+        android:id="@+id/other_settings_btn"
+        android:layout_marginTop="@dimen/marginXL"
+        android:layout_marginHorizontal="@dimen/marginXL"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:drawableLeft="@drawable/pill_icon"
+        android:drawablePadding="@dimen/marginL"
+        android:text="other settings"
+        android:textSize="22dp"
+        android:textAlignment="textStart"
+        />
+
+</LinearLayout>
