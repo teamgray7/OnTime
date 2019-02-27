@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/Welcome"
+        android:layout_width="match_parent"
+        android:layout_height="107dp"
+        android:ems="10"
+        android:text="@string/welcomeText"
+        android:textSize="40sp"
+        />
+
+    <EditText
+        android:id="@+id/editText_Account"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_marginStart="@dimen/marginXL"
+        android:layout_marginEnd="@dimen/marginXL"
+        android:text="@string/usernameInput"
+        android:textSize="40dp"
+        android:layout_marginBottom="@dimen/marginXL"
+        />
+
+    <EditText
+        android:id="@+id/editText_Account"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_marginStart="@dimen/marginXL"
+        android:layout_marginEnd="@dimen/marginXL"
+        android:text="@string/usernameInput"
+        android:textSize="40dp"
+        android:layout_marginBottom="@dimen/marginXL"
+        />
+
+    <EditText
+        android:id="@+id/editText_Account"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_marginStart="@dimen/marginXL"
+        android:layout_marginEnd="@dimen/marginXL"
+        android:text="@string/usernameInput"
+        android:textSize="40dp"
+        android:layout_marginBottom="@dimen/marginXL"
+        />
+
+    <EditText
+        android:id="@+id/editText_Account"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_marginStart="@dimen/marginXL"
+        android:layout_marginEnd="@dimen/marginXL"
+        android:text="@string/usernameInput"
+        android:textSize="40dp"
+        android:layout_marginBottom="@dimen/marginXL"
+        />
+</LinearLayout>

@@ -45,4 +45,6 @@
     <string name="logoContentDescription">Logo of OnTime</string>
     <string name="statisticsDescription">Statistics</string>
     <string name="pillContentDescription">Picture of Pill</string>
+    <string name="usernameInput">Username</string>
+    <string name="welcomeText">Welcome!</string>
 </resources>
