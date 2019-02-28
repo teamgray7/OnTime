@@ -46,5 +46,10 @@
     <string name="statisticsDescription">Statistics</string>
     <string name="pillContentDescription">Picture of Pill</string>
     <string name="usernameInput">Username</string>
-    <string name="welcomeText">Welcome!</string>
+    <string name="btnSignUp">SIGN UP</string>
+    <string name="btnSaveMe">SAVE ME</string>
+    <string name="inputUsername">Username</string>
+    <string name="inputEmailAddress">Email Address</string>
+    <string name="inputPassword">Password</string>
+    <string name="inputPasswordRetype">Re-type password</string>
 </resources>
