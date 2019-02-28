@@ -46,10 +46,14 @@
     <string name="statisticsDescription">Statistics</string>
     <string name="pillContentDescription">Picture of Pill</string>
     <string name="usernameInput">Username</string>
-    <string name="btnSignUp">SIGN UP</string>
-    <string name="btnSaveMe">SAVE ME</string>
-    <string name="inputUsername">Username</string>
-    <string name="inputEmailAddress">Email Address</string>
-    <string name="inputPassword">Password</string>
-    <string name="inputPasswordRetype">Re-type password</string>
+    <string name="welcomeText">Welcome!</string>
+
+    <string name="emergencyPersonName">Name</string>
+    <string name="emergencyPersonPhone">Phone number</string>
+    <string name="emergencyImageContent">Image of person to call</string>
+    <string name="emergencyCallImageContent">Call image</string>
+
+    <string name="otherSettings_bt">Bluetooth settings</string>
+    <string name="otherSettings_emergency">Emergency settings</string>
+    <string name="otherSettings_other">Other settings</string>
 </resources>

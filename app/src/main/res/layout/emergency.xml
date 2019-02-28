@@ -8,29 +8,37 @@
     <ImageView
         android:id="@+id/mugshot"
         android:layout_marginTop="@dimen/marginXL"
-        android:layout_marginHorizontal="@dimen/marginXL"
+        android:layout_marginStart="@dimen/marginXL"
+        android:layout_marginEnd="@dimen/marginXL"
         android:layout_width="match_parent"
         android:layout_height="128dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/avatar_icon"
+        android:contentDescription="@string/emergencyImageContent"
         />
     <EditText
         android:id="@+id/name_field"
         android:layout_marginTop="@dimen/marginXL"
-        android:layout_marginHorizontal="@dimen/marginXL"
+        android:layout_marginStart="@dimen/marginXL"
+        android:layout_marginEnd="@dimen/marginXL"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:editable="false"
+        android:inputType="textPersonName"
+        android:text="@string/emergencyPersonName"
+        android:labelFor="@id/name_field"
         />
     <EditText
         android:id="@+id/number_field"
         android:layout_marginTop="@dimen/marginXL"
-        android:layout_marginHorizontal="@dimen/marginXL"
+        android:layout_marginStart="@dimen/marginXL"
+        android:layout_marginEnd="@dimen/marginXL"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:editable="false"
+        android:inputType="phone"
+        android:text="@string/emergencyPersonPhone"
+        android:labelFor="@id/number_field"
         />
     <ImageButton
         android:id="@+id/callButton"
@@ -40,6 +48,7 @@
         android:layout_gravity="center_horizontal"
         android:src="@android:drawable/ic_menu_call"
         android:scaleType="fitCenter"
+        android:contentDescription="@string/emergencyCallImageContent"
         />
 
 </LinearLayout>
