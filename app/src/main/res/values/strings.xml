@@ -46,7 +46,10 @@
     <string name="statisticsDescription">Statistics</string>
     <string name="pillContentDescription">Picture of Pill</string>
     <string name="usernameInput">Username</string>
-    <string name="welcomeText">Welcome!</string>
+    <string name="welcomeText">Welcome</string>
+    <string name="inputEmailAddress">Input email address</string>
+    <string name="inputPassword">Input password</string>
+    <string name="inputPasswordRetype">Retype password</string>
 
     <string name="emergencyPersonName">Name</string>
     <string name="emergencyPersonPhone">Phone number</string>

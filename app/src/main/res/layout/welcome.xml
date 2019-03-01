@@ -29,7 +29,7 @@
         android:layout_marginStart="@dimen/marginXL"
         android:layout_marginEnd="@dimen/marginXL"
         android:layout_marginHorizontal="40dp"
-        android:text="@string/inputUsername"
+        android:text="@string/usernameInput"
         android:textSize="25dp"
         android:layout_marginBottom="@dimen/marginXL"
         />
