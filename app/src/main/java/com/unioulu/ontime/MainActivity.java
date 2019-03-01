@@ -3,6 +3,7 @@ package com.unioulu.ontime;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -152,12 +155,14 @@ public class MainActivity extends AppCompatActivity
          * The fragment argument representing the section number for this
          * fragment.
          */
+        // Today's fragment vars
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         private final String TAG = "Today fragment";
-        private RecyclerView nextPillsRV;
-        private  RecyclerView alreadyTakenPillsRV;
         private TextView textView;
+        private ArrayList<String> mNames = new ArrayList<>();
+        private ArrayList<String> mImageUrls= new ArrayList<>();
+
 
         public TodayFragment() {
             // Empty constructor
@@ -167,6 +172,7 @@ public class MainActivity extends AppCompatActivity
          * Returns a new instance of this fragment for the given section
          * number.
          */
+
         public static TodayFragment newInstance(int sectionNumber) {
             TodayFragment fragment = new TodayFragment();
             Bundle args = new Bundle();
@@ -175,20 +181,65 @@ public class MainActivity extends AppCompatActivity
             return fragment;
         }
 
+
+
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_today, container, false);
 
-            textView = (TextView) rootView.findViewById(R.id.nextPillsTextView);
 
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "text view");
-                }
-            });
+            // Initialization of the Recycler views
+            Log.d(TAG, "initRecyclerView: recyclerview initialization");
+
+            RecyclerView nextPillsRV = rootView.findViewById(R.id.NextPillRecyclerView);
+            RecyclerView alreadyTakenPillsRV = rootView.findViewById(R.id.AlreadyTakenRecyclerView);
+
+            initImageBitmaps();
+
+            RecyclerViewAdapter nextPillsAdapter = new RecyclerViewAdapter(getContext(), mNames, mImageUrls);
+            RecyclerViewAdapter alreadyTakenPillsAdapter = new RecyclerViewAdapter(getContext(), mNames, mImageUrls);
+
+            nextPillsRV.setAdapter(nextPillsAdapter);
+            alreadyTakenPillsRV.setAdapter(alreadyTakenPillsAdapter);
+
+            nextPillsRV.setLayoutManager(new LinearLayoutManager(getContext()));
+            alreadyTakenPillsRV.setLayoutManager(new LinearLayoutManager(getContext()));
 
             return rootView;
+        }
+
+        private void initImageBitmaps(){
+            Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
+
+            mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
+            mNames.add("Havasu Falls");
+
+            mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
+            mNames.add("Trondheim");
+
+            mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
+            mNames.add("Portugal");
+
+            mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
+            mNames.add("Rocky Mountain National Park");
+
+
+            mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
+            mNames.add("Mahahual");
+
+            mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
+            mNames.add("Frozen Lake");
+
+
+            mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
+            mNames.add("White Sands Desert");
+
+            mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
+            mNames.add("Austrailia");
+
+            mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
+            mNames.add("Washington");
+
         }
     }
 
