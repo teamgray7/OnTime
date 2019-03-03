@@ -3,7 +3,7 @@ package com.unioulu.ontime;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class Alarm_Activity extends AppCompatActivity {
+public class AlarmActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
