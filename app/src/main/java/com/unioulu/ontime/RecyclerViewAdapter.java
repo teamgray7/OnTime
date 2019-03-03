@@ -1,9 +1,9 @@
 package com.unioulu.ontime;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +17,12 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private static final String TAG = "RecyclerViewAdapter";
-
-    private ArrayList<String> mImageNames = new ArrayList<>();
-    private ArrayList<String> mImage= new ArrayList<>();
+    private ArrayList<String> mImageNames;
+    private ArrayList<String> mImage;
     private Context mContext;
 
-    // Constructor
     public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImage) {
         this.mImageNames = mImageNames;
         this.mImage = mImage;
@@ -34,34 +31,27 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int index) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_list_item, viewGroup, false);
-        // Class is defined at the bottom of  this class
-        ViewHolder holder = new ViewHolder(view);
-
-        return holder;
+        return new ViewHolder(view);
     }
 
+    @SuppressLint("RecyclerView")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        Log.d(TAG, "onBindViewHolder called");
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int index) {
+        viewHolder.recyclerImageName.setText(mImageNames.get(index));
+        viewHolder.recyclerLayout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, mImageNames.get(index), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Getting the images
         Glide.with(mContext)
                 .asBitmap()
-                .load(mImage.get(i))
+                .load(mImage.get(index))
                 .into(viewHolder.recyclerImage);
-
-        viewHolder.recyclerImageName.setText(mImageNames.get(i));
-
-        viewHolder.recyclerLayout.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "On click: clocked on: " + mImageNames.get(i));
-
-                Toast.makeText(mContext, mImageNames.get(i), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -69,12 +59,11 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
         return mImageNames.size(); // How many items are in the list !
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // Recycler view items
         CircleImageView recyclerImage;
         TextView recyclerImageName;
         RelativeLayout recyclerLayout;
-
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -82,9 +71,6 @@ public class RecyclerViewAdapter extends  RecyclerView.Adapter<RecyclerViewAdapt
             recyclerImage = (CircleImageView) itemView.findViewById(R.id.recyclerImage);
             recyclerImageName = (TextView) itemView.findViewById(R.id.recyclerText);
             recyclerLayout = (RelativeLayout) itemView.findViewById(R.id.recyclerLayout);
-
-
-
         }
     }
 }
