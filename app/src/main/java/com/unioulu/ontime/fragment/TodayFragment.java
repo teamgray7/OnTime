@@ -1,5 +1,6 @@
 package com.unioulu.ontime.fragment;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.unioulu.ontime.R;
 import com.unioulu.ontime.RecyclerViewAdapter;
@@ -22,6 +24,9 @@ public class TodayFragment extends Fragment {
     private ArrayList<String> mImageUrlsNext= new ArrayList<>();
     private ArrayList<String> mNamesPrevious = new ArrayList<>();
     private ArrayList<String> mImageUrlsPrevious= new ArrayList<>();
+
+    private TextView nextPills;
+    private TextView previousPills;
 
     public TodayFragment() {
         // Empty constructor
@@ -56,6 +61,11 @@ public class TodayFragment extends Fragment {
 
         nextPillsRV.setLayoutManager(new LinearLayoutManager(getContext()));
         alreadyTakenPillsRV.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        nextPills = (TextView) rootView.findViewById(R.id.nextPillsTextView);
+        previousPills = (TextView) rootView.findViewById(R.id.alreadyTakenPillsTextView);
+        nextPills.setPaintFlags(nextPills.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        previousPills.setPaintFlags(previousPills.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         return rootView;
     }
