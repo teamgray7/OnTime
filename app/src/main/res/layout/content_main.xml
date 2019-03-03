@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity" >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -41,24 +41,13 @@
                 android:text="@string/tab_today" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItemStat"
+                android:id="@+id/tabItemEmergency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_addPill" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItemEmerg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_stat" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItemLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_login" />
+                android:text="@string/tab_emergency" />
 
         </android.support.design.widget.TabLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
