@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/gridLayout"
     android:layout_width="match_parent"
@@ -7,59 +9,55 @@
     android:layout_row="6"
     android:layout_column="1"
     app:layout_column="1"
-    app:layout_row="6">
-
+    app:layout_row="6" >
 
     <TextView
         android:id="@+id/nextPillsTextView"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginM"
         android:text="@string/nextPill"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="@dimen/todayTextSize"
         android:textStyle="bold"
         android:layout_column="1"
-        android:layout_row="0"/>
+        android:layout_row="0" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/NextPillRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/marginL"
+        android:layout_marginTop="@dimen/marginL"
+        android:layout_marginEnd="@dimen/marginL"
         android:layout_row="1"
         android:layout_rowSpan="2"
         android:layout_rowWeight="1"
         android:layout_column="1"
-        android:layout_columnSpan="2"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_columnSpan="2" />
 
     <TextView
         android:id="@+id/alreadyTakenPillsTextView"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginM"
         android:text="@string/alreadyTakenPills"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="@dimen/todayTextSize"
         android:textStyle="bold"
         android:layout_column="1"
-        android:layout_row="3"/>
+        android:layout_row="3" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/AlreadyTakenRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_row="4"
         android:layout_rowSpan="2"
         android:layout_rowWeight="1"
         android:layout_column="1"
         android:layout_columnSpan="2"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp" />
-
+        android:layout_marginStart="@dimen/marginL"
+        android:layout_marginTop="@dimen/marginL"
+        android:layout_marginEnd="@dimen/marginL"
+        android:layout_marginBottom="@dimen/marginL" />
 
 </GridLayout>
