@@ -6,10 +6,29 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="medicinePicMargin">152dp</dimen>
+    <dimen name="emergencyAvatar">256dp</dimen>
 
     <dimen name="logoSize">128dp</dimen>
     <dimen name="marginS">5dp</dimen>
     <dimen name="marginM">10dp</dimen>
     <dimen name="marginL">20dp</dimen>
     <dimen name="marginXL">40dp</dimen>
+    <dimen name="marginXXL">80dp</dimen>
+
+    <dimen name="todayTextSize">20sp</dimen>
+    <dimen name="imageCircleSize">48dp</dimen>
+    <dimen name="pillItemTextSize">16sp</dimen>
+
+    <dimen name="registerAccountTextSize">60sp</dimen>
+    <dimen name="registerAccountEditTextSize">25sp</dimen>
+    <dimen name="saveAccountTextSize">30sp</dimen>
+    <dimen name="saveAccountEditTextSize">25sp</dimen>
+    <dimen name="editTextSize">25sp</dimen>
+
+    <dimen name="otherSettingsBtnSize">100dp</dimen>
+    <dimen name="emergencyCallButtonSize">128dp</dimen>
+    <dimen name="snoozeButtonWidth">150dp</dimen>
+    <dimen name="snoozeButtonHeight">80dp</dimen>
+    <dimen name="medicineNameTextSize">40sp</dimen>
 </resources>

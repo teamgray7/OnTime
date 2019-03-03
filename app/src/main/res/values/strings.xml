@@ -2,26 +2,28 @@
     <string name="app_name">OnTime</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="nav_header_title">OnTime</string>
+    <string name="nav_header_subtitle">Friendly pill reminder application</string>
+    <string name="nav_header_desc">Group Gray</string>
+    <string name="nav_login">Login</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_today">Today</string>
-    <string name="tab_stat">Statistics</string>
-    <string name="tab_emerg">Emergency</string>
+    <string name="tab_statistics">Statistics</string>
+    <string name="tab_emergency">Emergency</string>
     <string name="tab_login">Login</string>
     <string name="tab_addPill">New pill</string>
+
     <string name="usernameHint">Username</string>
     <string name="passwordHint">Password</string>
     <string name="btnLogin">Login</string>
     <string name="btnForgetPassword">Forgot Password</string>
     <string name="btnRegister">Register</string>
+    <string name="btnSaveMe">Save Me</string>
+    <string name="saveAccount">Let\'s save your account!</string>
+    <string name="saveAccountOR">- OR -</string>
 
-    <string name="nextPill">Next pill</string>
-    <string name="alreadyTakenPills">Already taken pills</string>
+    <string name="nextPill">Next pills at 14:00</string>
+    <string name="alreadyTakenPills">Already taken today</string>
 
     <string name="onTimeCount">Pills taken on time : 89</string>
     <string name="delayedCount">Pills taken delayed : 10</string>
@@ -50,6 +52,7 @@
     <string name="inputEmailAddress">Input email address</string>
     <string name="inputPassword">Input password</string>
     <string name="inputPasswordRetype">Retype password</string>
+    <string name="btnSignUp">Sign Up</string>
 
     <string name="emergencyPersonName">Name</string>
     <string name="emergencyPersonPhone">Phone number</string>
@@ -59,4 +62,6 @@
     <string name="otherSettings_bt">Bluetooth settings</string>
     <string name="otherSettings_emergency">Emergency settings</string>
     <string name="otherSettings_other">Other settings</string>
+
+    <string name="medicineNameAlarm">Medicine Name</string>
 </resources>
