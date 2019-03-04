@@ -1,6 +1,7 @@
 package com.unioulu.ontime;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -26,7 +27,8 @@ import com.unioulu.ontime.fragment.TodayFragment;
 
 public class AdminMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        SettingsFragment.OnFragmentInteractionListener {
+        SettingsFragment.OnFragmentInteractionListener,
+        EmergencyFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -117,6 +119,14 @@ public class AdminMainActivity extends AppCompatActivity
     @Override
     public void otherSettingsAsAdmin() {
         // TODO : Design and place this fragment.
+    }
+
+    @Override
+    public void makeCall(String phoneNumber) {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + phoneNumber));
+
+        startActivity(callIntent);
     }
 
     /**
