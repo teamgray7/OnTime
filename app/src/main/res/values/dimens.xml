@@ -25,6 +25,7 @@
     <dimen name="saveAccountTextSize">30sp</dimen>
     <dimen name="saveAccountEditTextSize">25sp</dimen>
     <dimen name="editTextSize">25sp</dimen>
+    <dimen name="loginTextSize">16sp</dimen>
 
     <dimen name="otherSettingsBtnSize">100dp</dimen>
     <dimen name="emergencyCallButtonSize">128dp</dimen>
