@@ -1,5 +1,6 @@
 package com.unioulu.ontime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -82,7 +83,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_login) {
-            // Handle the camera action
+            Intent loginActivityTransition = new Intent(MainActivity.this, LoginRegisterActivity.class);
+            startActivity(loginActivityTransition);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
