@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 
 import com.unioulu.ontime.fragment.EmergencyFragment;
 import com.unioulu.ontime.fragment.TodayFragment;
@@ -84,7 +83,8 @@ public class AdminMainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_signOut) {
-            Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
+            Intent signOutTransition = new Intent(AdminMainActivity.this, MainActivity.class);
+            startActivity(signOutTransition);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
