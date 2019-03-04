@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="@dimen/logoSize"
+        android:layout_height="@dimen/logoSize"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/marginL"
+        android:src="@drawable/avatar_icon"
+        android:contentDescription="@string/logoContentDescription" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginXL"
+        android:inputType="text"
+        android:hint="@string/usernameHint" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginL"
+        android:inputType="textPassword"
+        android:hint="@string/passwordHint" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/marginL"
+        android:text="@string/btnLogin" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/marginL"
+        android:orientation="horizontal"
+        android:gravity="bottom" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/btnForgetPassword" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/btnRegister" />
+
+    </LinearLayout>
+
+</LinearLayout>
