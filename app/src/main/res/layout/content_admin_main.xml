@@ -44,7 +44,7 @@
                 android:id="@+id/admin_tabItemAddPill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_emergency" />
+                android:text="@string/tab_addPill" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/admin_tabItemStatistics"
