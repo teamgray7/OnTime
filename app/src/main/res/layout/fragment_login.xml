@@ -19,6 +19,7 @@
         android:contentDescription="@string/logoContentDescription" />
 
     <EditText
+        android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginXXL"
@@ -26,6 +27,7 @@
         android:hint="@string/usernameHint" />
 
     <EditText
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginL"
@@ -33,6 +35,7 @@
         android:hint="@string/passwordHint" />
 
     <Button
+        android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

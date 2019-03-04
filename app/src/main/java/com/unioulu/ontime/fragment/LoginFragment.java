@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.unioulu.ontime.R;
@@ -15,6 +17,9 @@ public class LoginFragment extends Fragment {
 
     private TextView tvRegister;
     private TextView tvForgetPassword;
+    private EditText etUsername;
+    private EditText etPassword;
+    private Button btnLogin;
 
     // The interaction listener is defined.
     private OnFragmentInteractionListener mListener;
@@ -34,9 +39,13 @@ public class LoginFragment extends Fragment {
 
         tvRegister = (TextView) rootView.findViewById(R.id.tv_registerAccount);
         tvForgetPassword = (TextView) rootView.findViewById(R.id.tv_forgetPassword);
+        etUsername = (EditText) rootView.findViewById(R.id.etUsername);
+        etPassword = (EditText) rootView.findViewById(R.id.etPassword);
+        btnLogin = (Button) rootView.findViewById(R.id.btnLogin);
 
         tvRegister.setOnClickListener(registerClickListener);
         tvForgetPassword.setOnClickListener(forgetPasswordClickListener);
+        btnLogin.setOnClickListener(btnLoginClickListener);
 
         return rootView;
     }
@@ -58,6 +67,18 @@ public class LoginFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    private View.OnClickListener btnLoginClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String username = etUsername.getText().toString();
+            String password = etPassword.getText().toString();
+
+            if(username.length() != 0 && password.length() != 0) {
+                mListener.proceedLogin(username, password);
+            }
+        }
+    };
 
     private View.OnClickListener registerClickListener = new View.OnClickListener() {
         @Override
@@ -86,5 +107,6 @@ public class LoginFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void forgetPasswordClicked();
         void registerAccountClicked();
+        void proceedLogin(String username, String password);
     }
 }

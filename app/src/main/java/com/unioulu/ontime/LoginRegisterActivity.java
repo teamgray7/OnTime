@@ -1,8 +1,10 @@
 package com.unioulu.ontime;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.unioulu.ontime.fragment.ForgetPasswordFragment;
 import com.unioulu.ontime.fragment.LoginFragment;
@@ -47,5 +49,14 @@ public class LoginRegisterActivity extends AppCompatActivity
         transaction.replace(R.id.login_content, passwordFragment, TAG_FORGET_PASSWORD_FRAGMENT);
         transaction.addToBackStack(TAG_FORGET_PASSWORD_FRAGMENT);
         transaction.commit();
+    }
+
+    @Override
+    public void proceedLogin(String username, String password) {
+        String welcomeText = "Hello " + username + "!";
+        Toast.makeText(this, welcomeText, Toast.LENGTH_SHORT).show();
+
+        Intent adminUser = new Intent(LoginRegisterActivity.this, AdminMainActivity.class);
+        startActivity(adminUser);
     }
 }
