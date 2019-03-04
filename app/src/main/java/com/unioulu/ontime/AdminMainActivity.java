@@ -17,7 +17,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.unioulu.ontime.fragment.EmergencyFragment;
+import com.unioulu.ontime.fragment.AddPillScreenFragment;
+import com.unioulu.ontime.fragment.SettingsFragment;
+import com.unioulu.ontime.fragment.StatisticsScreenFragment;
 import com.unioulu.ontime.fragment.TodayFragment;
 
 public class AdminMainActivity extends AppCompatActivity
@@ -107,11 +109,11 @@ public class AdminMainActivity extends AppCompatActivity
             if(position == 0) {
                 return TodayFragment.newInstance(position + 1);
             } else if(position == 1) {
-                return EmergencyFragment.newInstance(position + 1);
+                return AddPillScreenFragment.newInstance(position + 1);
             } else if(position == 2) {
-                return TodayFragment.newInstance(position + 1);
+                return StatisticsScreenFragment.newInstance(position + 1);
             } else if(position == 3) {
-                return TodayFragment.newInstance(position + 1);
+                return SettingsFragment.newInstance(position + 1);
             } else {
                 return null;
             }
