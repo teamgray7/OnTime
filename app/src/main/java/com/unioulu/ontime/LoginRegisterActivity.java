@@ -1,13 +1,18 @@
 package com.unioulu.ontime;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.unioulu.ontime.fragment.ForgetPasswordFragment;
 import com.unioulu.ontime.fragment.LoginFragment;
+import com.unioulu.ontime.fragment.RegisterFragment;
 
-public class LoginRegisterActivity extends AppCompatActivity {
+public class LoginRegisterActivity extends AppCompatActivity
+    implements LoginFragment.OnFragmentInteractionListener {
 
-    private final String TAG_LOGIN_FRAGMENT = "fragment_login";
+    private final String TAG_REGISTER_FRAGMENT = "fragment_register";
+    private final String TAG_FORGET_PASSWORD_FRAGMENT = "fragment_forget_password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +23,29 @@ public class LoginRegisterActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.login_content, loginPasswordFragment)
                 .commit();
+    }
+
+    @Override
+    public void registerAccountClicked() {
+        RegisterFragment registerFragment = RegisterFragment.newInstance();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim
+                .enter_from_left, R.anim.exit_to_right);
+        transaction.replace(R.id.login_content, registerFragment, TAG_REGISTER_FRAGMENT);
+        transaction.addToBackStack(TAG_REGISTER_FRAGMENT);
+        transaction.commit();
+    }
+
+    @Override
+    public void forgetPasswordClicked() {
+        ForgetPasswordFragment passwordFragment = ForgetPasswordFragment.newInstance();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim
+                .enter_from_left, R.anim.exit_to_right);
+        transaction.replace(R.id.login_content, passwordFragment, TAG_FORGET_PASSWORD_FRAGMENT);
+        transaction.addToBackStack(TAG_FORGET_PASSWORD_FRAGMENT);
+        transaction.commit();
     }
 }

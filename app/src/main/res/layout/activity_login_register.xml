@@ -5,10 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/marginXL"
-    android:layout_marginStart="@dimen/marginXL"
-    android:layout_marginEnd="@dimen/marginXL"
-    android:layout_marginBottom="@dimen/marginXL"
     tools:context=".LoginRegisterActivity" >
 
     <FrameLayout
