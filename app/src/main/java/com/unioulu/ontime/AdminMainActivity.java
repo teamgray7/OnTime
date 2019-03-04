@@ -3,6 +3,7 @@ package com.unioulu.ontime;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,12 +19,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.unioulu.ontime.fragment.AddPillScreenFragment;
+import com.unioulu.ontime.fragment.EmergencyFragment;
 import com.unioulu.ontime.fragment.SettingsFragment;
 import com.unioulu.ontime.fragment.StatisticsScreenFragment;
 import com.unioulu.ontime.fragment.TodayFragment;
 
 public class AdminMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        SettingsFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -39,6 +42,10 @@ public class AdminMainActivity extends AppCompatActivity
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    // Admin user
+    private final boolean ADMIN_USER = true;
+    private final String TAG_EMERGENCY_FRAGMENT = "fragment_emergency";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +93,30 @@ public class AdminMainActivity extends AppCompatActivity
 
         if (id == R.id.nav_signOut) {
             Intent signOutTransition = new Intent(AdminMainActivity.this, MainActivity.class);
+            signOutTransition.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(signOutTransition);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void settingsEmergencyAsAdmin() {
+        EmergencyFragment emergencyFragment = EmergencyFragment.newInstance(3, ADMIN_USER);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim
+                .enter_from_left, R.anim.exit_to_right);
+        transaction.replace(R.id.admin_container, emergencyFragment, TAG_EMERGENCY_FRAGMENT);
+        transaction.addToBackStack(TAG_EMERGENCY_FRAGMENT);
+        transaction.commit();
+    }
+
+    @Override
+    public void otherSettingsAsAdmin() {
+        // TODO : Design and place this fragment.
     }
 
     /**

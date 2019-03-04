@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity
      */
     private ViewPager mViewPager;
 
+    // Admin user
+    private final boolean ADMIN_USER = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity
             if(position == 0) {
                 return TodayFragment.newInstance(position + 1);
             } else if(position == 1) {
-                return EmergencyFragment.newInstance(position + 1);
+                return EmergencyFragment.newInstance(position + 1, ADMIN_USER);
             } else {
                 return null;
             }
