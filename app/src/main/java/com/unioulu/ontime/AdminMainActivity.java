@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,7 @@ import android.support.v4.view.ViewPager;
 
 import com.unioulu.ontime.fragment.AddPillScreenFragment;
 import com.unioulu.ontime.fragment.EmergencyFragment;
+import com.unioulu.ontime.fragment.OtherSettingsFragment;
 import com.unioulu.ontime.fragment.SettingsFragment;
 import com.unioulu.ontime.fragment.StatisticsScreenFragment;
 import com.unioulu.ontime.fragment.TodayFragment;
@@ -51,6 +53,7 @@ public class AdminMainActivity extends AppCompatActivity
     // Admin user
     private final boolean ADMIN_USER = true;
     private final String TAG_EMERGENCY_FRAGMENT = "fragment_emergency";
+    private final String TAG_OTHERSETTINGS_FRAGMENT = "fragment_other_settings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +125,15 @@ public class AdminMainActivity extends AppCompatActivity
     @Override
     public void otherSettingsAsAdmin() {
         // TODO : Design and place this fragment.
+        Log.d("OtherSettings", "Other settings clicked !");
+        OtherSettingsFragment otherSettingsFragment = OtherSettingsFragment.newInstance(5, ADMIN_USER);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim
+                .enter_from_left, R.anim.exit_to_right);
+        transaction.replace(R.id.admin_container, otherSettingsFragment, TAG_OTHERSETTINGS_FRAGMENT);
+        transaction.addToBackStack(TAG_OTHERSETTINGS_FRAGMENT);
+        transaction.commit();
     }
 
     @Override

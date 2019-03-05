@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.unioulu.ontime.fragment.EmergencyFragment;
 import com.unioulu.ontime.fragment.TodayFragment;
