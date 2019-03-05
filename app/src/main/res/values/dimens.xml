@@ -27,6 +27,7 @@
     <dimen name="editTextSize">25sp</dimen>
     <dimen name="loginTextSize">16sp</dimen>
 
+    <dimen name="alarmMedicineSize">100dp</dimen>
     <dimen name="otherSettingsBtnSize">100dp</dimen>
     <dimen name="emergencyCallButtonSize">128dp</dimen>
     <dimen name="snoozeButtonWidth">150dp</dimen>
