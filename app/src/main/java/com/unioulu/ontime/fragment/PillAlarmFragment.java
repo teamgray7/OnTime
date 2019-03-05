@@ -69,7 +69,7 @@ public class PillAlarmFragment extends Fragment {
         // Setting drop down elements
         snoozeSpinner.setAdapter(spinnerAdapter);
 
-        // Spinner on Item click listener
+        /* Spinner on Item click listener
         snoozeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -79,7 +79,7 @@ public class PillAlarmFragment extends Fragment {
                 // Showing selected spinner item
                 Toast.makeText(getContext(), item+" selected !", Toast.LENGTH_SHORT).show();
             }
-        });
+        }); */
 
 
         // ------------------------------------ End of spinner implementation -------------------------------------------------
