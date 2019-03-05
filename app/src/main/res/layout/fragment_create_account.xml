@@ -28,8 +28,8 @@
         android:layout_marginStart="@dimen/marginXL"
         android:layout_marginEnd="@dimen/marginXL"
         android:layout_marginBottom="@dimen/marginXL"
-        android:text="@string/usernameInput"
         android:textSize="@dimen/registerAccountEditTextSize"
+        android:hint="@string/usernameInput"
         android:ems="10"
         android:inputType="textPersonName" />
 
@@ -52,8 +52,8 @@
         android:layout_marginStart="@dimen/marginXL"
         android:layout_marginEnd="@dimen/marginXL"
         android:layout_marginBottom="@dimen/marginXL"
-        android:text="@string/inputPasswordRetype"
         android:textSize="@dimen/registerAccountEditTextSize"
+        android:hint="@string/inputPasswordRetype"
         android:ems="10"
         android:inputType="textPassword" />
 
@@ -64,8 +64,8 @@
         android:layout_marginStart="@dimen/marginXL"
         android:layout_marginEnd="@dimen/marginXL"
         android:layout_marginBottom="@dimen/marginXL"
-        android:text="@string/inputEmailAddress"
         android:textSize="@dimen/registerAccountEditTextSize"
+        android:hint="@string/inputEmailAddress"
         android:ems="10"
         android:inputType="textEmailAddress" />
 
