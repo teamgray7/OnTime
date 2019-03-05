@@ -10,6 +10,7 @@
         android:layout_width="@dimen/logoSize"
         android:layout_height="@dimen/logoSize"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/marginXL"
         android:src="@drawable/pill_icon"
         android:contentDescription="@string/pillContentDescription" />
 
@@ -52,9 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="@dimen/marginL"
-        android:orientation="horizontal"
-        android:gravity="bottom" >
+        android:layout_marginTop="@dimen/marginXXL"
+        android:orientation="horizontal" >
 
         <Button
             android:layout_width="match_parent"
