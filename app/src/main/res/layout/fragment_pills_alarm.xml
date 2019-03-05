@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorRedMD" >
+
+    <TextView
+        android:id="@+id/medicineTime"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/appbar_padding_top"
+        android:layout_marginTop="@dimen/marginL"
+        android:layout_marginEnd="@dimen/appbar_padding_top"
+        android:textStyle="bold|italic"
+        android:text="@string/medicineTime"
+        android:textColor="@color/colorWrite"
+        android:textSize="@dimen/todayTextSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicinePic" />
+
+    <ImageView
+        android:id="@+id/medicinePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/appbar_padding_top"
+        android:layout_marginTop="@dimen/medicinePicMargin"
+        android:layout_marginEnd="@dimen/appbar_padding_top"
+        app:srcCompat="@drawable/pill_icon"
+        android:contentDescription="@string/pillContentDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/medicineName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/appbar_padding_top"
+        android:layout_marginTop="@dimen/marginXXL"
+        android:layout_marginEnd="@dimen/appbar_padding_top"
+        android:text="@string/medicineNameAlarm"
+        android:textColor="@color/colorWrite"
+        android:textSize="@dimen/medicineNameTextSize"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicineTime" />
+
+    <Button
+        android:id="@+id/snoozeButton"
+        android:layout_width="@dimen/snoozeButtonWidth"
+        android:layout_height="@dimen/snoozeButtonHeight"
+        android:layout_marginStart="@dimen/marginL"
+        android:layout_marginTop="@dimen/marginXXL"
+        android:layout_marginBottom="@dimen/marginM"
+        android:background="@color/colorGreenMD"
+        android:text="@string/snooze"
+        android:textSize="@dimen/todayTextSize"
+        android:textStyle="italic"
+        android:textColor="@color/colorWrite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicineName"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Spinner
+        android:id="@+id/snoozeSpinner"
+        android:layout_width="@dimen/snoozeButtonWidth"
+        android:layout_height="@dimen/snoozeButtonHeight"
+        android:layout_marginStart="@dimen/marginM"
+        android:layout_marginTop="@dimen/marginXXL"
+        android:layout_marginEnd="@dimen/marginM"
+        android:layout_marginBottom="@dimen/marginM"
+        android:textSize="@dimen/todayTextSize"
+        android:textStyle="italic"
+        android:background="@color/colorYellowMD"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.71"
+        app:layout_constraintStart_toEndOf="@+id/snoozeButton"
+        app:layout_constraintTop_toBottomOf="@+id/medicineName"
+        app:layout_constraintVertical_bias="0.02" />
+
+</android.support.constraint.ConstraintLayout>
