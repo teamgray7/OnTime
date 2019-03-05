@@ -126,7 +126,7 @@ public class AdminMainActivity extends AppCompatActivity
     public void otherSettingsAsAdmin() {
         // TODO : Design and place this fragment.
         Log.d("OtherSettings", "Other settings clicked !");
-        OtherSettingsFragment otherSettingsFragment = OtherSettingsFragment.newInstance(5, ADMIN_USER);
+        OtherSettingsFragment otherSettingsFragment = OtherSettingsFragment.newInstance("5", "Other settings");
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim
