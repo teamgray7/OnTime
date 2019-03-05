@@ -41,7 +41,7 @@
     <string name="pillNameHint">Pill name</string>
     <string name="pillAmountHint">Amount</string>
     <string name="btnPillSave">Save</string>
-    <string name="btnPillCancel">Cancel</string>
+    <string name="btnPillCancel">Delete</string>
     <string name="radioMorning">Morning</string>
     <string name="radioAfternoon">Afternoon</string>
     <string name="radioEvening">Evening</string>
@@ -58,6 +58,12 @@
     <string name="inputPassword">Input password</string>
     <string name="inputPasswordRetype">Retype password</string>
     <string name="btnSignUp">Sign Up</string>
+
+    <string name="pillDeleteDialogTitle">Deleting a pill</string>
+    <string name="pillDeleteDialogMessage">You have chosen to delete Katarin - 0.5 pill from your
+        alarm list. All the alarm settings will be removed. Are you sure? </string>
+    <string name="pillDeleteConfirm">YES</string>
+    <string name="pillDeleteCancel">NO</string>
 
     <string name="emergencyPersonName">Name</string>
     <string name="emergencyPersonPhone">Phone number</string>

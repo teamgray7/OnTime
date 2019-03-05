@@ -1,5 +1,7 @@
 package com.unioulu.ontime;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,7 +30,8 @@ import com.unioulu.ontime.fragment.TodayFragment;
 public class AdminMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         SettingsFragment.OnFragmentInteractionListener,
-        EmergencyFragment.OnFragmentInteractionListener {
+        EmergencyFragment.OnFragmentInteractionListener,
+        AddPillScreenFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -127,6 +130,25 @@ public class AdminMainActivity extends AppCompatActivity
         callIntent.setData(Uri.parse("tel:" + phoneNumber));
 
         startActivity(callIntent);
+    }
+
+    @Override
+    public void pillDelete() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminMainActivity.this);
+        builder.setTitle(getResources().getString(R.string.pillDeleteDialogTitle));
+        builder.setMessage(R.string.pillDeleteDialogMessage)
+                .setPositiveButton(R.string.pillDeleteConfirm, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Do positive things here..
+                    }
+                })
+                .setNegativeButton(R.string.pillDeleteCancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog...
+                    }
+                });
+
+        builder.create().show();
     }
 
     /**
