@@ -21,6 +21,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.unioulu.ontime.fragment.AddPillScreenFragment;
 import com.unioulu.ontime.fragment.EmergencyFragment;
@@ -83,6 +85,16 @@ public class AdminMainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Hiding the emergency settings and other settings tab from tabLayout
+        ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(4).setVisibility(View.GONE);
+        ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(5).setVisibility(View.GONE);
+
+        // Set the first tab as selected tab
+        TabLayout.Tab tab = tabLayout.getTabAt(0);
+        if(tab != null) {
+            tab.select();
+        }
     }
 
     @Override
@@ -92,7 +104,19 @@ public class AdminMainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
+            TabLayout.Tab tabSettings = tabLayout.getTabAt(3);
+
+            // If back button is pressed,
+            //   - If it is pressed on other/emergency settings, go back to settings.
+            //   - Else if it is one of the visible tabs, do as super.onBackPressed()
+            if(tabLayout.getSelectedTabPosition() > 3) {
+                if (tabSettings != null) {
+                    tabSettings.select();
+                }
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -113,28 +137,22 @@ public class AdminMainActivity extends AppCompatActivity
 
     @Override
     public void settingsEmergencyAsAdmin() {
-        EmergencyFragment emergencyFragment = EmergencyFragment.newInstance(3, ADMIN_USER);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
+        TabLayout.Tab tabEmergencySettings = tabLayout.getTabAt(4);
 
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim
-                .enter_from_left, R.anim.exit_to_right);
-        transaction.replace(R.id.admin_container, emergencyFragment, TAG_EMERGENCY_FRAGMENT);
-        transaction.addToBackStack(TAG_EMERGENCY_FRAGMENT);
-        transaction.commit();
+        if(tabEmergencySettings != null) {
+            tabEmergencySettings.select();
+        }
     }
 
     @Override
     public void otherSettingsAsAdmin() {
-        // TODO : Design and place this fragment.
-        Log.d("OtherSettings", "Other settings clicked !");
-        OtherSettingsFragment otherSettingsFragment = OtherSettingsFragment.newInstance("5", "Other settings");
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
+        TabLayout.Tab tabOtherSettings = tabLayout.getTabAt(5);
 
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim
-                .enter_from_left, R.anim.exit_to_right);
-        transaction.replace(R.id.admin_container, otherSettingsFragment, TAG_OTHERSETTINGS_FRAGMENT);
-        transaction.addToBackStack(TAG_OTHERSETTINGS_FRAGMENT);
-        transaction.commit();
+        if(tabOtherSettings != null) {
+            tabOtherSettings.select();
+        }
     }
 
     @Override
@@ -184,6 +202,10 @@ public class AdminMainActivity extends AppCompatActivity
                 return StatisticsScreenFragment.newInstance(position + 1);
             } else if(position == 3) {
                 return SettingsFragment.newInstance(position + 1);
+            } else if(position == 4) {
+                return EmergencyFragment.newInstance(position + 1, true);
+            } else if(position == 5) {
+                return OtherSettingsFragment.newInstance("dummy1", "dummy2");
             } else {
                 return null;
             }
@@ -191,8 +213,8 @@ public class AdminMainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
-            return 4;
+            // Show 6 total pages. (2 of them are hidden...)
+            return 6;
         }
     }
 }
