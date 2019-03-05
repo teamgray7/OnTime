@@ -69,13 +69,12 @@ public class TodayFragment extends Fragment {
         nextPills.setPaintFlags(nextPills.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         previousPills.setPaintFlags(previousPills.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-
+        // Should be removed ! Only implemented to make alarm activity accessible !
         nextPills.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Intent intent = new Intent(v.getContext(), AlarmActivity.class);
                 startActivity(intent);
-
                 return true;
             }
         });

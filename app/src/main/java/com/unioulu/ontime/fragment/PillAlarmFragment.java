@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,29 +70,19 @@ public class PillAlarmFragment extends Fragment {
         // Setting drop down elements
         snoozeSpinner.setAdapter(spinnerAdapter);
 
-        /* Spinner on Item click listener
-        snoozeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Getting selected item
-                String item = parent.getItemAtPosition(position).toString();
-
-                // Showing selected spinner item
-                Toast.makeText(getContext(), item+" selected !", Toast.LENGTH_SHORT).show();
-            }
-        }); */
-
 
         // ------------------------------------ End of spinner implementation -------------------------------------------------
 
         // ------------------------------------ Snooze button implementation --------------------------------------------------
-        snoozeButton = (Button) rootView.findViewById(R.id.snoozeButton);
+        snoozeButton = rootView.findViewById(R.id.snoozeButton);
 
         snoozeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Snooze button clicked !", Toast.LENGTH_SHORT).show();
+                String selectedSnoozeTime = snoozeSpinner.getSelectedItem().toString();
+                Toast.makeText(getContext(), selectedSnoozeTime + " Snooze time selected !", Toast.LENGTH_SHORT).show();
                 // Will change alarm fragment to taken fragment..
+                getActivity().finish();
             }
         });
 
@@ -99,6 +90,8 @@ public class PillAlarmFragment extends Fragment {
 
         return rootView;
     }
+
+
 
     @Override
     public void onAttach(Context context) {
