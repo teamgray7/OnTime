@@ -1,5 +1,6 @@
 package com.unioulu.ontime.fragment;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.unioulu.ontime.AlarmActivity;
 import com.unioulu.ontime.R;
 import com.unioulu.ontime.RecyclerViewAdapter;
 
@@ -46,7 +48,7 @@ public class TodayFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_today, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_today, container, false);
 
         RecyclerView nextPillsRV = rootView.findViewById(R.id.NextPillRecyclerView);
         RecyclerView alreadyTakenPillsRV = rootView.findViewById(R.id.AlreadyTakenRecyclerView);
@@ -66,6 +68,17 @@ public class TodayFragment extends Fragment {
         previousPills = (TextView) rootView.findViewById(R.id.alreadyTakenPillsTextView);
         nextPills.setPaintFlags(nextPills.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         previousPills.setPaintFlags(previousPills.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+
+        nextPills.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(v.getContext(), AlarmActivity.class);
+                startActivity(intent);
+
+                return true;
+            }
+        });
 
         return rootView;
     }
