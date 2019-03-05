@@ -40,8 +40,8 @@
         android:layout_marginStart="@dimen/marginXL"
         android:layout_marginEnd="@dimen/marginXL"
         android:layout_marginBottom="@dimen/marginXL"
-        android:text="@string/inputPassword"
         android:textSize="@dimen/registerAccountEditTextSize"
+        android:hint="@string/inputPassword"
         android:ems="10"
         android:inputType="textPassword" />
 
