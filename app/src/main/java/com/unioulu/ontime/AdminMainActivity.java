@@ -33,7 +33,8 @@ public class AdminMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         SettingsFragment.OnFragmentInteractionListener,
         EmergencyFragment.OnFragmentInteractionListener,
-        AddPillScreenFragment.OnFragmentInteractionListener {
+        AddPillScreenFragment.OnFragmentInteractionListener,
+        OtherSettingsFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
