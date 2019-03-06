@@ -1,16 +1,25 @@
 package com.unioulu.ontime.fragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.RadioButton;
+import android.widget.TimePicker;
 
 import com.unioulu.ontime.R;
+
+import java.text.BreakIterator;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -103,14 +112,63 @@ public class OtherSettingsFragment extends Fragment {
     private View.OnClickListener timeBtnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            // Time picker parameters (Current time)
+            Calendar mcurrentTime = Calendar.getInstance();
+            int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+            int minute = mcurrentTime.get(Calendar.MINUTE);
+            TimePickerDialog mTimePicker; // Time picker dialog
+
+
             if (R.id.morningBtn == v.getId() ) {
                 Log.d("OtherSettings", "morning");
-            }else if (R.id.afternoonBtn == v.getId()) {
+
+                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle(R.string.SelectMorningTime);
+                mTimePicker.show();
+
+            }
+            else if (R.id.afternoonBtn == v.getId()) {
+
                 Log.d("OtherSettings", "Afternoon");
+                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle(R.string.SelectAfternoonTime);
+                mTimePicker.show();
+
+
             }else if (R.id.eveningBtn == v.getId()){
                 Log.d("OtherSettings", "Evening");
+
+                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle(R.string.SelectEveningTime);
+                mTimePicker.show();
+
             }else if (R.id.customBtn == v.getId()){
                 Log.d("OtherSettings", "Custom");
+
+                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle(R.string.SelectCustomTime);
+                mTimePicker.show();
+
             }else if (R.id.saveBtn == v.getId()){
                 Log.d("OtherSettings", "Save");
             }else if (R.id.cancelBtn == v.getId()){
