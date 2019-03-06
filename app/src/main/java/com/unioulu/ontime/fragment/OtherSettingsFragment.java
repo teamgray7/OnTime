@@ -3,6 +3,7 @@ package com.unioulu.ontime.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,8 +90,35 @@ public class OtherSettingsFragment extends Fragment {
                 rootView.findViewById(R.id.s25Rbtn),
         };
 
+        morningBtn.setOnClickListener(timeBtnOnClickListener);
+        afternoonBtn.setOnClickListener(timeBtnOnClickListener);
+        eveningBtn.setOnClickListener(timeBtnOnClickListener);
+        customBtn.setOnClickListener(timeBtnOnClickListener);
+        save.setOnClickListener(timeBtnOnClickListener);
+        cancel.setOnClickListener(timeBtnOnClickListener);
+
         return rootView;
     }
+
+    private View.OnClickListener timeBtnOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (R.id.morningBtn == v.getId() ) {
+                Log.d("OtherSettings", "morning");
+            }else if (R.id.afternoonBtn == v.getId()) {
+                Log.d("OtherSettings", "Afternoon");
+            }else if (R.id.eveningBtn == v.getId()){
+                Log.d("OtherSettings", "Evening");
+            }else if (R.id.customBtn == v.getId()){
+                Log.d("OtherSettings", "Custom");
+            }else if (R.id.saveBtn == v.getId()){
+                Log.d("OtherSettings", "Save");
+            }else if (R.id.cancelBtn == v.getId()){
+                Log.d("OtherSettings", "Cancel");
+            }
+
+        }
+    };
 
     @Override
     public void onAttach(Context context) {
