@@ -50,10 +50,12 @@
 
     <string name="medicineTime">Medicine time</string>
     <string name="snooze">Snooze</string>
+    <string name="missedPillText">YOU HAVE MISSED TO TAKE YOUR PILL!</string>
 
     <string name="logoContentDescription">Logo of OnTime</string>
     <string name="statisticsDescription">Statistics</string>
     <string name="pillContentDescription">Picture of Pill</string>
+    <string name="missedContentDescription">Missed pill</string>
     <string name="usernameInput">Username</string>
     <string name="welcomeText">Welcome</string>
     <string name="inputEmailAddress">Input email address</string>
@@ -78,10 +80,9 @@
 
     <string name="medicineNameAlarm">Medicine Name</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="ok">OK</string>
     <string name="_25_min">25 min</string>
     <string name="_5_minutes">5 minutes</string>
     <string name="snooze_time">Snooze time</string>
