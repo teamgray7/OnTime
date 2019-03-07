@@ -44,6 +44,6 @@
         android:paddingEnd="40dp"
         android:text="@string/ok"
         android:textSize="@dimen/saveAccountTextSize"
-        android:background="@color/colorYellowMD" />
+        android:background="@color/colorRedMD" />
 
 </LinearLayout>
