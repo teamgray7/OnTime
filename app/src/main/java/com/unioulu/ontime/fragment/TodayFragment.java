@@ -83,6 +83,12 @@ public class TodayFragment extends Fragment {
     }
 
     private void initImageBitmaps(){
+        // Clearing so that there won't be duplicate items.
+        mImageUrlsNext.clear();
+        mNamesNext.clear();
+        mImageUrlsPrevious.clear();
+        mNamesPrevious.clear();
+
         mImageUrlsNext.add("https://i.ibb.co/f00N4B3/20190303-224419.jpg");
         mNamesNext.add("Sinecod 50mg - 1 pill");
 
