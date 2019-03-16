@@ -80,6 +80,7 @@ public class Medicines {
     }
 
     // Constructors
+    @Ignore
     public Medicines(){}    // Empty constructor
 
     public Medicines(String medicine_name, String picture_path, String morningAt, String afternoonAt, String everingAt, String customAt) {
