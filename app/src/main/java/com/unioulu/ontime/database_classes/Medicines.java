@@ -48,6 +48,34 @@ public class Medicines {
 
         @ColumnInfo(name = "status")
         private String status;
+
+
+        // Constructors
+        public MedicineStatisticsTable(){} // Empty constructor
+
+        public MedicineStatisticsTable(Date date, String status) {
+            this.date = date;
+            this.status = status;
+        }
+
+        //Getters
+        public Date getDate() {
+            return date;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        // Setters
+
+        public void setDate(Date date) {
+            this.date = date;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
     }
 
     // Constructors

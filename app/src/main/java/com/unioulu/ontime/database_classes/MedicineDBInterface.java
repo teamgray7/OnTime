@@ -22,6 +22,9 @@ public interface MedicineDBInterface {
     @Query("SELECT * FROM Medicines WHERE medicine_name =: medicine_name")
     Medicines fetchOneMedicineByName(String medicine_name);
 
+    @Query("SELECT picture_path FROM Medicines WHERE medicine_name =: medicine_name")
+    String fetchPicturePathByName(String medicine_name);
+
     @Query("SELECT morningAt FROM Medicines WHERE medicine_name =: medicine_name")
     String fetchMorningAtByName(String medicine_name);
 

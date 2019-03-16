@@ -7,3 +7,4 @@ import android.arch.persistence.room.RoomDatabase;
 public abstract class MedicinesDatabase extends RoomDatabase {
     public abstract MedicineDBInterface medicineDBInterface();
 }
+
