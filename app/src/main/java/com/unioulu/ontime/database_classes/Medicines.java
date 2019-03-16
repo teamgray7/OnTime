@@ -51,6 +51,7 @@ public class Medicines {
 
 
         // Constructors
+        @Ignore
         public MedicineStatisticsTable(){} // Empty constructor
 
         public MedicineStatisticsTable(Date date, String status) {

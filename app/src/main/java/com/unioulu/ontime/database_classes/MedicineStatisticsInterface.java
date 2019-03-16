@@ -13,6 +13,6 @@ public interface MedicineStatisticsInterface {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertDateAndStatus(Medicines.MedicineStatisticsTable medicineStatisticsElement);
 
-    @Query("SELECT * FROM MedicineStatisticsTable WHERE medicine_id = medicine_id")
+    @Query("SELECT * FROM MedicineStatisticsTable WHERE medicine_id = :id")
     List<Medicines.MedicineStatisticsTable> fetchMedicineStatisticsByID(int id);
 }

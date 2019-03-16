@@ -19,22 +19,22 @@ public interface MedicineDBInterface {
     @Query("SELECT * FROM Medicines")
     LiveData<List<Medicines>> fetchAllMedicines();
 
-    @Query("SELECT * FROM Medicines WHERE medicine_name =: medicine_name")
+    @Query("SELECT * FROM Medicines WHERE medicine_name = :medicine_name")
     Medicines fetchOneMedicineByName(String medicine_name);
 
-    @Query("SELECT picture_path FROM Medicines WHERE medicine_name =: medicine_name")
+    @Query("SELECT picture_path FROM Medicines WHERE medicine_name = :medicine_name")
     String fetchPicturePathByName(String medicine_name);
 
-    @Query("SELECT morningAt FROM Medicines WHERE medicine_name =: medicine_name")
+    @Query("SELECT morningAt FROM Medicines WHERE medicine_name = :medicine_name")
     String fetchMorningAtByName(String medicine_name);
 
-    @Query("SELECT afternoonAt FROM Medicines WHERE medicine_name =: medicine_name")
+    @Query("SELECT afternoonAt FROM Medicines WHERE medicine_name = :medicine_name")
     String fetchAfternoonAtByName(String medicine_name);
 
-    @Query("SELECT everingAt FROM Medicines WHERE medicine_name =: medicine_name")
+    @Query("SELECT everingAt FROM Medicines WHERE medicine_name = :medicine_name")
     String fetchEveningAtByName(String medicine_name);
 
-    @Query("SELECT customAt FROM Medicines WHERE medicine_name =: medicine_name")
+    @Query("SELECT customAt FROM Medicines WHERE medicine_name = :medicine_name")
     String fetchCustomAtByName(String medicine_name);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -43,7 +43,7 @@ public interface MedicineDBInterface {
     @Delete
     void deleteMedicine(Medicines medicine);
 
-    @Query("DELETE FROM MEDICINES WHERE medicine_name =: medicine_name")
+    @Query("DELETE FROM MEDICINES WHERE medicine_name = :medicine_name")
     void deleteMedicineByName(String medicine_name);
 
 }
