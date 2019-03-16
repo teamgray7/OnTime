@@ -149,4 +149,19 @@ public class Medicines {
     public void setCustomAt(String customAt) {
         this.customAt = customAt;
     }
+
+    // ToString
+    // Might be useful when debugging!
+    @Override
+    public String toString() {
+        return "Medicines{" +
+                "id=" + id +
+                ", medicine_name='" + medicine_name + '\'' +
+                ", picture_path='" + picture_path + '\'' +
+                ", morningAt='" + morningAt + '\'' +
+                ", afternoonAt='" + afternoonAt + '\'' +
+                ", everingAt='" + everingAt + '\'' +
+                ", customAt='" + customAt + '\'' +
+                '}';
+    }
 }
