@@ -1,6 +1,7 @@
 package com.unioulu.ontime;
 
 import android.Manifest;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -23,6 +24,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.unioulu.ontime.database_classes.Medicines;
+import com.unioulu.ontime.database_classes.MedicinesDatabase;
 import com.unioulu.ontime.fragment.EmergencyFragment;
 import com.unioulu.ontime.fragment.TodayFragment;
 
@@ -50,10 +53,22 @@ public class MainActivity extends AppCompatActivity
 
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 0;
 
+    // Variables used for application Database
+    private static final String TAG_DB = "DB";
+    private static final String DATABASE_NAME = "medicines_DB";
+    private MedicinesDatabase medicinesDatabase; // Medicine database
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialization and built of Room database
+        medicinesDatabase = Room.databaseBuilder(getApplicationContext(),
+                MedicinesDatabase.class, DATABASE_NAME)
+                .fallbackToDestructiveMigration()
+                .build();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
