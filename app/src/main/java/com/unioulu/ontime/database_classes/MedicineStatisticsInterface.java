@@ -11,8 +11,13 @@ import java.util.List;
 public interface MedicineStatisticsInterface {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertDateAndStatus(Medicines.MedicineStatisticsTable medicineStatisticsElement);
+    void insertDateAndStatus(MedicineStatistics medicineStatisticsElement);
 
-    @Query("SELECT * FROM MedicineStatisticsTable WHERE medicine_id = :id")
-    List<Medicines.MedicineStatisticsTable> fetchMedicineStatisticsByID(int id);
+    @Query("SELECT * FROM MedicineStatistics WHERE id = :id")
+    List<MedicineStatistics> fetchMedicineStatisticsByID(int id);
+
+
+    @Query("DELETE FROM MedicineStatistics")
+    void deleteMedicinesStatisticsTable();
+
 }

@@ -1,25 +1,18 @@
 package com.unioulu.ontime.fragment;
 
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
-
 import com.unioulu.ontime.R;
-
-import java.text.BreakIterator;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +22,7 @@ import java.util.Date;
  * Use the {@link OtherSettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OtherSettingsFragment extends Fragment {
+public class OtherSettingsFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -89,15 +82,6 @@ public class OtherSettingsFragment extends Fragment {
         customBtn    = rootView.findViewById(R.id.customBtn);
         save         = rootView.findViewById(R.id.saveBtn);
         cancel       = rootView.findViewById(R.id.cancelBtn);
-
-        // Initialization of radio buttons
-        snoozeRbtn = new RadioButton[]{
-                rootView.findViewById(R.id.s5Rbtn),
-                rootView.findViewById(R.id.s10Rbtn),
-                rootView.findViewById(R.id.s15Rbtn),
-                rootView.findViewById(R.id.s20Rbtn),
-                rootView.findViewById(R.id.s25Rbtn),
-        };
 
         morningBtn.setOnClickListener(timeBtnOnClickListener);
         afternoonBtn.setOnClickListener(timeBtnOnClickListener);
@@ -177,6 +161,12 @@ public class OtherSettingsFragment extends Fragment {
 
         }
     };
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
 
     @Override
     public void onAttach(Context context) {

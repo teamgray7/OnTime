@@ -22,10 +22,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
-import com.unioulu.ontime.database_classes.Medicines;
-import com.unioulu.ontime.database_classes.MedicinesDatabase;
+import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.fragment.EmergencyFragment;
 import com.unioulu.ontime.fragment.TodayFragment;
 
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     // Variables used for application Database
     private static final String TAG_DB = "DB";
     private static final String DATABASE_NAME = "medicines_DB";
-    private MedicinesDatabase medicinesDatabase; // Medicine database
+    private AppDatabase appDatabase; // Medicine database
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +62,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // Initialization and built of Room database
-        medicinesDatabase = Room.databaseBuilder(getApplicationContext(),
-                MedicinesDatabase.class, DATABASE_NAME)
+        appDatabase = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
 

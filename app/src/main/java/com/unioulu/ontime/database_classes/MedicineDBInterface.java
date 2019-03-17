@@ -46,4 +46,7 @@ public interface MedicineDBInterface {
     @Query("DELETE FROM MEDICINES WHERE medicine_name = :medicine_name")
     void deleteMedicineByName(String medicine_name);
 
+    @Query("DELETE FROM MEDICINES")
+    void deleteMedicinesTable();
+
 }

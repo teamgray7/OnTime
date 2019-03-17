@@ -10,12 +10,12 @@ import android.support.annotation.NonNull;
 import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
-
 @Entity
 public class Medicines {
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "medicine_id")
     private int id;
 
     @ColumnInfo(name = "medicine_name")
@@ -35,49 +35,6 @@ public class Medicines {
 
     @ColumnInfo(name = "customAt")
     private String customAt;
-
-    @Entity (foreignKeys = @ForeignKey(onDelete = CASCADE,
-            entity = Medicines.class, parentColumns = "id", childColumns = "id"))
-    public class MedicineStatisticsTable{
-        @PrimaryKey(autoGenerate = true)
-        @ColumnInfo(name = "medicine_id")
-        private int id;
-
-        @ColumnInfo(name="date")
-        private Date date;
-
-        @ColumnInfo(name = "status")
-        private String status;
-
-
-        // Constructors
-        @Ignore
-        public MedicineStatisticsTable(){} // Empty constructor
-
-        public MedicineStatisticsTable(Date date, String status) {
-            this.date = date;
-            this.status = status;
-        }
-
-        //Getters
-        public Date getDate() {
-            return date;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        // Setters
-
-        public void setDate(Date date) {
-            this.date = date;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-    }
 
     // Constructors
     @Ignore
@@ -150,8 +107,8 @@ public class Medicines {
         this.customAt = customAt;
     }
 
-    // ToString
-    // Might be useful when debugging!
+    // To String
+
     @Override
     public String toString() {
         return "Medicines{" +
