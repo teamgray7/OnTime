@@ -1,5 +1,6 @@
 package com.unioulu.ontime.database_classes;
 
+//https://github.com/ziizouz/RoomPersistenceLibraryAndroid.git
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
@@ -16,5 +17,3 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract OtherSettingsInterface otherSettingsInterface();
     public abstract EmergencySettingsInterface emergencySettingsInterface();
 }
-
-
