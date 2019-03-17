@@ -10,7 +10,8 @@ import android.support.annotation.NonNull;
 import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
-@Entity
+@Entity(foreignKeys = @ForeignKey(onDelete = CASCADE,
+        entity = UsersTable.class, parentColumns = "user_id", childColumns = "medicine_id"))
 public class Medicines {
 
     @NonNull

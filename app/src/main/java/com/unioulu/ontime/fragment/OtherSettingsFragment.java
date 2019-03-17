@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
 import com.unioulu.ontime.R;
+import com.unioulu.ontime.database_classes.AppDatabase;
+
 import java.util.Calendar;
 
 /**
@@ -22,11 +24,14 @@ import java.util.Calendar;
  * Use the {@link OtherSettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OtherSettingsFragment extends Fragment implements View.OnClickListener{
+public class OtherSettingsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    // Database variable
+    private AppDatabase appDatabase;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -75,6 +80,7 @@ public class OtherSettingsFragment extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_other_settings, container, false);
 
+
         // Initialization of buttons
         morningBtn   = rootView.findViewById(R.id.morningBtn);
         afternoonBtn = rootView.findViewById(R.id.afternoonBtn);
@@ -83,89 +89,95 @@ public class OtherSettingsFragment extends Fragment implements View.OnClickListe
         save         = rootView.findViewById(R.id.saveBtn);
         cancel       = rootView.findViewById(R.id.cancelBtn);
 
+        // Initialization of radio buttons
+        snoozeRbtn = new RadioButton[]{
+                rootView.findViewById(R.id.s5Rbtn),
+                rootView.findViewById(R.id.s10Rbtn),
+                rootView.findViewById(R.id.s15Rbtn),
+                rootView.findViewById(R.id.s20Rbtn),
+                rootView.findViewById(R.id.s25Rbtn),
+        };
+
+        // OnClick listeners
         morningBtn.setOnClickListener(timeBtnOnClickListener);
         afternoonBtn.setOnClickListener(timeBtnOnClickListener);
         eveningBtn.setOnClickListener(timeBtnOnClickListener);
         customBtn.setOnClickListener(timeBtnOnClickListener);
-        save.setOnClickListener(timeBtnOnClickListener);
-        cancel.setOnClickListener(timeBtnOnClickListener);
+
+        save.setOnClickListener(save_cancer_Clicked);
+        cancel.setOnClickListener(save_cancer_Clicked);
+
+        for (RadioButton rButton : snoozeRbtn){
+            rButton.setOnClickListener(radioButtonClickListener);
+        }
 
         return rootView;
     }
 
+    // Time pickers !
     private View.OnClickListener timeBtnOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             // Time picker parameters (Current time)
+            final View view = v;
             Calendar mcurrentTime = Calendar.getInstance();
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker; // Time picker dialog
 
-
-            if (R.id.morningBtn == v.getId() ) {
-                Log.d("OtherSettings", "morning");
-
-                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+            mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                    if (R.id.morningBtn == view.getId() ) {
+                        Log.d("OtherSettings", "morning");
                         Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
                     }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle(R.string.SelectMorningTime);
-                mTimePicker.show();
+                    else if (R.id.afternoonBtn == view.getId()) {
 
-            }
-            else if (R.id.afternoonBtn == v.getId()) {
+                        Log.d("OtherSettings", "Afternoon");
 
-                Log.d("OtherSettings", "Afternoon");
-                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
+
+                    }else if (R.id.eveningBtn == view.getId()){
+                        Log.d("OtherSettings", "Evening");
+
+                        Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
+
+                    }else if (R.id.customBtn == view.getId()){
+                        Log.d("OtherSettings", "Custom");
+
                         Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
                     }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle(R.string.SelectAfternoonTime);
-                mTimePicker.show();
+                }
+            }, hour, minute, true);//Yes 24 hour time
+            mTimePicker.setTitle(R.string.SelectMorningTime);
+            mTimePicker.show();
+        }
+    };
 
+    private View.OnClickListener save_cancer_Clicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
 
-            }else if (R.id.eveningBtn == v.getId()){
-                Log.d("OtherSettings", "Evening");
-
-                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle(R.string.SelectEveningTime);
-                mTimePicker.show();
-
-            }else if (R.id.customBtn == v.getId()){
-                Log.d("OtherSettings", "Custom");
-
-                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle(R.string.SelectCustomTime);
-                mTimePicker.show();
-
-            }else if (R.id.saveBtn == v.getId()){
+            if (R.id.saveBtn == v.getId()){
                 Log.d("OtherSettings", "Save");
             }else if (R.id.cancelBtn == v.getId()){
                 Log.d("OtherSettings", "Cancel");
             }
-
         }
     };
 
-    @Override
-    public void onClick(View v) {
+    private View.OnClickListener radioButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RadioButton rButton = getActivity().findViewById(v.getId());
+            if (rButton.isChecked()){
+                rButton.toggle();
 
-    }
+                Log.d("OtherSettings", "Radio button: " + rButton.getText() + " clicked ! ");
+            }
+        }
+    };
 
 
     @Override

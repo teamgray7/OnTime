@@ -146,68 +146,53 @@
                 android:textColor="@color/colorRedMD"
                 app:layout_gravity="center"
                 app:layout_rowWeight="1"/>
-
-            <RadioButton
-                android:id="@+id/s5Rbtn"
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_row="8"
+                app:layout_rowSpan="5"
                 app:layout_column="0"
                 app:layout_columnSpan="2"
-                android:layout_marginStart="@dimen/marginL"
-                android:text="@string/_5_minutes"
-                android:textSize="18sp"
-                app:layout_rowWeight="1"
-                android:onClick="snoozeRadioBtnClicked"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
+                android:gravity="start">
+                <RadioButton
+                    android:id="@+id/s5Rbtn"
+                    android:layout_marginStart="@dimen/marginL"
+                    android:text="@string/_5_minutes"
+                    android:checked="true"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
 
-            <RadioButton
-                android:id="@+id/s10Rbtn"
-                app:layout_row="9"
-                app:layout_column="0"
-                app:layout_columnSpan="2"
-                android:layout_marginStart="@dimen/marginL"
-                android:onClick="snoozeRadioBtnClicked"
-                android:text="@string/_10_minutes"
-                android:textSize="18sp"
-                app:layout_rowWeight="1"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-            <RadioButton
-                android:id="@+id/s15Rbtn"
-                app:layout_row="10"
-                app:layout_column="0"
-                app:layout_columnSpan="2"
-                android:onClick="snoozeRadioBtnClicked"
-                android:layout_marginStart="@dimen/marginL"
-                android:text="@string/_15_minutes"
-                android:textSize="18sp"
-                app:layout_rowWeight="1"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-            <RadioButton
-                android:id="@+id/s20Rbtn"
-                app:layout_row="11"
-                app:layout_column="0"
-                app:layout_columnSpan="2"
-                android:onClick="snoozeRadioBtnClicked"
-                android:layout_marginStart="@dimen/marginL"
-                android:text="@string/_20_minutes"
-                android:textSize="18sp"
-                app:layout_rowWeight="1"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-            <RadioButton
-                android:id="@+id/s25Rbtn"
-                app:layout_row="12"
-                app:layout_column="0"
-                app:layout_columnSpan="2"
-                android:onClick="snoozeRadioBtnClicked"
-                android:layout_marginStart="@dimen/marginL"
-                android:text="@string/_25_minutes"
-                android:textSize="18sp"
-                app:layout_rowWeight="1"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
+                <RadioButton
+                    android:id="@+id/s10Rbtn"
+                    android:layout_marginStart="@dimen/marginL"
+                    android:text="@string/_10_minutes"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+                <RadioButton
+                    android:id="@+id/s15Rbtn"
+                    android:layout_marginStart="@dimen/marginL"
+                    android:text="@string/_15_minutes"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+                <RadioButton
+                    android:id="@+id/s20Rbtn"
+                    android:layout_marginStart="@dimen/marginL"
+                    android:text="@string/_20_minutes"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+                <RadioButton
+                    android:id="@+id/s25Rbtn"
+                    android:layout_marginStart="@dimen/marginL"
+                    android:text="@string/_25_minutes"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+            </RadioGroup>
             <Button
                 android:id="@+id/saveBtn"
                 android:layout_width="wrap_content"
