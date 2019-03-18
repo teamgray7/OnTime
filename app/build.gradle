@@ -38,4 +38,6 @@ dependencies {
     // Room persistence library
     implementation 'android.arch.persistence.room:runtime:1.1.0'
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.0'
+    // Statistical library for pie charts and everything
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
 }
