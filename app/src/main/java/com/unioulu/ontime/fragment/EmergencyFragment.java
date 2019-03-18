@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -52,25 +53,43 @@ public class EmergencyFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_emergency, container, false);
         isAdmin = getArguments().getBoolean(ARG_ADMIN_USER);
 
+        ImageButton callButton = (ImageButton) rootView.findViewById(R.id.callButton);
+        Button btnSaveEmergency = (Button) rootView.findViewById(R.id.btn_saveEmergency);
+
+        // TODO : Replace static image with the one saved into database...
+        ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
+        ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
+
+        // Admin user can edit info and picture, normal user is not able to edit anything.
         if(isAdmin) {
             EditText etPersonName = (EditText) rootView.findViewById(R.id.name_field);
             EditText etPersonPhone = (EditText) rootView.findViewById(R.id.number_field);
 
+            // TODO : Replace static information with ones retrieved from database...
+            etPersonName.setText("Berke Esmer");
+            etPersonPhone.setText("+358403600652");
+
             etPersonName.setVisibility(View.VISIBLE);
             etPersonPhone.setVisibility(View.VISIBLE);
+
+            callButton.setVisibility(View.GONE);
+            btnSaveEmergency.setOnClickListener(btnSaveEmergencyClickListener);
+
+            ivEmergency.setOnClickListener(emergencyImageClickListener);
         } else {
             TextView tvPersonName = (TextView) rootView.findViewById(R.id.tv_name_field);
             TextView tvPersonPhone = (TextView) rootView.findViewById(R.id.tv_number_field);
 
+            // TODO : Replace static information with ones retrieved from database...
+            tvPersonName.setText("Berke Esmer");
+            tvPersonPhone.setText("+358403600652");
+
             tvPersonName.setVisibility(View.VISIBLE);
             tvPersonPhone.setVisibility(View.VISIBLE);
+
+            btnSaveEmergency.setVisibility(View.GONE);
+            callButton.setOnClickListener(callButtonClickListener);
         }
-
-        ImageButton callButton = (ImageButton) rootView.findViewById(R.id.callButton);
-        callButton.setOnClickListener(callButtonClickListener);
-
-        ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
-        ivEmergency.setOnClickListener(emergencyImageClickListener);
 
         return rootView;
     }
@@ -96,7 +115,17 @@ public class EmergencyFragment extends Fragment {
     private View.OnClickListener callButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mListener.makeCall("+358403600652");
+            TextView tvPersonPhone = (TextView) getView().findViewById(R.id.tv_number_field);
+            String phoneNumber = tvPersonPhone.getText().toString();
+
+            mListener.makeCall(phoneNumber);
+        }
+    };
+
+    private View.OnClickListener btnSaveEmergencyClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // TODO : Fill here with the function that would save data (both image and info) into database..
         }
     };
 

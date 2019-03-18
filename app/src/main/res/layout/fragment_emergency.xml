@@ -14,7 +14,6 @@
         android:layout_marginStart="@dimen/marginXL"
         android:layout_marginEnd="@dimen/marginXL"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/avatar_icon"
         android:contentDescription="@string/emergencyImageContent" />
 
     <EditText
@@ -51,8 +50,7 @@
         android:layout_marginStart="@dimen/marginXL"
         android:layout_marginEnd="@dimen/marginXL"
         android:layout_gravity="center_horizontal"
-        android:visibility="gone"
-        android:text="@string/emergencyPerson" />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_number_field"
@@ -62,8 +60,7 @@
         android:layout_marginStart="@dimen/marginXL"
         android:layout_marginEnd="@dimen/marginXL"
         android:layout_gravity="center_horizontal"
-        android:visibility="gone"
-        android:text="@string/emergencyPhone" />
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/callButton"
@@ -74,5 +71,14 @@
         android:src="@android:drawable/ic_menu_call"
         android:scaleType="fitCenter"
         android:contentDescription="@string/emergencyCallImageContent" />
+
+    <Button
+        android:id="@+id/btn_saveEmergency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginXL"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/save"
+        android:textSize="@dimen/saveAccountTextSize" />
 
 </LinearLayout>
