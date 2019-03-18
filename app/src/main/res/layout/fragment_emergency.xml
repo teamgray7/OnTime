@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/mugshot"
+        android:id="@+id/iv_emergency"
         android:layout_width="@dimen/emergencyAvatar"
         android:layout_height="@dimen/emergencyAvatar"
         android:layout_marginTop="@dimen/marginXL"

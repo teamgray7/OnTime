@@ -1,5 +1,6 @@
 package com.unioulu.ontime.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.unioulu.ontime.R;
@@ -19,6 +21,9 @@ public class EmergencyFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String ARG_ADMIN_USER = "user_admin";
+    private static final int GALLERY_REQUEST = 1;
+
+    private ImageView ivEmergency;
 
     boolean isAdmin;
 
@@ -64,6 +69,9 @@ public class EmergencyFragment extends Fragment {
         ImageButton callButton = (ImageButton) rootView.findViewById(R.id.callButton);
         callButton.setOnClickListener(callButtonClickListener);
 
+        ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
+        ivEmergency.setOnClickListener(emergencyImageClickListener);
+
         return rootView;
     }
 
@@ -91,6 +99,28 @@ public class EmergencyFragment extends Fragment {
             mListener.makeCall("+358403600652");
         }
     };
+
+    private View.OnClickListener emergencyImageClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+
+            startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+        }
+    };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == Activity.RESULT_OK) {
+            if(requestCode == 1) {
+                final Uri imgSelected = data.getData();
+                ivEmergency.setImageURI(imgSelected);
+            }
+        }
+    }
 
     /**
      * This interface must be implemented by activities that contain this
