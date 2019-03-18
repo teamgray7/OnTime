@@ -1,5 +1,6 @@
 package com.unioulu.ontime.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -55,13 +56,14 @@ public class StatisticsScreenFragment extends Fragment {
         pieEntries.add(new PieEntry(18f, "Danger"));
         pieEntries.add(new PieEntry(1f, "Fail"));
 
-        PieDataSet dataSet = new PieDataSet(pieEntries, "Statistics of medicine");
+        PieDataSet dataSet = new PieDataSet(pieEntries, "Statistics");
         PieData data = new PieData(dataSet);
 
         pieChart = (PieChart) rootView.findViewById(R.id.pie_chart);
         pieChart.setData(data);
 
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setColors(new int[]{Color.GREEN, Color.YELLOW, Color.RED});
+        dataSet.setValueTextSize(18f);
         pieChart.animateXY(2000,2000);
     }
 }

@@ -79,7 +79,10 @@
         android:id="@+id/pie_chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/marginM"
+        android:layout_marginTop="@dimen/marginXL"
+        android:layout_marginEnd="@dimen/marginXL"
+        android:layout_marginStart="@dimen/marginXL"
+        android:layout_marginBottom="@dimen/marginXXL"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/statisticsDescription" />
 
