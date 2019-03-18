@@ -46,9 +46,8 @@ public class MainActivity extends AppCompatActivity
      */
     private ViewPager mViewPager;
 
-    // Admin user
+    // Admin user and permission numbers.
     private final boolean ADMIN_USER = false;
-
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 0;
 
     // Variables used for application Database
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity
                 AppDatabase.class, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

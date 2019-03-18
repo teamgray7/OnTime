@@ -59,5 +59,6 @@ public class LoginRegisterActivity extends AppCompatActivity
         Intent adminUser = new Intent(LoginRegisterActivity.this, AdminMainActivity.class);
         adminUser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(adminUser);
+        finish();
     }
 }
