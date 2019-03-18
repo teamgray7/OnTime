@@ -75,12 +75,12 @@
         android:gravity="center"
         android:text="@string/statisticsDate"/>
 
-    <ImageView
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/marginM"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/chart_example"
         android:contentDescription="@string/statisticsDescription" />
 
 </LinearLayout>
