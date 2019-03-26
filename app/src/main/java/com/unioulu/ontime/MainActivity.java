@@ -100,10 +100,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // TODO: implement a function that initiate default values and settings to database if nothing is already written
+        // Default user initialization done !
         databaseDefaultInitialization();
     }
-
+    // Default user initialization function
     void databaseDefaultInitialization() {
         new Thread(new Runnable() {
             @Override
