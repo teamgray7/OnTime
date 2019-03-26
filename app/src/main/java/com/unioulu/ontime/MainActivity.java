@@ -101,16 +101,20 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // TODO: implement a function that initiate default values and settings to database if nothing is already written
-        int usersCount = appDatabase.usersTableInterface().usersCount();
-        Log.d(TAG_DB, "Users count: " + usersCount);
-        // If first time application ran !
-        if (usersCount == 0) { databaseDefaultInitialization(); }
+        databaseDefaultInitialization();
     }
 
     void databaseDefaultInitialization() {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                // If there are users registered or the default user is present, do not add another default user
+                int usersCount = appDatabase.usersTableInterface().usersCount();
+                Log.d(TAG_DB, "Users count: " + usersCount);
+                // If first time application ran !
+                if (usersCount > 0)
+                    return;
+
                 Log.d(TAG_DB, "Default function called !");
 
                 // Adding Default user first time application ran !
