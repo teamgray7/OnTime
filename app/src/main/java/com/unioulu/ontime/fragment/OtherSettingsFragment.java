@@ -13,8 +13,10 @@ import android.widget.RadioButton;
 import android.widget.TimePicker;
 import com.unioulu.ontime.R;
 import com.unioulu.ontime.database_classes.AppDatabase;
+import com.unioulu.ontime.database_classes.OtherSettingsTable;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -98,6 +100,10 @@ public class OtherSettingsFragment extends Fragment {
                 rootView.findViewById(R.id.s25Rbtn),
         };
 
+        // TODO : retrieve settings from database and update fragment
+        // fetching data from DB
+        updateOtherSettingsFragmentViews();
+
         // OnClick listeners
         morningBtn.setOnClickListener(timeBtnOnClickListener);
         afternoonBtn.setOnClickListener(timeBtnOnClickListener);
@@ -112,6 +118,18 @@ public class OtherSettingsFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    private void updateOtherSettingsFragmentViews(){
+        // I avoided using threads to fetch from DB to avoid weird behaviour of fragment views !
+        /*
+        List<OtherSettingsTable> otherSettings = appDatabase.otherSettingsInterface().fetchAllOtherSettings();
+        if (otherSettings.size() > 0)
+        {
+            // TODO: retrieve data from database and update view in this function
+            OtherSettingsTable settings = otherSettings.get(otherSettings.size() -1 ); // always take the last saved settings
+        }
+        */
     }
 
     // Time pickers !
@@ -160,6 +178,7 @@ public class OtherSettingsFragment extends Fragment {
         public void onClick(View v) {
 
             if (R.id.saveBtn == v.getId()){
+                // TODO : save other settings to database
                 Log.d("OtherSettings", "Save");
             }else if (R.id.cancelBtn == v.getId()){
                 Log.d("OtherSettings", "Cancel");

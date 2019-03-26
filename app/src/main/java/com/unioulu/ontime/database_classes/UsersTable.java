@@ -3,10 +3,11 @@ package com.unioulu.ontime.database_classes;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity
+@Entity(indices = {@Index(value = {"email"}, unique = true)})
 public class UsersTable {
 
     @NonNull

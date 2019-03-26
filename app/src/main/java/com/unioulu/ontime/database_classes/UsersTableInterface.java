@@ -26,6 +26,9 @@ public interface UsersTableInterface {
     @Query("SELECT * FROM UsersTable WHERE username = :username AND email = :email")
     UsersTable fetchUserByEmailAndEmail(String username, String email);
 
+    @Query("SELECT COUNT (*) FROM UsersTable")
+    int usersCount();
+
     @Update(onConflict = OnConflictStrategy.ABORT)
     int updateUser(UsersTable usersTable);
 
