@@ -25,14 +25,18 @@ public class UsersTable {
     @ColumnInfo(name = "password")
     private String password;
 
+    @ColumnInfo(name = "active")
+    private Boolean isUserActive;
+
     // Constructor
     @Ignore
     public UsersTable(){}
 
-    public UsersTable(String username, String email, String password) {
+    public UsersTable(String username, String email, String password, Boolean isUserActive) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isUserActive = isUserActive;
     }
 
     // Getters
@@ -53,6 +57,9 @@ public class UsersTable {
         return password;
     }
 
+    public Boolean getUserActive() {
+        return isUserActive;
+    }
     // Setters
 
     public void setUser_id(int user_id) {
@@ -71,7 +78,11 @@ public class UsersTable {
         this.password = password;
     }
 
+    public void setUserActive(Boolean userActive) {
+        isUserActive = userActive;
+    }
     // Object To string (for debugging)
+
 
     @Override
     public String toString() {
@@ -80,6 +91,7 @@ public class UsersTable {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", isUserActive=" + isUserActive +
                 '}';
     }
 }

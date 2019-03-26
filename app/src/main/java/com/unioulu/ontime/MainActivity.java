@@ -121,7 +121,8 @@ public class MainActivity extends AppCompatActivity
                 UsersTable user = new UsersTable(
                         "Dafault",
                         "default.user@users.com",
-                        "1234password"
+                        "1234password",
+                        true
                 );
 
                 appDatabase.usersTableInterface().createUser(user);
