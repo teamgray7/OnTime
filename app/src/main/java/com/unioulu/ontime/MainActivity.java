@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -22,10 +23,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 import com.unioulu.ontime.database_classes.AppDatabase;
+import com.unioulu.ontime.database_classes.EmergencySettingsTable;
+import com.unioulu.ontime.database_classes.Medicines;
+import com.unioulu.ontime.database_classes.OtherSettingsTable;
+import com.unioulu.ontime.database_classes.UsersTable;
 import com.unioulu.ontime.fragment.EmergencyFragment;
 import com.unioulu.ontime.fragment.TodayFragment;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -50,8 +60,9 @@ public class MainActivity extends AppCompatActivity
     private final boolean ADMIN_USER = false;
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 0;
 
+
     // Variables used for application Database
-    private static final String TAG_DB = "DB";
+    private static final String TAG_DB = "Database_TAG";
     private static final String DATABASE_NAME = "medicines_DB";
     private AppDatabase appDatabase; // Medicine database
 
@@ -90,6 +101,77 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // TODO: implement a function that initiate default values and settings to database if nothing is already written
+        int usersCount = appDatabase.usersTableInterface().usersCount();
+        Log.d(TAG_DB, "Users count: " + usersCount);
+        // If first time application ran !
+        if (usersCount == 0) { databaseDefaultInitialization(); }
+    }
+
+    void databaseDefaultInitialization() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG_DB, "Default function called !");
+
+                // Adding Default user first time application ran !
+                UsersTable user = new UsersTable(
+                        "Dafault",
+                        "default.user@users.com",
+                        "1234password"
+                );
+
+                appDatabase.usersTableInterface().createUser(user);
+
+                Log.d(TAG_DB, "Added: " + user.toString());
+
+                // Adding Emergency settings contacts
+                EmergencySettingsTable emergencyContact = new EmergencySettingsTable(
+                        "Emergency",
+                        "112",
+                        "NULL"
+                );
+                appDatabase.emergencySettingsInterface().insertEmergencyContact(emergencyContact);
+                Log.d(TAG_DB, "Added: " + emergencyContact.toString());
+
+
+
+                // Adding settings
+                // ---------------------------------- Generating some fake settings time -----------------
+                // Vars only for testing purposes
+                String[] strings_time   ={" 8:00:00",
+                                     "13:00:00",
+                                     "19:30:00",
+                                     "22:00:00"};
+
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+
+                Long[] long_time = new Long[4];
+                try{
+                    for (int i=0; i< strings_time.length; i++){
+                        Date date = sdf.parse(strings_time[i]);
+                        long_time[i] = date.getTime();
+                    }
+
+
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
+                // --------------------------------- End of fake settings time generation --------------------------
+                // Inserting new settings only if no previous settings are found in the table (Otherwise use update)
+                OtherSettingsTable otherSettings = new OtherSettingsTable(
+                        long_time[0],
+                        long_time[1],
+                        long_time[2],
+                        long_time[3],
+                        "10"
+                );
+
+                appDatabase.otherSettingsInterface().insertOtherSettings(otherSettings);
+                Log.d(TAG_DB, "Added: " + otherSettings.toString());
+            }
+        }).start();
+
+
     }
 
     @Override
