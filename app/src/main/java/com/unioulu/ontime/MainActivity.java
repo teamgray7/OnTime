@@ -36,6 +36,7 @@ import com.unioulu.ontime.fragment.TodayFragment;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity
                 .fallbackToDestructiveMigration()
                 .build();
         // Update the dataHolder (The Singleton)
-        DataHolder holder = DataHolder.getInstance();
+        final DataHolder holder = DataHolder.getInstance();
         holder.setAppDatabase(appDatabase);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -104,20 +105,29 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Default user initialization done !
-        databaseDefaultInitialization();
+        databaseDefaultInitialization(holder);
     }
     // Default user initialization function
-    void databaseDefaultInitialization() {
+    void databaseDefaultInitialization(final DataHolder holder) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // If there are users registered or the default user is present, do not add another default user
                 int usersCount = appDatabase.usersTableInterface().usersCount();
                 Log.d(TAG_DB, "Users count: " + usersCount);
-                // If first time application ran !
-                if (usersCount > 0)
-                    return;
+                List<String> activeUsernames;
+                int active_userID;
 
+                // If first time application ran !
+                if (usersCount > 0) {
+                    // get active user and update DataHolder
+                    activeUsernames = appDatabase.usersTableInterface().getActiveUsers(true);
+                    active_userID = appDatabase.usersTableInterface().getUserIdByName(activeUsernames.get(activeUsernames.size()-1));
+                    // Settings the user_id of the shared DataHolder
+                    holder.setUser_id(active_userID);
+                    holder.setUsername(activeUsernames.get(activeUsernames.size()-1));
+                return;
+                }
                 Log.d(TAG_DB, "Default function called !");
 
                 // Adding Default user first time application ran !
@@ -133,6 +143,13 @@ public class MainActivity extends AppCompatActivity
                 Log.d(TAG_DB, "Added: " + user.toString());
 
                 int default_user_id = appDatabase.usersTableInterface().getUserIdByName("Default");
+
+                // Settings the user_id of the shared DataHolder
+                holder.setUser_id(default_user_id);
+                holder.setUsername("Default");
+
+                // Printing out user ID
+                Log.d("OtherSettings", "User id from main activity : " + default_user_id);
 
                 // Adding Emergency settings contacts
                 EmergencySettingsTable emergencyContact = new EmergencySettingsTable(
@@ -153,12 +170,13 @@ public class MainActivity extends AppCompatActivity
                 // Adding settings
                 // ---------------------------------- Generating some fake settings time -----------------
                 // Vars only for testing purposes
-                String[] strings_time   ={" 8:00:00",
-                                     "13:00:00",
-                                     "19:30:00",
-                                     "22:00:00"};
+                String[] strings_time   ={" 9:00",
+                                     "13:00",
+                                     "18:30",
+                                     "22:00"};
 
-                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                // TODO : This parsing implementation of string to long time causes some troubles !
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
 
                 Long[] long_time = new Long[4];
                 try{

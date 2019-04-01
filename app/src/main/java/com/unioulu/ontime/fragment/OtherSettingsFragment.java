@@ -1,5 +1,6 @@
 package com.unioulu.ontime.fragment;
 
+import android.app.Application;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,10 +14,15 @@ import android.widget.RadioButton;
 import android.widget.TimePicker;
 import com.unioulu.ontime.R;
 import com.unioulu.ontime.database_classes.AppDatabase;
+import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.OtherSettingsTable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,7 +108,54 @@ public class OtherSettingsFragment extends Fragment {
 
         // TODO : retrieve settings from database and update fragment
         // fetching data from DB
-        updateOtherSettingsFragmentViews();
+        // Creation of appDatabase instance
+        final DataHolder holder = DataHolder.getInstance();
+        final AppDatabase appDatabase = holder.getAppDatabase();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                int user_id = holder.getUser_id();
+                Log.d("OtherSettings", "user settings id: " + user_id);
+                List<OtherSettingsTable> user_settingsList = appDatabase.otherSettingsInterface().fetchAllOtherSettings(user_id);
+                Log.d("OtherSettings", "user settings list length: "+ user_settingsList.size());
+                final OtherSettingsTable user_settings = user_settingsList.get(user_settingsList.size()-1); // Use last saved settings
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // parsing data
+                        final String morning = parseLongTime(user_settings.getMorning());
+
+                        final String afternoon = parseLongTime(user_settings.getAfternoon());
+                        morningBtn.setText(afternoon);
+
+                        final String evening = parseLongTime(user_settings.getEverning());
+                        morningBtn.setText(evening);
+
+                        final String custom = parseLongTime(user_settings.getCustom());
+                        morningBtn.setText(custom);
+
+                        final int snoozeTime = Integer.valueOf(user_settings.getSnooze_time());
+
+                        morningBtn.setText(morning);
+                        afternoonBtn.setText(afternoon);
+                        eveningBtn.setText(evening);
+                        customBtn.setText(custom);
+
+                        snoozeRbtn[(snoozeTime / 5) -1].toggle();
+                    }
+
+                    private String parseLongTime(Long time) {
+                        long m = (time / 60) % 60;
+                        long h = (time / (60 * 60)) % 24;
+                        return String.format("%d:%02d", h,m);
+                        }
+                });
+            }
+        }).start();
 
         // OnClick listeners
         morningBtn.setOnClickListener(timeBtnOnClickListener);
@@ -120,18 +173,6 @@ public class OtherSettingsFragment extends Fragment {
         return rootView;
     }
 
-    private void updateOtherSettingsFragmentViews(){
-        // I avoided using threads to fetch from DB to avoid weird behaviour of fragment views !
-        /*
-        List<OtherSettingsTable> otherSettings = appDatabase.otherSettingsInterface().fetchAllOtherSettings();
-        if (otherSettings.size() > 0)
-        {
-            // TODO: retrieve data from database and update view in this function
-            OtherSettingsTable settings = otherSettings.get(otherSettings.size() -1 ); // always take the last saved settings
-        }
-        */
-    }
-
     // Time pickers !
     private View.OnClickListener timeBtnOnClickListener = new View.OnClickListener() {
         @Override
@@ -142,13 +183,16 @@ public class OtherSettingsFragment extends Fragment {
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker; // Time picker dialog
+            final DataHolder holder = DataHolder.getInstance();
+            final AppDatabase appDatabase = holder.getAppDatabase();
 
             mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
-                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                public void onTimeSet(TimePicker timePicker, final int selectedHour, int selectedMinute) {
                     if (R.id.morningBtn == view.getId() ) {
                         Log.d("OtherSettings", "morning");
                         Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
+                        morningBtn.setText(String.valueOf(selectedHour) + ":" +String.valueOf(selectedMinute));
                     }
                     else if (R.id.afternoonBtn == view.getId()) {
 
@@ -156,15 +200,22 @@ public class OtherSettingsFragment extends Fragment {
 
                         Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
 
+                        afternoonBtn.setText(String.valueOf(selectedHour) + ":" +String.valueOf(selectedMinute));
+
                     }else if (R.id.eveningBtn == view.getId()){
                         Log.d("OtherSettings", "Evening");
 
                         Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
 
+                        eveningBtn.setText(String.valueOf(selectedHour) + ":" +String.valueOf(selectedMinute));
+
+
                     }else if (R.id.customBtn == view.getId()){
                         Log.d("OtherSettings", "Custom");
 
                         Log.d("OtherSettings", selectedHour + ":" + selectedMinute);
+
+                        customBtn.setText(String.valueOf(selectedHour) + ":" +String.valueOf(selectedMinute));
                     }
                 }
             }, hour, minute, true);//Yes 24 hour time
@@ -180,6 +231,58 @@ public class OtherSettingsFragment extends Fragment {
             if (R.id.saveBtn == v.getId()){
                 // TODO : save other settings to database
                 Log.d("OtherSettings", "Save");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Getting selected time
+                        String[] string_time = new String[4];
+                        string_time[0] = morningBtn.getText().toString();
+                        string_time[1] = afternoonBtn.getText().toString();
+                        string_time[2] = eveningBtn.getText().toString();
+                        string_time[3] = customBtn.getText().toString();
+
+                        // Parsing selected time to Long
+                        // TODO: Date parsing gives tedious results !
+                        Long[] long_time = new Long[4];
+                        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+
+                        // printing string time
+                        for (String x:string_time)
+                            Log.d("OtherSettings", "Time: " + x);
+
+                        try{
+                            for (int i=0; i < string_time.length; i++)
+                            {
+                                Date date = sdf.parse(string_time[i]);
+                                long_time[i] = date.getTime();
+                            }
+                        }catch (ParseException e){
+                            e.printStackTrace();
+                        }
+
+                        String snoozeTime="5";
+                        // Getting selected Snooze time
+                        for (int i=0; i<snoozeRbtn.length; i++){
+                            if (snoozeRbtn[i].isChecked())
+                                snoozeTime = String.valueOf( ( i + 1 ) * 5 );
+                        }
+
+                        OtherSettingsTable settings = new OtherSettingsTable(
+                            DataHolder.getInstance().getUser_id(),
+                            long_time[0],
+                            long_time[1],
+                            long_time[2],
+                            long_time[3],
+                            snoozeTime
+                        );
+
+                        Log.d("OtherSettings", settings.toString());
+                        try{
+                            DataHolder.getInstance().getAppDatabase().otherSettingsInterface().updateOtherSettings(settings);
+                            }catch (Exception e){e.printStackTrace();}
+                    }
+                }).start();
+
             }else if (R.id.cancelBtn == v.getId()){
                 Log.d("OtherSettings", "Cancel");
             }
