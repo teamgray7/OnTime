@@ -4,20 +4,24 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
-@Entity(foreignKeys = @ForeignKey(onDelete = CASCADE,
-        entity = UsersTable.class, parentColumns = "user_id", childColumns = "medicine_id"))
+
+// https://medium.freecodecamp.org/room-sqlite-beginner-tutorial-2e725e47bfab
+
+// This table is linked to a specific user
+@Entity(indices={@Index(value="medicine_name", unique=true)})
 public class Medicines {
 
     @NonNull
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "medicine_id")
-    private int id;
+    private int medicine_id;
 
     @ColumnInfo(name = "medicine_name")
     private String medicine_name;
@@ -41,7 +45,8 @@ public class Medicines {
     @Ignore
     public Medicines(){}    // Empty constructor
 
-    public Medicines(String medicine_name, String picture_path, String morningAt, String afternoonAt, String everingAt, String customAt) {
+    public Medicines(int medicine_id,String medicine_name, String picture_path, String morningAt, String afternoonAt, String everingAt, String customAt) {
+        this.medicine_id = medicine_id;
         this.medicine_name = medicine_name;
         this.picture_path = picture_path;
         this.morningAt = morningAt;
@@ -51,8 +56,8 @@ public class Medicines {
     }
 
     // Getters
-    public int getId() {
-        return id;
+    public int getMedicine_id() {
+        return medicine_id;
     }
 
     public String getMedicine_name() {
@@ -80,8 +85,8 @@ public class Medicines {
     }
 
     // Setters
-    public void setId(int id) {
-        this.id = id;
+    public void setMedicine_id(int medicine_id) {
+        this.medicine_id = medicine_id;
     }
 
     public void setMedicine_name(String medicine_name) {
@@ -113,7 +118,7 @@ public class Medicines {
     @Override
     public String toString() {
         return "Medicines{" +
-                "id=" + id +
+                "id=" + medicine_id +
                 ", medicine_name='" + medicine_name + '\'' +
                 ", picture_path='" + picture_path + '\'' +
                 ", morningAt='" + morningAt + '\'' +

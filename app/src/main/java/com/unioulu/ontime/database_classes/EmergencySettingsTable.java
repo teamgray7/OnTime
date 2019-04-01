@@ -4,23 +4,22 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(foreignKeys = @ForeignKey(onDelete = CASCADE,
-        entity = UsersTable.class, parentColumns = "user_id",
-        childColumns = "emer_contact_id"))
+@Entity(indices={@Index(value="phone_number", unique=true)})
 public class EmergencySettingsTable {
     @NonNull
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "emer_contact_id")
     private int emer_contact_id;
 
     @ColumnInfo(name = "contact_name")
     private String contact_name;
-
+    // Phone nbr should be unique !
     @ColumnInfo(name = "phone_number")
     private String phone_number;
 
@@ -31,7 +30,8 @@ public class EmergencySettingsTable {
     @Ignore
     public EmergencySettingsTable(){}
 
-    public EmergencySettingsTable(String contact_name, String phone_number, String picture_url) {
+    public EmergencySettingsTable(int emer_contact_id, String contact_name, String phone_number, String picture_url) {
+        this.emer_contact_id = emer_contact_id;
         this.contact_name = contact_name;
         this.phone_number = phone_number;
         this.picture_url = picture_url;

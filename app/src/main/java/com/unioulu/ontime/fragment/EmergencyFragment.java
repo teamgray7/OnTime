@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.unioulu.ontime.R;
 
@@ -62,6 +63,21 @@ public class EmergencyFragment extends Fragment {
 
         // Admin user can edit info and picture, normal user is not able to edit anything.
         if(isAdmin) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity().getApplicationContext(), "From emergency thread !", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+            }).start();
             EditText etPersonName = (EditText) rootView.findViewById(R.id.name_field);
             EditText etPersonPhone = (EditText) rootView.findViewById(R.id.number_field);
 

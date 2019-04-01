@@ -16,8 +16,8 @@ public interface EmergencySettingsInterface {
     @Delete
     void deleteEmergencyContact(EmergencySettingsTable emergencySettingsTable);
 
-    @Query("SELECT * FROM EmergencySettingsTable")
-    List<EmergencySettingsTable> fetchAllEmergencyContacts();
+    @Query("SELECT * FROM EmergencySettingsTable WHERE emer_contact_id =:id")
+    List<EmergencySettingsTable> fetchAllEmergencyContacts(int id);
 
     @Query("DELETE FROM EmergencySettingsTable")
     void deleteAllEmergencyContacts();

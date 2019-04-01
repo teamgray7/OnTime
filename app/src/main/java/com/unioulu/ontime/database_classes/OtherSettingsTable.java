@@ -4,18 +4,20 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 
-@Entity(foreignKeys = @ForeignKey(onDelete = CASCADE,
-        entity = UsersTable.class, parentColumns = "user_id",
-        childColumns = "id"))
+// Each user ID has a single set of saved settings
+
+@Entity(indices={@Index(value="user_id", unique=true)})
 public class OtherSettingsTable {
     @NonNull
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    @ColumnInfo(name = "user_id")
+    private int user_id;
 
     @ColumnInfo(name = "morning")
     private Long morning;
@@ -37,7 +39,8 @@ public class OtherSettingsTable {
     @Ignore
     public OtherSettingsTable(){} // Empty constructor
 
-    public OtherSettingsTable(Long morning, Long afternoon, Long everning, Long custom, String snooze_time) {
+    public OtherSettingsTable(int user_id, Long morning, Long afternoon, Long everning, Long custom, String snooze_time) {
+        this.user_id = user_id;
         this.morning = morning;
         this.afternoon = afternoon;
         this.everning = everning;
@@ -47,8 +50,8 @@ public class OtherSettingsTable {
 
 
     // Getters
-    public int getId() {
-        return id;
+    public int getUser_id() {
+        return user_id;
     }
 
     public Long getMorning() {
@@ -72,8 +75,8 @@ public class OtherSettingsTable {
     }
 
     // Setters
-    public void setId(int id) {
-        this.id = id;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public void setMorning(Long morning) {
@@ -100,7 +103,7 @@ public class OtherSettingsTable {
     @Override
     public String toString() {
         return "OtherSettingsTable{" +
-                "id=" + id +
+                "user id=" + user_id +
                 ", morning=" + morning +
                 ", afternoon=" + afternoon +
                 ", everning=" + everning +

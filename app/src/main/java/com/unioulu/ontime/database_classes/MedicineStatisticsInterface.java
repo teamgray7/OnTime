@@ -16,6 +16,8 @@ public interface MedicineStatisticsInterface {
     @Query("SELECT * FROM MedicineStatistics WHERE id = :id")
     List<MedicineStatistics> fetchMedicineStatisticsByID(int id);
 
+    @Query("SELECT * FROM MedicineStatistics WHERE id = :id AND medicine_name= :medicine_name")
+    List<MedicineStatistics> getMedicineStatistics(int id, String medicine_name);
 
     @Query("DELETE FROM MedicineStatistics")
     void deleteMedicinesStatisticsTable();

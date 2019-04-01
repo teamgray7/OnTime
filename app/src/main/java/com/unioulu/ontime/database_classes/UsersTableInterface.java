@@ -24,13 +24,19 @@ public interface UsersTableInterface {
     UsersTable fetchUserByEmail(String email);
 
     @Query("SELECT * FROM UsersTable WHERE username = :username AND email = :email")
-    UsersTable fetchUserByEmailAndEmail(String username, String email);
+    UsersTable fetchUserByUsernameAndEmail(String username, String email);
 
     @Query("SELECT active FROM UsersTable WHERE username = :username")
     Boolean isUserActiveFromDB(String username);
 
+    @Query("SELECT username FROM UsersTable WHERE active = :status")
+    List<String> getActiveUsers(boolean status);
+
     @Query("SELECT COUNT (*) FROM UsersTable")
     int usersCount();
+
+    @Query("UPDATE UsersTable SET active = :status WHERE username = :username")
+    void updateUserActiveStatus(String username,boolean status);
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     int updateUser(UsersTable usersTable);

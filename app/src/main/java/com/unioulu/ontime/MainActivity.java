@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.EmergencySettingsTable;
-import com.unioulu.ontime.database_classes.Medicines;
 import com.unioulu.ontime.database_classes.OtherSettingsTable;
 import com.unioulu.ontime.database_classes.UsersTable;
 import com.unioulu.ontime.fragment.EmergencyFragment;
