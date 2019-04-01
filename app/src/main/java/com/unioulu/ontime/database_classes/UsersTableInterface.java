@@ -26,6 +26,9 @@ public interface UsersTableInterface {
     @Query("SELECT * FROM UsersTable WHERE username = :username AND email = :email")
     UsersTable fetchUserByUsernameAndEmail(String username, String email);
 
+    @Query("SELECT user_id FROM UsersTable WHERE username = :username")
+    int getUserIdByName(String username);
+
     @Query("SELECT active FROM UsersTable WHERE username = :username")
     Boolean isUserActiveFromDB(String username);
 

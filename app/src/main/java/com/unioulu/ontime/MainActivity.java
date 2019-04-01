@@ -26,6 +26,7 @@ import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
 import com.unioulu.ontime.database_classes.AppDatabase;
+import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.EmergencySettingsTable;
 import com.unioulu.ontime.database_classes.OtherSettingsTable;
 import com.unioulu.ontime.database_classes.UsersTable;
@@ -75,6 +76,9 @@ public class MainActivity extends AppCompatActivity
                 AppDatabase.class, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
+        // Update the dataHolder (The Singleton)
+        DataHolder holder = DataHolder.getInstance();
+        holder.setAppDatabase(appDatabase);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,7 +122,7 @@ public class MainActivity extends AppCompatActivity
 
                 // Adding Default user first time application ran !
                 UsersTable user = new UsersTable(
-                        "Dafault",
+                        "Default",
                         "default.user@users.com",
                         "1234password",
                         true
@@ -128,14 +132,21 @@ public class MainActivity extends AppCompatActivity
 
                 Log.d(TAG_DB, "Added: " + user.toString());
 
+                int default_user_id = appDatabase.usersTableInterface().getUserIdByName("Default");
+
                 // Adding Emergency settings contacts
                 EmergencySettingsTable emergencyContact = new EmergencySettingsTable(
+                        default_user_id,
                         "Emergency",
                         "112",
                         "NULL"
                 );
-                appDatabase.emergencySettingsInterface().insertEmergencyContact(emergencyContact);
-                Log.d(TAG_DB, "Added: " + emergencyContact.toString());
+                try{
+                    appDatabase.emergencySettingsInterface().insertEmergencyContact(emergencyContact);
+                    Log.d(TAG_DB, "Added: " + emergencyContact.toString());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
 
 
@@ -163,15 +174,18 @@ public class MainActivity extends AppCompatActivity
                 // --------------------------------- End of fake settings time generation --------------------------
                 // Inserting new settings only if no previous settings are found in the table (Otherwise use update)
                 OtherSettingsTable otherSettings = new OtherSettingsTable(
+                        default_user_id,
                         long_time[0],
                         long_time[1],
                         long_time[2],
                         long_time[3],
                         "10"
                 );
+                try{
+                    appDatabase.otherSettingsInterface().insertOtherSettings(otherSettings);
+                    Log.d(TAG_DB, "Added: " + otherSettings.toString());
+                }catch (Exception e){e.printStackTrace();}
 
-                appDatabase.otherSettingsInterface().insertOtherSettings(otherSettings);
-                Log.d(TAG_DB, "Added: " + otherSettings.toString());
             }
         }).start();
 

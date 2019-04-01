@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.unioulu.ontime.R;
+import com.unioulu.ontime.database_classes.AppDatabase;
+import com.unioulu.ontime.database_classes.DataHolder;
+import com.unioulu.ontime.database_classes.EmergencySettingsTable;
+import com.unioulu.ontime.database_classes.UsersTable;
+
+import java.util.List;
 
 public class EmergencyFragment extends Fragment {
 
@@ -51,15 +58,17 @@ public class EmergencyFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_emergency, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_emergency, container, false);
         isAdmin = getArguments().getBoolean(ARG_ADMIN_USER);
 
-        ImageButton callButton = (ImageButton) rootView.findViewById(R.id.callButton);
-        Button btnSaveEmergency = (Button) rootView.findViewById(R.id.btn_saveEmergency);
+        final ImageButton callButton = (ImageButton) rootView.findViewById(R.id.callButton);
+        final Button btnSaveEmergency = (Button) rootView.findViewById(R.id.btn_saveEmergency);
 
         // TODO : Replace static image with the one saved into database...
-        ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
-        ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
+        final ImageView ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
+
+        // Creation of appDatabase instance
+        final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
 
         // Admin user can edit info and picture, normal user is not able to edit anything.
         if(isAdmin) {
@@ -68,43 +77,96 @@ public class EmergencyFragment extends Fragment {
                 @Override
                 public void run() {
 
+                    // Priting emergency contacts
+                    // Getting active user
+                    List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
+                    final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size()-1)); // ID of last active user
+
+                    List<EmergencySettingsTable> emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(active_user_id);
+
+                    // TODO: think of a better emergency contact retrieval mechanism
+                    final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size()-1);
+
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(), "From emergency thread !", Toast.LENGTH_SHORT).show();
+
+                            EditText etPersonName = (EditText) rootView.findViewById(R.id.name_field);
+                            EditText etPersonPhone = (EditText) rootView.findViewById(R.id.number_field);
+
+                            // TODO : Replace static information with ones retrieved from database...
+                            etPersonName.setText(contact.getContact_name());
+                            etPersonPhone.setText(contact.getPhone_number());
+                            String picture_path = contact.getPicture_url();
+                            if ( picture_path.equals("NULL") ){
+                                ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
+                            }else{
+                                // TODO: Replace the drawable with picture using the picture_path variable
+                                ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
+                            }
+
+                            etPersonName.setVisibility(View.VISIBLE);
+                            etPersonPhone.setVisibility(View.VISIBLE);
+
+                            callButton.setVisibility(View.GONE);
+                            btnSaveEmergency.setOnClickListener(btnSaveEmergencyClickListener);
+
+                            ivEmergency.setOnClickListener(emergencyImageClickListener);
+
                         }
                     });
 
                 }
             }).start();
-            EditText etPersonName = (EditText) rootView.findViewById(R.id.name_field);
-            EditText etPersonPhone = (EditText) rootView.findViewById(R.id.number_field);
 
-            // TODO : Replace static information with ones retrieved from database...
-            etPersonName.setText("Berke Esmer");
-            etPersonPhone.setText("+358403600652");
-
-            etPersonName.setVisibility(View.VISIBLE);
-            etPersonPhone.setVisibility(View.VISIBLE);
-
-            callButton.setVisibility(View.GONE);
-            btnSaveEmergency.setOnClickListener(btnSaveEmergencyClickListener);
-
-            ivEmergency.setOnClickListener(emergencyImageClickListener);
         } else {
-            TextView tvPersonName = (TextView) rootView.findViewById(R.id.tv_name_field);
-            TextView tvPersonPhone = (TextView) rootView.findViewById(R.id.tv_number_field);
 
-            // TODO : Replace static information with ones retrieved from database...
-            tvPersonName.setText("Berke Esmer");
-            tvPersonPhone.setText("+358403600652");
+            final TextView tvPersonName = (TextView) rootView.findViewById(R.id.tv_name_field);
+            final TextView tvPersonPhone = (TextView) rootView.findViewById(R.id.tv_number_field);
 
-            tvPersonName.setVisibility(View.VISIBLE);
-            tvPersonPhone.setVisibility(View.VISIBLE);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-            btnSaveEmergency.setVisibility(View.GONE);
-            callButton.setOnClickListener(callButtonClickListener);
+                    // Priting emergency contacts
+                    // Getting active user
+                    List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
+                    final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size()-1)); // ID of last active user
+
+                    List<EmergencySettingsTable> emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(active_user_id);
+
+                    // TODO: think of a better emergency contact retrieval mechanism
+                    final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size()-1);
+
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("EMERGTAG", "From emergency thread !");
+
+                            // TODO : Replace static information with ones retrieved from database...
+                            tvPersonName.setText(contact.getContact_name());
+                            tvPersonPhone.setText(contact.getPhone_number());
+                            String picture_path = contact.getPicture_url();
+                            if ( picture_path.equals("NULL") ){
+                                ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
+                            }else{
+                                // TODO: Replace the drawable with picture using the picture_path variable
+                                ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
+                            }
+
+                            tvPersonName.setVisibility(View.VISIBLE);
+                            tvPersonPhone.setVisibility(View.VISIBLE);
+
+                            btnSaveEmergency.setVisibility(View.GONE);
+                            callButton.setOnClickListener(callButtonClickListener);
+                        }
+                    });
+
+                }
+            }).start();
+
         }
 
         return rootView;
