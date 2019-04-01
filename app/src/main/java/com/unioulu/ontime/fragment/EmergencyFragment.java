@@ -25,6 +25,7 @@ import com.unioulu.ontime.database_classes.EmergencySettingsTable;
 import com.unioulu.ontime.database_classes.UsersTable;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class EmergencyFragment extends Fragment {
 
@@ -135,7 +136,7 @@ public class EmergencyFragment extends Fragment {
                     final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size()-1)); // ID of last active user
 
                     List<EmergencySettingsTable> emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(active_user_id);
-
+                    Log.d("OtherSettings", "Nbr of emergency contacts : "+ emergencySettingsContacts.size());
                     // TODO: think of a better emergency contact retrieval mechanism
                     final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size()-1);
 
@@ -204,6 +205,34 @@ public class EmergencyFragment extends Fragment {
         @Override
         public void onClick(View v) {
             // TODO : Fill here with the function that would save data (both image and info) into database..
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final EditText etPersonName =  getActivity().findViewById(R.id.name_field);
+                    final EditText etPersonPhone = getActivity().findViewById(R.id.number_field);
+                    final ImageView ivEmergency = getActivity().findViewById(R.id.iv_emergency);
+
+                    // TODO: Get image URI from imageView .. doable ?
+                    EmergencySettingsTable emergencyContact = new EmergencySettingsTable(
+                            DataHolder.getInstance().getUser_id(),
+                            etPersonName.getText().toString(),
+                            etPersonPhone.getText().toString(),
+                            "NULL"
+                    );
+
+                    try{
+                        DataHolder.getInstance().getAppDatabase().emergencySettingsInterface().insertEmergencyContact(emergencyContact);
+                    }catch (Exception e){
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "Contact phone number already exists", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
     };
 
