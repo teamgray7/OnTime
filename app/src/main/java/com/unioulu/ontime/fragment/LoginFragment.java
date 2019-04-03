@@ -74,6 +74,9 @@ public class LoginFragment extends Fragment {
             String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
 
+            // TODO: implement a mechanism to save the register on the database !
+            // user : DataHolder.getInstance().getAppDatabase().usersTableInterface()...
+
             if(username.length() != 0 && password.length() != 0) {
                 mListener.proceedLogin(username, password);
             }
@@ -83,6 +86,7 @@ public class LoginFragment extends Fragment {
     private View.OnClickListener registerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            // TODO: implement a mechanist to save user to database
             mListener.registerAccountClicked();
         }
     };
@@ -90,6 +94,7 @@ public class LoginFragment extends Fragment {
     private View.OnClickListener forgetPasswordClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            // TODO: implement a forget password mechanism
             mListener.forgetPasswordClicked();
         }
     };
