@@ -4,14 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.unioulu.ontime.R;
+import com.unioulu.ontime.database_classes.DataHolder;
+import com.unioulu.ontime.database_classes.UsersTable;
 
 public class LoginFragment extends Fragment {
 
@@ -46,7 +50,6 @@ public class LoginFragment extends Fragment {
         tvRegister.setOnClickListener(registerClickListener);
         tvForgetPassword.setOnClickListener(forgetPasswordClickListener);
         btnLogin.setOnClickListener(btnLoginClickListener);
-
         return rootView;
     }
 
@@ -71,22 +74,47 @@ public class LoginFragment extends Fragment {
     private View.OnClickListener btnLoginClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String username = etUsername.getText().toString();
-            String password = etPassword.getText().toString();
+            final String username = etUsername.getText().toString();
+            final String password = etPassword.getText().toString();
 
-            // TODO: implement a mechanism to save the register on the database !
             // user : DataHolder.getInstance().getAppDatabase().usersTableInterface()...
 
-            if(username.length() != 0 && password.length() != 0) {
-                mListener.proceedLogin(username, password);
-            }
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+
+                    final UsersTable user = DataHolder.getInstance().getAppDatabase().usersTableInterface().fetchUserByUsernameAndPassword(username,password);
+
+                    if(user!=null){
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {mListener.proceedLogin(username, password);
+
+                            }
+                        });
+                    } else {
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getActivity().getApplicationContext(), "User doesn't exist !", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        Log.d("Logging fragment", "User doesn't exist !");
+                    }
+
+                }
+            }).start();
         }
     };
 
     private View.OnClickListener registerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: implement a mechanist to save user to database
+            // final String username = etUsername.getText().toString();
+            // final String password = etPassword.getText().toString();
             mListener.registerAccountClicked();
         }
     };
