@@ -16,6 +16,7 @@ import com.unioulu.ontime.R;
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.OtherSettingsTable;
+import com.unioulu.ontime.database_classes.UsersTable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -117,10 +118,22 @@ public class OtherSettingsFragment extends Fragment {
             public void run() {
 
                 int user_id = holder.getUser_id();
+                // Priting emergency contacts
+
                 Log.d("OtherSettings", "user settings id: " + user_id);
                 List<OtherSettingsTable> user_settingsList = appDatabase.otherSettingsInterface().fetchAllOtherSettings(user_id);
                 Log.d("OtherSettings", "user settings list length: "+ user_settingsList.size());
-                final OtherSettingsTable user_settings = user_settingsList.get(user_settingsList.size()-1); // Use last saved settings
+
+                OtherSettingsTable user_settings_;
+                if(user_settingsList.size() == 0) {
+                    // Getting active user
+                    List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
+                    int default_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(0));
+                    user_settingsList.clear();
+                    user_settingsList = appDatabase.otherSettingsInterface().fetchAllOtherSettings(default_user_id);
+                }
+                //Gettings latest user settings
+                final OtherSettingsTable user_settings = user_settingsList.get(user_settingsList.size()-1);
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
