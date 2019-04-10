@@ -87,7 +87,7 @@ public class EmergencyFragment extends Fragment {
                     List<EmergencySettingsTable> emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(active_user_id);
                     Log.d("OtherSettings", "Contact size " + emergencySettingsContacts.size());
                     if (emergencySettingsContacts.size() == 0){
-                        emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(0);
+                        emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(appDatabase.usersTableInterface().getUserIdByName(active_user.get(0)));
                     }
                     // TODO: think of a better emergency contact retrieval mechanism
                     final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size()-1);
@@ -140,6 +140,8 @@ public class EmergencyFragment extends Fragment {
                     final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size()-1)); // ID of last active user
 
                     List<EmergencySettingsTable> emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(active_user_id);
+                    if (emergencySettingsContacts.size() == 0)
+                        emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(appDatabase.usersTableInterface().getUserIdByName(active_user.get(0)));
                     Log.d("OtherSettings", "Nbr of emergency contacts : "+ emergencySettingsContacts.size());
                     // TODO: think of a better emergency contact retrieval mechanism
                     final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size()-1);
