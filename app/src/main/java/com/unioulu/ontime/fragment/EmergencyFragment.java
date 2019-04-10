@@ -111,9 +111,6 @@ public class EmergencyFragment extends Fragment {
                                 ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
                             }
 
-                            etPersonName.setVisibility(View.VISIBLE);
-                            etPersonPhone.setVisibility(View.VISIBLE);
-
                             callButton.setVisibility(View.GONE);
                             btnSaveEmergency.setOnClickListener(btnSaveEmergencyClickListener);
 
@@ -127,8 +124,8 @@ public class EmergencyFragment extends Fragment {
 
         } else {
 
-            final TextView tvPersonName = (TextView) rootView.findViewById(R.id.tv_name_field);
-            final TextView tvPersonPhone = (TextView) rootView.findViewById(R.id.tv_number_field);
+            final TextView tvPersonName = rootView.findViewById(R.id.name_field);
+            final TextView tvPersonPhone = rootView.findViewById(R.id.number_field);
 
             new Thread(new Runnable() {
                 @Override
@@ -163,8 +160,8 @@ public class EmergencyFragment extends Fragment {
                                 ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
                             }
 
-                            tvPersonName.setVisibility(View.VISIBLE);
-                            tvPersonPhone.setVisibility(View.VISIBLE);
+                            tvPersonName.setEnabled(false);
+                            tvPersonPhone.setEnabled(false);
 
                             btnSaveEmergency.setVisibility(View.GONE);
                             callButton.setOnClickListener(callButtonClickListener);
@@ -200,7 +197,7 @@ public class EmergencyFragment extends Fragment {
     private View.OnClickListener callButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            TextView tvPersonPhone = (TextView) getView().findViewById(R.id.tv_number_field);
+            TextView tvPersonPhone = getView().findViewById(R.id.name_field);
             String phoneNumber = tvPersonPhone.getText().toString();
 
             mListener.makeCall(phoneNumber);

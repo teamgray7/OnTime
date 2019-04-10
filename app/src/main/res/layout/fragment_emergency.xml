@@ -1,84 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+</LinearLayout>
+</ScrollView>
+-->
+
+<ScrollView
+
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".fragment.EmergencyFragment" >
+
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/iv_emergency"
         android:layout_width="@dimen/emergencyAvatar"
         android:layout_height="@dimen/emergencyAvatar"
-        android:layout_marginTop="@dimen/marginXL"
-        android:layout_marginStart="@dimen/marginXL"
-        android:layout_marginEnd="@dimen/marginXL"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@string/emergencyImageContent" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/emergencyImageContent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/name_field"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginXL"
-        android:layout_marginStart="@dimen/marginXL"
-        android:layout_marginEnd="@dimen/marginXL"
-        android:layout_gravity="center_horizontal"
-        android:visibility="gone"
-        android:labelFor="@id/name_field"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/emergencyPersonName"
         android:inputType="textPersonName"
-        android:hint="@string/emergencyPersonName" />
+        android:labelFor="@id/name_field"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_emergency" />
 
     <EditText
         android:id="@+id/number_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginXL"
-        android:layout_marginStart="@dimen/marginXL"
-        android:layout_marginEnd="@dimen/marginXL"
         android:layout_gravity="center_horizontal"
-        android:visibility="gone"
-        android:labelFor="@id/number_field"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/emergencyPersonPhone"
         android:inputType="phone"
-        android:hint="@string/emergencyPersonPhone"  />
-
-    <TextView
-        android:id="@+id/tv_name_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginXL"
-        android:layout_marginStart="@dimen/marginXL"
-        android:layout_marginEnd="@dimen/marginXL"
-        android:layout_gravity="center_horizontal"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tv_number_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginXL"
-        android:layout_marginStart="@dimen/marginXL"
-        android:layout_marginEnd="@dimen/marginXL"
-        android:layout_gravity="center_horizontal"
-        android:visibility="gone" />
+        android:labelFor="@id/number_field"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_field" />
 
     <ImageButton
         android:id="@+id/callButton"
         android:layout_width="@dimen/emergencyCallButtonSize"
         android:layout_height="@dimen/emergencyCallButtonSize"
-        android:layout_marginTop="@dimen/marginXL"
         android:layout_gravity="center_horizontal"
-        android:src="@android:drawable/ic_menu_call"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/emergencyCallImageContent"
         android:scaleType="fitCenter"
-        android:contentDescription="@string/emergencyCallImageContent" />
+        android:src="@android:drawable/ic_menu_call"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_field" />
 
     <Button
         android:id="@+id/btn_saveEmergency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginXL"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/save"
-        android:textSize="@dimen/saveAccountTextSize" />
+        android:textSize="@dimen/saveAccountTextSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/callButton"
+        app:layout_constraintVertical_bias="1.0" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
+
+</ScrollView>
