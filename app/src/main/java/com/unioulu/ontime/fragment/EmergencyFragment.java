@@ -81,10 +81,14 @@ public class EmergencyFragment extends Fragment {
                     // Priting emergency contacts
                     // Getting active user
                     List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
+
                     final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size()-1)); // ID of last active user
 
                     List<EmergencySettingsTable> emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(active_user_id);
-
+                    Log.d("OtherSettings", "Contact size " + emergencySettingsContacts.size());
+                    if (emergencySettingsContacts.size() == 0){
+                        emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(0);
+                    }
                     // TODO: think of a better emergency contact retrieval mechanism
                     final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size()-1);
 
@@ -133,40 +137,38 @@ public class EmergencyFragment extends Fragment {
                     // Priting emergency contacts
                     // Getting active user
                     List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
-                    if (active_user.size() != 0){
                     final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size()-1)); // ID of last active user
 
                     List<EmergencySettingsTable> emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(active_user_id);
                     Log.d("OtherSettings", "Nbr of emergency contacts : "+ emergencySettingsContacts.size());
-                    if (emergencySettingsContacts.size() != 0) {
-                        // TODO: think of a better emergency contact retrieval mechanism
-                        final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size() - 1);
+                    // TODO: think of a better emergency contact retrieval mechanism
+                    final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size()-1);
 
 
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d("EMERGTAG", "From emergency thread !");
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("EMERGTAG", "From emergency thread !");
 
-                                // TODO : Replace static information with ones retrieved from database...
-                                tvPersonName.setText(contact.getContact_name());
-                                tvPersonPhone.setText(contact.getPhone_number());
-                                String picture_path = contact.getPicture_url();
-                                if (picture_path.equals("NULL")) {
-                                    ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
-                                } else {
-                                    // TODO: Replace the drawable with picture using the picture_path variable
-                                    ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
-                                }
-
-                                tvPersonName.setVisibility(View.VISIBLE);
-                                tvPersonPhone.setVisibility(View.VISIBLE);
-
-                                btnSaveEmergency.setVisibility(View.GONE);
-                                callButton.setOnClickListener(callButtonClickListener);
+                            // TODO : Replace static information with ones retrieved from database...
+                            tvPersonName.setText(contact.getContact_name());
+                            tvPersonPhone.setText(contact.getPhone_number());
+                            String picture_path = contact.getPicture_url();
+                            if ( picture_path.equals("NULL") ){
+                                ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
+                            }else{
+                                // TODO: Replace the drawable with picture using the picture_path variable
+                                ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
                             }
-                        });
-                    }                    }
+
+                            tvPersonName.setVisibility(View.VISIBLE);
+                            tvPersonPhone.setVisibility(View.VISIBLE);
+
+                            btnSaveEmergency.setVisibility(View.GONE);
+                            callButton.setOnClickListener(callButtonClickListener);
+                        }
+                    });
+
                 }
             }).start();
 
