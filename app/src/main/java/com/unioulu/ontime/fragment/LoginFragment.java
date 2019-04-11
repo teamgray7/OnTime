@@ -87,6 +87,8 @@ public class LoginFragment extends Fragment {
                     final UsersTable user = DataHolder.getInstance().getAppDatabase().usersTableInterface().fetchUserByUsernameAndPassword(username,password);
 
                     if(user!=null){
+                        DataHolder.getInstance().setUsername(username);
+                        DataHolder.getInstance().setUser_id(DataHolder.getInstance().getAppDatabase().usersTableInterface().getUserIdByName(username));
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override

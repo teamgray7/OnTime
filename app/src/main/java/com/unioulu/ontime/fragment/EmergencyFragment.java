@@ -224,6 +224,9 @@ public class EmergencyFragment extends Fragment {
                     );
 
                     try{
+                        int a = DataHolder.getInstance().getAppDatabase().usersTableInterface().usersCount();
+                        Log.d("OtherSettings", "To add: "+ emergencyContact.toString());
+                        Log.d("OtherSettings", "There are : "+ a + " users! ");
                         DataHolder.getInstance().getAppDatabase().emergencySettingsInterface().insertEmergencyContact(emergencyContact);
                     }catch (Exception e){
                         getActivity().runOnUiThread(new Runnable() {
