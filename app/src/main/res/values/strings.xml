@@ -29,7 +29,7 @@
     <string name="saveAccount">Let\'s save your account!</string>
     <string name="saveAccountOR">- OR -</string>
 
-    <string name="nextPill">Next pills at 14:00</string>
+    <string name="nextPill">Today\'s pills</string>
     <string name="alreadyTakenPills">Already taken today</string>
 
     <string name="onTimeCount">Pills taken on time : 89</string>

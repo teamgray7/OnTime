@@ -1,128 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<LinearLayout
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <GridLayout
+    <TextView
+        android:id="@+id/tv_pillTextView"
+        android:layout_marginTop="@dimen/marginM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:rowCount="4"
-        android:columnCount="1">
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/nextPill"
+        android:textAlignment="center"
+        android:textSize="@dimen/todayTextSize"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/nextPillsTextView"
-            android:layout_marginTop="@dimen/marginM"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/nextPill"
-            android:textAlignment="center"
-            android:textSize="@dimen/todayTextSize"
-            android:textStyle="bold"
-            android:layout_row="0"
-            android:layout_column="0" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_pillList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/NextPillRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_row="1"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/alreadyTakenPillsTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/alreadyTakenPills"
-            android:textAlignment="center"
-            android:textSize="@dimen/todayTextSize"
-            android:textStyle="bold"
-            android:layout_row="2"
-            android:layout_column="0" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/AlreadyTakenRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_row="3"
-            android:layout_column="0" />
-
-
-        <!--
-        <android.support.v7.widget.GridLayout
-            android:layout_width="395dp"
-            android:layout_height="715dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-
-            android:layout_margin="@dimen/marginXL"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                app:layout_row="0"
-                app:layout_column="0"
-                android:id="@+id/nextPillsTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginM"
-                android:text="@string/nextPill"
-                android:textSize="@dimen/todayTextSize"
-                android:textAlignment="center"
-                android:textStyle="bold"/>
-
-            <android.support.v7.widget.RecyclerView
-                app:layout_row="1"
-                app:layout_column="0"
-                android:id="@+id/NextPillRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/marginL"
-                android:layout_marginTop="@dimen/marginL"
-                android:layout_marginEnd="@dimen/marginL" />
-
-            <TextView
-                app:layout_row="2"
-                app:layout_column="0"
-                android:id="@+id/alreadyTakenPillsTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:layout_marginTop="@dimen/marginM"
-                android:text="@string/alreadyTakenPills"
-                android:textSize="@dimen/todayTextSize"
-                android:textStyle="bold"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/AlreadyTakenRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_row="3"
-                app:layout_column="0"
-                android:layout_marginStart="@dimen/marginL"
-                android:layout_marginTop="@dimen/marginL"
-                android:layout_marginEnd="@dimen/marginL"
-                android:layout_marginBottom="@dimen/marginL" />
-
-        </android.support.v7.widget.GridLayout>
-        -->
-
-    </GridLayout>
-
-</ScrollView>
+</LinearLayout>
