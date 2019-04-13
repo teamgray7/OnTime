@@ -134,6 +134,16 @@ public class AdminMainActivity extends AppCompatActivity
     }
 
     @Override
+    public void settingsAsAdmin() {
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
+        TabLayout.Tab tabSettings = tabLayout.getTabAt(3);
+
+        if(tabSettings != null) {
+            tabSettings.select();
+        }
+    }
+
+    @Override
     public void settingsEmergencyAsAdmin() {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
         TabLayout.Tab tabEmergencySettings = tabLayout.getTabAt(4);
@@ -203,7 +213,7 @@ public class AdminMainActivity extends AppCompatActivity
             } else if(position == 4) {
                 return EmergencyFragment.newInstance(position + 1, true);
             } else if(position == 5) {
-                return OtherSettingsFragment.newInstance("dummy1", "dummy2");
+                return OtherSettingsFragment.newInstance();
             } else {
                 return null;
             }
