@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -22,6 +21,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> mImageNames;
     private ArrayList<String> mImage;
     private Context mContext;
+
+    private OnItemClickListener mListener;
 
     public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImage) {
         this.mImageNames = mImageNames;
@@ -43,7 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.recyclerLayout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, mImageNames.get(index), Toast.LENGTH_SHORT).show();
+                mListener.onItemClick(mImageNames.get(index));
             }
         });
 
@@ -59,6 +60,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mImageNames.size(); // How many items are in the list !
     }
 
+    public void setItemClickListener(OnItemClickListener listener) {
+        this.mListener = listener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Recycler view items
         CircleImageView recyclerImage;
@@ -72,5 +77,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             recyclerImageName = (TextView) itemView.findViewById(R.id.recyclerText);
             recyclerLayout = (RelativeLayout) itemView.findViewById(R.id.recyclerLayout);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(String pillName);
     }
 }

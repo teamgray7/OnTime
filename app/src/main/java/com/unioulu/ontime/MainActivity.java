@@ -23,7 +23,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
@@ -40,7 +39,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        EmergencyFragment.OnFragmentInteractionListener {
+        EmergencyFragment.OnFragmentInteractionListener,
+        TodayFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -249,6 +249,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void viewEditPill() {
+        // TODO : aaa
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -262,7 +267,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             if(position == 0) {
-                return TodayFragment.newInstance(position + 1);
+                return TodayFragment.newInstance();
             } else if(position == 1) {
                 return EmergencyFragment.newInstance(position + 1, ADMIN_USER);
             } else {

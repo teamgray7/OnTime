@@ -34,7 +34,8 @@ public class AdminMainActivity extends AppCompatActivity
         SettingsFragment.OnFragmentInteractionListener,
         EmergencyFragment.OnFragmentInteractionListener,
         AddPillScreenFragment.OnFragmentInteractionListener,
-        OtherSettingsFragment.OnFragmentInteractionListener {
+        OtherSettingsFragment.OnFragmentInteractionListener,
+        TodayFragment.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -190,6 +191,11 @@ public class AdminMainActivity extends AppCompatActivity
         builder.create().show();
     }
 
+    @Override
+    public void viewEditPill() {
+        // TODO : sss
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -203,7 +209,7 @@ public class AdminMainActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             if(position == 0) {
-                return TodayFragment.newInstance(position + 1);
+                return TodayFragment.newInstance();
             } else if(position == 1) {
                 return AddPillScreenFragment.newInstance(position + 1);
             } else if(position == 2) {
