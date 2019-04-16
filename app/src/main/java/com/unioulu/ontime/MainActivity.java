@@ -14,7 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -36,6 +35,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -61,11 +61,10 @@ public class MainActivity extends AppCompatActivity
     private final boolean ADMIN_USER = false;
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 0;
 
-
     // Variables used for application Database
     private static final String TAG_DB = "Database_TAG";
     private static final String DATABASE_NAME = "medicines_DB";
-    private AppDatabase appDatabase; // Medicine database
+    private AppDatabase appDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +76,12 @@ public class MainActivity extends AppCompatActivity
                 AppDatabase.class, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
+
         // Update the dataHolder (The Singleton)
         final DataHolder holder = DataHolder.getInstance();
         holder.setAppDatabase(appDatabase);
 
+        // Toolbar on top of the activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -91,123 +92,116 @@ public class MainActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        // Set up the tabs.
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        // Set up the drawer on the left.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Set up the navigation.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Default user initialization done !
+        // Default user initialization
         databaseDefaultInitialization(holder);
     }
-    // Default user initialization function
+
     void databaseDefaultInitialization(final DataHolder holder) {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                int active_userID;
+                List<String> activeUsernames;
+
                 // If there are users registered or the default user is present, do not add another default user
                 int usersCount = appDatabase.usersTableInterface().usersCount();
-                Log.d(TAG_DB, "Users count: " + usersCount);
-                List<String> activeUsernames;
-                int active_userID;
 
-                // If first time application ran !
+                // If first time application ran.
                 if (usersCount > 0) {
-                    // get active user and update DataHolder
+                    // Get active user and update DataHolder
                     activeUsernames = appDatabase.usersTableInterface().getActiveUsers(true);
-                    active_userID = appDatabase.usersTableInterface().getUserIdByName(activeUsernames.get(activeUsernames.size()-1));
+                    active_userID = appDatabase.usersTableInterface().getUserIdByName(activeUsernames.get(activeUsernames.size() - 1));
+
                     // Settings the user_id of the shared DataHolder
                     holder.setUser_id(active_userID);
                     holder.setUsername(activeUsernames.get(activeUsernames.size()-1));
-                return;
-                }
-                Log.d(TAG_DB, "Default function called !");
+                } else {
+                    // Adding Default user first time application ran.
+                    UsersTable user = new UsersTable(
+                            "Default",
+                            "default.user@users.com",
+                            "1234password",
+                            true
+                    );
+                    appDatabase.usersTableInterface().createUser(user);
 
-                // Adding Default user first time application ran !
-                UsersTable user = new UsersTable(
-                        "Default",
-                        "default.user@users.com",
-                        "1234password",
-                        true
-                );
+                    // Settings the user_id of the shared DataHolder
+                    int default_user_id = appDatabase.usersTableInterface().getUserIdByName("Default");
+                    holder.setUser_id(default_user_id);
+                    holder.setUsername("Default");
 
-                appDatabase.usersTableInterface().createUser(user);
+                    // Adding Emergency settings contacts
+                    EmergencySettingsTable emergencyContact = new EmergencySettingsTable(
+                            default_user_id,
+                            "Emergency",
+                            "112",
+                            "https://www.112.fi/download/e8f93e2ae7498f3f197dd7fd2424d152ed4c4ab7.jpg"
+                    );
 
-                Log.d(TAG_DB, "Added: " + user.toString());
-
-                int default_user_id = appDatabase.usersTableInterface().getUserIdByName("Default");
-
-                // Settings the user_id of the shared DataHolder
-                holder.setUser_id(default_user_id);
-                holder.setUsername("Default");
-
-                // Printing out user ID
-                Log.d("OtherSettings", "User id from main activity : " + default_user_id);
-
-                // Adding Emergency settings contacts
-                EmergencySettingsTable emergencyContact = new EmergencySettingsTable(
-                        default_user_id,
-                        "Emergency",
-                        "112",
-                        "NULL"
-                );
-                try{
-                    appDatabase.emergencySettingsInterface().insertEmergencyContact(emergencyContact);
-                    Log.d(TAG_DB, "Added: " + emergencyContact.toString());
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-
-
-                // Adding settings
-                // ---------------------------------- Generating some fake settings time -----------------
-                // Vars only for testing purposes
-                String[] strings_time   ={" 9:00",
-                                     "13:00",
-                                     "18:30",
-                                     "22:00"};
-
-                // TODO : This parsing implementation of string to long time causes some troubles !
-                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-
-                Long[] long_time = new Long[4];
-                try{
-                    for (int i=0; i< strings_time.length; i++){
-                        Date date = sdf.parse(strings_time[i]);
-                        long_time[i] = date.getTime();
+                    try {
+                        appDatabase.emergencySettingsInterface().insertEmergencyContact(emergencyContact);
+                    } catch (Exception e){
+                        e.printStackTrace();
                     }
 
+                    // ---------------------------------- Generating some fake settings time -----------------
+                    // Vars only for testing purposes
+                    String[] strings_time = {
+                            "07:00",
+                            "12:30",
+                            "18:00",
+                            "22:30"
+                    };
 
-                }catch (ParseException e){
-                    e.printStackTrace();
+                    // TODO : This parsing implementation of string to long time causes some troubles !
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm", Locale.getDefault());
+
+                    Long[] long_time = new Long[4];
+
+                    try {
+                        for(int i = 0; i < strings_time.length; i++){
+                            Date date = sdf.parse(strings_time[i]);
+                            long_time[i] = date.getTime();
+                        }
+                    } catch (ParseException e){
+                        e.printStackTrace();
+                    }
+                    // --------------------------------- End of fake settings time generation --------------------------
+
+                    // Inserting new settings only if no previous settings are found in the table (Otherwise use update)
+                    OtherSettingsTable otherSettings = new OtherSettingsTable(
+                            default_user_id,
+                            long_time[0],
+                            long_time[1],
+                            long_time[2],
+                            long_time[3],
+                            "10"
+                    );
+
+                    try {
+                        appDatabase.otherSettingsInterface().insertOtherSettings(otherSettings);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-                // --------------------------------- End of fake settings time generation --------------------------
-                // Inserting new settings only if no previous settings are found in the table (Otherwise use update)
-                OtherSettingsTable otherSettings = new OtherSettingsTable(
-                        default_user_id,
-                        long_time[0],
-                        long_time[1],
-                        long_time[2],
-                        long_time[3],
-                        "10"
-                );
-                try{
-                    appDatabase.otherSettingsInterface().insertOtherSettings(otherSettings);
-                    Log.d(TAG_DB, "Added: " + otherSettings.toString());
-                }catch (Exception e){e.printStackTrace();}
-
             }
         }).start();
-
-
     }
 
     @Override
@@ -251,7 +245,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void viewEditPill(String pillName, String pillImage) {
-        // No implementation
+        // This will not be implemented for normal user.
     }
 
     /**
