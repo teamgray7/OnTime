@@ -173,6 +173,16 @@ public class AdminMainActivity extends AppCompatActivity
     }
 
     @Override
+    public void pillCancel() {
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
+        TabLayout.Tab tabOtherSettings = tabLayout.getTabAt(0);
+
+        if(tabOtherSettings != null) {
+            tabOtherSettings.select();
+        }
+    }
+
+    /*
     public void pillDelete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminMainActivity.this);
         builder.setTitle(getResources().getString(R.string.pillDeleteDialogTitle));
@@ -189,7 +199,7 @@ public class AdminMainActivity extends AppCompatActivity
                 });
 
         builder.create().show();
-    }
+    } */
 
     @Override
     public void viewEditPill(String pillName, String pillImage) {
@@ -202,7 +212,7 @@ public class AdminMainActivity extends AppCompatActivity
             AddPillScreenFragment fragment = (AddPillScreenFragment) getSupportFragmentManager()
                     .findFragmentByTag("android:switcher:" + mViewPager.getId() + ":" + mViewPager.getCurrentItem());
 
-            fragment.setFragmentDetails(pillName, pillImage, ADMIN_USER);
+            fragment.setFragmentDetails(pillName, pillImage);
         }
     }
 

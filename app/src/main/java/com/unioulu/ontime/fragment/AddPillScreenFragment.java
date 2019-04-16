@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import com.bumptech.glide.Glide;
 import com.unioulu.ontime.R;
@@ -23,6 +24,12 @@ public class AddPillScreenFragment extends Fragment {
 
     private ImageView ivPill;
     private EditText etPill;
+    private EditText etPillAmount;
+    private RadioButton rbMorning;
+    private RadioButton rbAfternoon;
+    private RadioButton rbEvening;
+    private Button btnPillSave;
+    private Button btnPillCancel;
     private Button btnPillDelete;
 
     // The interaction listener is defined.
@@ -44,6 +51,12 @@ public class AddPillScreenFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pill, container, false);
 
+        btnPillSave = (Button) rootView.findViewById(R.id.btnPillSave);
+        btnPillSave.setOnClickListener(btnPillSaveClickListener);
+
+        btnPillCancel = (Button) rootView.findViewById(R.id.btnPillCancel);
+        btnPillCancel.setOnClickListener(btnPillCancelClickListener);
+
         btnPillDelete = (Button) rootView.findViewById(R.id.btnPillDelete);
         btnPillDelete.setOnClickListener(btnPillDeleteClickListener);
 
@@ -51,6 +64,11 @@ public class AddPillScreenFragment extends Fragment {
         ivPill.setOnClickListener(pillImageClickListener);
 
         etPill = (EditText) rootView.findViewById(R.id.et_pill);
+        etPillAmount = (EditText) rootView.findViewById(R.id.et_pillAmount);
+
+        rbMorning = (RadioButton) rootView.findViewById(R.id.rb_pillMorning);
+        rbAfternoon = (RadioButton) rootView.findViewById(R.id.rb_pillAfternoon);
+        rbEvening = (RadioButton) rootView.findViewById(R.id.rb_pillEvening);
 
         return rootView;
     }
@@ -73,7 +91,7 @@ public class AddPillScreenFragment extends Fragment {
         mListener = null;
     }
 
-    public void setFragmentDetails(String pillName, String pillImage, boolean isAdmin) {
+    public void setFragmentDetails(String pillName, String pillImage) {
         etPill.setText(pillName);
 
         // Getting the images
@@ -81,12 +99,37 @@ public class AddPillScreenFragment extends Fragment {
                 .asBitmap()
                 .load(pillImage)
                 .into(ivPill);
+
+        btnPillCancel.setVisibility(View.GONE);
+        btnPillDelete.setVisibility(View.VISIBLE);
     }
+
+    private View.OnClickListener btnPillSaveClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // TODO: Save the pill into database.
+        }
+    };
+
+    private View.OnClickListener btnPillCancelClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Cleaning the data
+            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
+            etPill.setText("");
+            etPillAmount.setText("");
+            rbMorning.setChecked(false);
+            rbAfternoon.setChecked(false);
+            rbEvening.setChecked(false);
+
+            mListener.pillCancel();
+        }
+    };
 
     private View.OnClickListener btnPillDeleteClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mListener.pillDelete();
+            // TODO: Remove the pill from database.
         }
     };
 
@@ -123,6 +166,6 @@ public class AddPillScreenFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void pillDelete();
+        void pillCancel();
     }
 }

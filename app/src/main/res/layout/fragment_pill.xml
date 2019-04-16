@@ -24,6 +24,7 @@
         android:hint="@string/pillNameHint" />
 
     <EditText
+        android:id="@+id/et_pillAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginS"
@@ -31,6 +32,7 @@
         android:hint="@string/pillAmountHint" />
 
     <RadioButton
+        android:id="@+id/rb_pillMorning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginL"
@@ -38,6 +40,7 @@
         android:checked="false" />
 
     <RadioButton
+        android:id="@+id/rb_pillAfternoon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginS"
@@ -45,6 +48,7 @@
         android:checked="false" />
 
     <RadioButton
+        android:id="@+id/rb_pillEvening"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginS"
@@ -67,12 +71,21 @@
             android:text="@string/btnPillSave" />
 
         <Button
-            android:id="@+id/btnPillDelete"
+            android:id="@+id/btnPillCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/btnPillCancel" />
+
+        <Button
+            android:id="@+id/btnPillDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/btnPillCancel"
+            android:visibility="gone" />
 
     </LinearLayout>
 
