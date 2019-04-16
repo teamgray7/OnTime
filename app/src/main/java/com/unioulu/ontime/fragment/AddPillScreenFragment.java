@@ -11,16 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.unioulu.ontime.R;
 
 public class AddPillScreenFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
     private static final int GALLERY_REQUEST = 1;
 
     private ImageView ivPill;
+    private EditText etPill;
     private Button btnPillDelete;
 
     // The interaction listener is defined.
@@ -34,12 +36,8 @@ public class AddPillScreenFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static AddPillScreenFragment newInstance(int sectionNumber) {
-        AddPillScreenFragment fragment = new AddPillScreenFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
+    public static AddPillScreenFragment newInstance() {
+        return new AddPillScreenFragment();
     }
 
     @Override
@@ -51,6 +49,8 @@ public class AddPillScreenFragment extends Fragment {
 
         ivPill = (ImageView) rootView.findViewById(R.id.iv_pill);
         ivPill.setOnClickListener(pillImageClickListener);
+
+        etPill = (EditText) rootView.findViewById(R.id.et_pill);
 
         return rootView;
     }
@@ -71,6 +71,16 @@ public class AddPillScreenFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setFragmentDetails(String pillName, String pillImage, boolean isAdmin) {
+        etPill.setText(pillName);
+
+        // Getting the images
+        Glide.with(getContext())
+                .asBitmap()
+                .load(pillImage)
+                .into(ivPill);
     }
 
     private View.OnClickListener btnPillDeleteClickListener = new View.OnClickListener() {

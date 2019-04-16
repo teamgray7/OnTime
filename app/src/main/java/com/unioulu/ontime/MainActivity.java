@@ -250,8 +250,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void viewEditPill() {
-        // TODO : aaa
+    public void viewEditPill(String pillName, String pillImage) {
+        // No implementation
     }
 
     /**

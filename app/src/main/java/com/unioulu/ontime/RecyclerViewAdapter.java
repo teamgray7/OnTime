@@ -44,7 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.recyclerLayout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                mListener.onItemClick(mImageNames.get(index));
+                mListener.onItemClick(mImageNames.get(index), mImage.get(index));
             }
         });
 
@@ -80,6 +80,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String pillName);
+        void onItemClick(String pillName, String pillImage);
     }
 }

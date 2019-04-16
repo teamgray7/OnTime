@@ -192,8 +192,18 @@ public class AdminMainActivity extends AppCompatActivity
     }
 
     @Override
-    public void viewEditPill() {
-        // TODO : sss
+    public void viewEditPill(String pillName, String pillImage) {
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
+        TabLayout.Tab tabSettings = tabLayout.getTabAt(1);
+
+        if(tabSettings != null) {
+            tabSettings.select();
+
+            AddPillScreenFragment fragment = (AddPillScreenFragment) getSupportFragmentManager()
+                    .findFragmentByTag("android:switcher:" + mViewPager.getId() + ":" + mViewPager.getCurrentItem());
+
+            fragment.setFragmentDetails(pillName, pillImage, ADMIN_USER);
+        }
     }
 
     /**
@@ -211,7 +221,7 @@ public class AdminMainActivity extends AppCompatActivity
             if(position == 0) {
                 return TodayFragment.newInstance();
             } else if(position == 1) {
-                return AddPillScreenFragment.newInstance(position + 1);
+                return AddPillScreenFragment.newInstance();
             } else if(position == 2) {
                 return StatisticsScreenFragment.newInstance(position + 1);
             } else if(position == 3) {

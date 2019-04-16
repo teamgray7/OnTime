@@ -55,7 +55,7 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof AddPillScreenFragment.OnFragmentInteractionListener) {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
@@ -85,8 +85,8 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
     }
 
     @Override
-    public void onItemClick(String pillName) {
-        Toast.makeText(getContext(), "hello", Toast.LENGTH_LONG).show();
+    public void onItemClick(String pillName, String pillImage) {
+        mListener.viewEditPill(pillName, pillImage);
     }
 
     /**
@@ -100,6 +100,6 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void viewEditPill();
+        void viewEditPill(String pillName, String pillImage);
     }
 }
