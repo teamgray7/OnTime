@@ -43,7 +43,8 @@
     <string name="pillNameHint">Pill name</string>
     <string name="pillAmountHint">Amount</string>
     <string name="btnPillSave">Save</string>
-    <string name="btnPillCancel">Delete</string>
+    <string name="btnPillCancel">Cancel</string>
+    <string name="btnPillDelete">Delete</string>
     <string name="radioMorning">Morning</string>
     <string name="radioAfternoon">Afternoon</string>
     <string name="radioEvening">Evening</string>
