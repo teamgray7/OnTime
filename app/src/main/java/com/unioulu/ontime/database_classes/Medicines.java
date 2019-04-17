@@ -5,15 +5,17 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 // This table is linked to a specific user
 @Entity(indices={@Index(value="medicine_name", unique=true)})
 public class Medicines {
 
-    @PrimaryKey
     @ColumnInfo(name = "medicine_id")
     private int medicine_id;
 
+    @NonNull
+    @PrimaryKey
     @ColumnInfo(name = "medicine_name")
     private String medicine_name;
 
@@ -24,22 +26,22 @@ public class Medicines {
     private String picture_path;
 
     @ColumnInfo(name = "morningAt")
-    private String morningAt;
+    private int morningAt;
 
     @ColumnInfo(name = "afternoonAt")
-    private String afternoonAt;
+    private int afternoonAt;
 
     @ColumnInfo(name = "everingAt")
-    private String everingAt;
+    private int everingAt;
 
     @ColumnInfo(name = "customAt")
-    private String customAt;
+    private int customAt;
 
     // Constructors
     @Ignore
     public Medicines(){}    // Empty constructor
 
-    public Medicines(int medicine_id, String medicine_name, String medicine_amount, String picture_path, String morningAt, String afternoonAt, String everingAt, String customAt) {
+    public Medicines(int medicine_id, String medicine_name, String medicine_amount, String picture_path, int morningAt, int afternoonAt, int everingAt, int customAt) {
         this.medicine_id = medicine_id;
         this.medicine_name = medicine_name;
         this.medicine_amount = medicine_amount;
@@ -67,19 +69,19 @@ public class Medicines {
         return picture_path;
     }
 
-    public String getMorningAt() {
+    public int getMorningAt() {
         return morningAt;
     }
 
-    public String getAfternoonAt() {
+    public int getAfternoonAt() {
         return afternoonAt;
     }
 
-    public String getEveringAt() {
+    public int getEveringAt() {
         return everingAt;
     }
 
-    public String getCustomAt() {
+    public int getCustomAt() {
         return customAt;
     }
 
@@ -100,19 +102,19 @@ public class Medicines {
         this.picture_path = picture_path;
     }
 
-    public void setMorningAt(String morningAt) {
+    public void setMorningAt(int morningAt) {
         this.morningAt = morningAt;
     }
 
-    public void setAfternoonAt(String afternoonAt) {
+    public void setAfternoonAt(int afternoonAt) {
         this.afternoonAt = afternoonAt;
     }
 
-    public void setEveringAt(String everingAt) {
+    public void setEveringAt(int everingAt) {
         this.everingAt = everingAt;
     }
 
-    public void setCustomAt(String customAt) {
+    public void setCustomAt(int customAt) {
         this.customAt = customAt;
     }
 

@@ -115,48 +115,69 @@ public class AddPillScreenFragment extends Fragment {
     private View.OnClickListener btnPillSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            final EditText etPill_th = etPill;
+            final EditText etPillAmount_th = etPillAmount;
+            final RadioButton rbMorning_th = rbMorning, rbAfternoon_th = rbAfternoon, rbEvening_th = rbEvening;
+            final String imgPill_th = imgPill;
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    // TODO : Use this three lines below for SERVICES
                     final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
 
                     List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
                     final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size() - 1)); // ID of last active user
 
-                    List<Medicines> all_medicines = appDatabase.medicineDBInterface().fetchAllMedicines(active_user_id).getValue();
+                    List<Medicines> all_medicines = appDatabase.medicineDBInterface().fetchAllMedicines(active_user_id);
                     int nextMedicineID = all_medicines.size() + 1;
 
                     Log.d("NEXT PILL ID : ", String.valueOf(nextMedicineID));
+                    Log.d("NEXT PILL NAME: ", etPill_th.getText().toString());
+                    Log.d("NEXT PILL AMOUNT: ", etPillAmount.getText().toString());
 
                     Medicines newPill = new Medicines(
-                            nextMedicineID,
-                            etPill.getText().toString(),
-                            etPillAmount.getText().toString(),
-                            imgPill,
-                            String.valueOf(rbMorning.isChecked()),
-                            String.valueOf(rbAfternoon.isChecked()),
-                            String.valueOf(rbEvening.isChecked()),
-                            String.valueOf(false)
+                            active_user_id,
+                            etPill_th.getText().toString(),
+                            etPillAmount_th.getText().toString(),
+                            imgPill_th,
+                            rbMorning_th.isChecked() ? 1:0,
+                            rbAfternoon_th.isChecked() ? 1:0,
+                            rbEvening_th.isChecked() ? 1:0,
+                            0
                     );
 
                     try {
+                        Log.d("BERKE: ", newPill.toString());
                         DataHolder.getInstance().getAppDatabase().medicineDBInterface().insertOnlySingleMedicine(newPill);
                     } catch (Exception e) {
                         Log.v("ERROR on saving pill", "There is an error... God knows what..");
                         Log.v("ERROR: ", e.getMessage());
                     }
+
+                    // TODO: For SERVICES
+                    List<String> all_medicines2 = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
+                    long morning = appDatabase.otherSettingsInterface().fetchMorningTime(active_user_id);
+                    for(String medicines: all_medicines2) {
+                        Log.d("Medicine: ", medicines);
+                    }
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Cleaning the data
+                            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
+                            etPill.setText("");
+                            etPillAmount.setText("");
+                            rbMorning.setChecked(false);
+                            rbAfternoon.setChecked(false);
+                            rbEvening.setChecked(false);
+
+                            mListener.pillSaved();
+                        }
+                    });
                 }
-            });
-
-            // Cleaning the data
-            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
-            etPill.setText("");
-            etPillAmount.setText("");
-            rbMorning.setChecked(false);
-            rbAfternoon.setChecked(false);
-            rbEvening.setChecked(false);
-
-            mListener.pillSaved();
+            }).start();
         }
     };
 

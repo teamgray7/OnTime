@@ -1,7 +1,5 @@
 package com.unioulu.ontime.database_classes;
 
-
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -17,7 +15,7 @@ public interface MedicineDBInterface {
     void insertOnlySingleMedicine(Medicines medicine);
 
     @Query("SELECT * FROM Medicines WHERE medicine_id =:user_id")
-    LiveData<List<Medicines>> fetchAllMedicines(int user_id);
+    List<Medicines> fetchAllMedicines(int user_id);
 
     @Query("SELECT * FROM Medicines WHERE medicine_name = :medicine_name AND medicine_id =:user_id")
     Medicines fetchOneMedicineByName(String medicine_name, int user_id);
@@ -26,16 +24,25 @@ public interface MedicineDBInterface {
     String fetchPicturePathByName(String medicine_name, int user_id);
 
     @Query("SELECT morningAt FROM Medicines WHERE medicine_name = :medicine_name and medicine_id = :user_id")
-    String fetchMorningAtByName(String medicine_name, int user_id);
+    int fetchMorningAtByName(String medicine_name, int user_id);
 
     @Query("SELECT afternoonAt FROM Medicines WHERE medicine_name = :medicine_name AND medicine_id = :user_id")
-    String fetchAfternoonAtByName(String medicine_name, int user_id);
+    int fetchAfternoonAtByName(String medicine_name, int user_id);
 
     @Query("SELECT everingAt FROM Medicines WHERE medicine_name = :medicine_name AND medicine_id = :user_id")
-    String fetchEveningAtByName(String medicine_name, int user_id);
+    int fetchEveningAtByName(String medicine_name, int user_id);
 
     @Query("SELECT customAt FROM Medicines WHERE medicine_name = :medicine_name AND medicine_id = :user_id")
-    String fetchCustomAtByName(String medicine_name, int user_id);
+    int fetchCustomAtByName(String medicine_name, int user_id);
+
+    @Query("SELECT medicine_name FROM Medicines WHERE morningAt = 1 AND medicine_id = :user_id")
+    List<String> fetchMorningPills(int user_id);
+
+    @Query("SELECT medicine_name FROM Medicines WHERE afternoonAt = 1 AND medicine_id = :user_id")
+    List<String> fetchAfternoonPills(int user_id);
+
+    @Query("SELECT medicine_name FROM Medicines WHERE everingAt = 1 AND medicine_id = :user_id")
+    List<String> fetchEveningPills(int user_id);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateMedicine(Medicines medicine);
