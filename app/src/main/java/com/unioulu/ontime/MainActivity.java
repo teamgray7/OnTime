@@ -1,7 +1,9 @@
 package com.unioulu.ontime;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -80,6 +82,14 @@ public class MainActivity extends AppCompatActivity
         // Update the dataHolder (The Singleton)
         final DataHolder holder = DataHolder.getInstance();
         holder.setAppDatabase(appDatabase);
+
+        // Start service
+        ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        if (!AlarmService.isRunning(manager)) {
+            Intent serviceIntent = new Intent(this, AlarmService.class);
+            AlarmService service = new AlarmService();
+            startService(serviceIntent);
+        }
 
         // Toolbar on top of the activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
