@@ -247,7 +247,7 @@ public class AdminMainActivity extends AppCompatActivity
             } else if(position == 3) {
                 return SettingsFragment.newInstance(position + 1);
             } else if(position == 4) {
-                return EmergencyFragment.newInstance(position + 1, true);
+                return EmergencyFragment.newInstance(true);
             } else if(position == 5) {
                 return OtherSettingsFragment.newInstance();
             } else {

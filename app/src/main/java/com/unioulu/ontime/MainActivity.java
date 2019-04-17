@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity
             if(position == 0) {
                 return TodayFragment.newInstance();
             } else if(position == 1) {
-                return EmergencyFragment.newInstance(position + 1, ADMIN_USER);
+                return EmergencyFragment.newInstance(ADMIN_USER);
             } else {
                 return null;
             }

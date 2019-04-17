@@ -22,8 +22,10 @@ import com.unioulu.ontime.R;
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.EmergencySettingsTable;
+import com.unioulu.ontime.database_classes.UsersTable;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class EmergencyFragment extends Fragment {
 
@@ -46,10 +48,9 @@ public class EmergencyFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static EmergencyFragment newInstance(int sectionNumber, boolean user_admin) {
+    public static EmergencyFragment newInstance(boolean user_admin) {
         EmergencyFragment fragment = new EmergencyFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         args.putBoolean(ARG_ADMIN_USER, user_admin);
         fragment.setArguments(args);
         return fragment;
@@ -64,7 +65,7 @@ public class EmergencyFragment extends Fragment {
         final Button btnSaveEmergency = (Button) rootView.findViewById(R.id.btn_saveEmergency);
 
         // TODO : Replace static image with the one saved into database...
-        ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
+        final ImageView ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
 
         // Creation of appDatabase instance
         final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
