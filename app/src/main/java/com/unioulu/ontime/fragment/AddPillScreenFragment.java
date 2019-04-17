@@ -126,7 +126,7 @@ public class AddPillScreenFragment extends Fragment {
                     List<Medicines> all_medicines = appDatabase.medicineDBInterface().fetchAllMedicines(active_user_id).getValue();
                     int nextMedicineID = all_medicines.size() + 1;
 
-                    Log.v("NEXT PILL ID : ", String.valueOf(nextMedicineID));
+                    Log.d("NEXT PILL ID : ", String.valueOf(nextMedicineID));
 
                     Medicines newPill = new Medicines(
                             nextMedicineID,
