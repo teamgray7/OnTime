@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/marginXL"
-    android:layout_marginStart="@dimen/marginXL"
-    android:layout_marginEnd="@dimen/marginXL"
-    android:layout_marginBottom="@dimen/marginXL"
-    android:orientation="vertical" >
+<ScrollView
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/marginXL"
+        android:layout_marginStart="@dimen/marginXL"
+        android:layout_marginEnd="@dimen/marginXL"
+        android:layout_marginBottom="@dimen/marginXL"
+        android:orientation="vertical" >
 
     <ImageView
         android:layout_width="@dimen/logoSize"
@@ -42,6 +47,7 @@
         android:layout_marginTop="@dimen/marginL"
         android:text="@string/btnLogin" />
 
+        <!--This is for Forgot Password and Register puttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -71,5 +77,5 @@
             android:text="@string/btnRegister" />
 
     </LinearLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
