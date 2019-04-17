@@ -22,18 +22,16 @@ import com.unioulu.ontime.R;
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.EmergencySettingsTable;
-import com.unioulu.ontime.database_classes.UsersTable;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class EmergencyFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String ARG_ADMIN_USER = "user_admin";
     private static final int GALLERY_REQUEST = 1;
 
     private ImageView ivEmergency;
+    private String ivUri = "NULL";
 
     boolean isAdmin;
 
@@ -66,6 +64,7 @@ public class EmergencyFragment extends Fragment {
 
         // TODO : Replace static image with the one saved into database...
         final ImageView ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
+        this.ivEmergency = ivEmergency;
 
         // Creation of appDatabase instance
         final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
@@ -107,7 +106,9 @@ public class EmergencyFragment extends Fragment {
                                 ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
                             }else{
                                 // TODO: Replace the drawable with picture using the picture_path variable
-                                ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
+                                ivUri = picture_path;
+                                Log.d("Image pat: ", picture_path);
+                                ivEmergency.setImageURI(Uri.parse(picture_path));
                             }
 
                             callButton.setVisibility(View.GONE);
@@ -156,7 +157,8 @@ public class EmergencyFragment extends Fragment {
                                 ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
                             }else{
                                 // TODO: Replace the drawable with picture using the picture_path variable
-                                ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
+                                ivUri = picture_path;
+                                ivEmergency.setImageURI(Uri.parse(picture_path));
                             }
 
                             tvPersonName.setEnabled(false);
@@ -219,7 +221,7 @@ public class EmergencyFragment extends Fragment {
                             DataHolder.getInstance().getUser_id(),
                             etPersonName.getText().toString(),
                             etPersonPhone.getText().toString(),
-                            "NULL"
+                            ivUri
                     );
 
                     try{
@@ -257,7 +259,9 @@ public class EmergencyFragment extends Fragment {
 
         if(resultCode == Activity.RESULT_OK) {
             if(requestCode == 1) {
+                // TODO: Ask storage permission..
                 final Uri imgSelected = data.getData();
+                ivUri = imgSelected.toString();
                 ivEmergency.setImageURI(imgSelected);
             }
         }
