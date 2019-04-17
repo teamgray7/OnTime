@@ -182,6 +182,16 @@ public class AdminMainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void pillSaved() {
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
+        TabLayout.Tab tabOtherSettings = tabLayout.getTabAt(0);
+
+        if(tabOtherSettings != null) {
+            tabOtherSettings.select();
+        }
+    }
+
     /*
     public void pillDelete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminMainActivity.this);

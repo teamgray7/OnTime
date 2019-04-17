@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,16 @@ import android.widget.RadioButton;
 
 import com.bumptech.glide.Glide;
 import com.unioulu.ontime.R;
+import com.unioulu.ontime.database_classes.AppDatabase;
+import com.unioulu.ontime.database_classes.DataHolder;
+import com.unioulu.ontime.database_classes.Medicines;
+
+import java.util.List;
 
 public class AddPillScreenFragment extends Fragment {
 
     private static final int GALLERY_REQUEST = 1;
+    private String imgPill;
 
     private ImageView ivPill;
     private EditText etPill;
@@ -92,6 +99,7 @@ public class AddPillScreenFragment extends Fragment {
     }
 
     public void setFragmentDetails(String pillName, String pillImage) {
+        this.imgPill = pillImage;
         etPill.setText(pillName);
 
         // Getting the images
@@ -107,7 +115,48 @@ public class AddPillScreenFragment extends Fragment {
     private View.OnClickListener btnPillSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: Save the pill into database.
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
+
+                    List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
+                    final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size() - 1)); // ID of last active user
+
+                    List<Medicines> all_medicines = appDatabase.medicineDBInterface().fetchAllMedicines(active_user_id).getValue();
+                    int nextMedicineID = all_medicines.size() + 1;
+
+                    Log.v("NEXT PILL ID : ", String.valueOf(nextMedicineID));
+
+                    Medicines newPill = new Medicines(
+                            nextMedicineID,
+                            etPill.getText().toString(),
+                            etPillAmount.getText().toString(),
+                            imgPill,
+                            String.valueOf(rbMorning.isChecked()),
+                            String.valueOf(rbAfternoon.isChecked()),
+                            String.valueOf(rbEvening.isChecked()),
+                            String.valueOf(false)
+                    );
+
+                    try {
+                        DataHolder.getInstance().getAppDatabase().medicineDBInterface().insertOnlySingleMedicine(newPill);
+                    } catch (Exception e) {
+                        Log.v("ERROR on saving pill", "There is an error... God knows what..");
+                        Log.v("ERROR: ", e.getMessage());
+                    }
+                }
+            });
+
+            // Cleaning the data
+            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
+            etPill.setText("");
+            etPillAmount.setText("");
+            rbMorning.setChecked(false);
+            rbAfternoon.setChecked(false);
+            rbEvening.setChecked(false);
+
+            mListener.pillSaved();
         }
     };
 
@@ -150,6 +199,7 @@ public class AddPillScreenFragment extends Fragment {
         if(resultCode == Activity.RESULT_OK) {
             if(requestCode == 1) {
                 final Uri imgSelected = data.getData();
+                imgPill = String.valueOf(imgSelected);
                 ivPill.setImageURI(imgSelected);
             }
         }
@@ -166,6 +216,7 @@ public class AddPillScreenFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
+        void pillSaved();
         void pillCancel();
     }
 }
