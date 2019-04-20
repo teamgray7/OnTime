@@ -9,17 +9,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.unioulu.ontime.R;
 import com.unioulu.ontime.RecyclerViewAdapter;
+import com.unioulu.ontime.database_classes.AppDatabase;
+import com.unioulu.ontime.database_classes.DataHolder;
+import com.unioulu.ontime.database_classes.Medicines;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnItemClickListener {
 
-    private ArrayList<String> mNamesNext = new ArrayList<>();
-    private ArrayList<String> mImageUrlsNext= new ArrayList<>();
+    private ArrayList<Medicines> pillsMorning = new ArrayList<>();
+    private ArrayList<Medicines> pillsAfternoon = new ArrayList<>();
+    private ArrayList<Medicines> pillsEvening = new ArrayList<>();
+
+    RecyclerView nextPillsRV;
+    RecyclerViewAdapter nextPillsAdapter;
 
     // The interaction listener is defined.
     private OnFragmentInteractionListener mListener;
@@ -40,10 +47,16 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_today, container, false);
 
-        initImageBitmaps();
+        // Clearing so that there won't be duplicate items.
+        pillsMorning.clear();
+        pillsAfternoon.clear();
+        pillsEvening.clear();
 
-        RecyclerView nextPillsRV = rootView.findViewById(R.id.rv_pillList);
-        RecyclerViewAdapter nextPillsAdapter = new RecyclerViewAdapter(getContext(), mNamesNext, mImageUrlsNext);
+        dbThread.start();
+
+        nextPillsRV = rootView.findViewById(R.id.rv_pillList);
+        nextPillsAdapter = new RecyclerViewAdapter(getContext(), pillsMorning, pillsAfternoon, pillsEvening);
+
         nextPillsRV.setAdapter(nextPillsAdapter);
         nextPillsRV.setLayoutManager(new LinearLayoutManager(getContext()));
         nextPillsAdapter.setItemClickListener(this);
@@ -69,20 +82,37 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
         mListener = null;
     }
 
-    private void initImageBitmaps(){
-        // Clearing so that there won't be duplicate items.
-        mImageUrlsNext.clear();
-        mNamesNext.clear();
+    private Thread dbThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            // Creation of appDatabase instance
+            final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
 
-        mImageUrlsNext.add("https://i.ibb.co/f00N4B3/20190303-224419.jpg");
-        mNamesNext.add("Sinecod 50mg - 1 pill");
+            List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
+            final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size() - 1)); // ID of last active user
 
-        mImageUrlsNext.add("https://i.ibb.co/sbWmw5Y/20190303-224425.jpg");
-        mNamesNext.add("Minoset plus - 1 pill");
+            List<String> medsMorning = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
+            List<String> medsAfternoon = appDatabase.medicineDBInterface().fetchAfternoonPills(active_user_id);
+            List<String> medsEvening = appDatabase.medicineDBInterface().fetchEveningPills(active_user_id);
 
-        mImageUrlsNext.add("https://i.ibb.co/LCMXjwk/20190303-224431.jpg");
-        mNamesNext.add("Katarin - 0.5 pill");
-    }
+            for(String pillName: medsMorning) {
+                Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
+                pillsMorning.add(med);
+            }
+
+            for(String pillName: medsAfternoon) {
+                Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
+                pillsAfternoon.add(med);
+            }
+
+            for(String pillName: medsEvening) {
+                Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
+                pillsEvening.add(med);
+            }
+
+            nextPillsAdapter.setDataSet(pillsMorning, pillsAfternoon, pillsEvening);
+        }
+    });
 
     @Override
     public void onItemClick(String pillName, String pillImage) {
