@@ -102,12 +102,6 @@ public class AddPillScreenFragment extends Fragment {
         this.imgPill = pillImage;
         etPill.setText(pillName);
 
-        // Getting the images
-        Glide.with(getContext())
-                .asBitmap()
-                .load(pillImage)
-                .into(ivPill);
-
         btnPillCancel.setVisibility(View.GONE);
         btnPillDelete.setVisibility(View.VISIBLE);
     }

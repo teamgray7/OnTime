@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.unioulu.ontime.database_classes.Medicines;
 
 import java.util.ArrayList;
 
@@ -18,16 +18,25 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<String> mImageNames;
-    private ArrayList<String> mImage;
+    private ArrayList<Medicines> mPillsMorning;
+    private ArrayList<Medicines> mPillsAfternoon;
+    private ArrayList<Medicines> mPillsEvening;
     private Context mContext;
+
+    private int sizeOfMorning;
+    private int sizeOfAfternoon;
+    private int sizeOfEvening;
 
     private OnItemClickListener mListener;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImage) {
-        this.mImageNames = mImageNames;
-        this.mImage = mImage;
+    public RecyclerViewAdapter(Context mContext, ArrayList<Medicines> mPillsMorning, ArrayList<Medicines> mPillsAfternoon, ArrayList<Medicines> mPillsEvening) {
         this.mContext = mContext;
+        this.mPillsMorning = mPillsMorning;
+        this.mPillsAfternoon = mPillsAfternoon;
+        this.mPillsEvening = mPillsEvening;
+        this.sizeOfMorning = mPillsMorning.size();
+        this.sizeOfAfternoon = mPillsAfternoon.size();
+        this.sizeOfEvening = mPillsEvening.size();
     }
 
     @NonNull
@@ -40,37 +49,59 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int index) {
-        viewHolder.recyclerImageName.setText(mImageNames.get(index));
+        Medicines med;
+
+        if(index + 1 <= sizeOfMorning) {
+            med = mPillsMorning.get(index);
+        } else if(index + 1 > sizeOfMorning && index + 1 <= sizeOfMorning + sizeOfAfternoon) {
+            med = mPillsAfternoon.get(index - sizeOfMorning);
+        } else {
+            med = mPillsEvening.get(index - sizeOfMorning - sizeOfAfternoon);
+        }
+
+        String text = med.getMedicine_name() + " - " + med.getMedicine_amount() + " pills";
+        viewHolder.recyclerImageName.setText(text);
         viewHolder.recyclerLayout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                mListener.onItemClick(mImageNames.get(index), mImage.get(index));
+                if(index + 1 <= sizeOfMorning) {
+                    mListener.onItemClick(mPillsMorning.get(index).getMedicine_name(), mPillsMorning.get(index).getPicture_path());
+                } else if(index + 1 > sizeOfMorning && index + 1 <= sizeOfMorning + sizeOfAfternoon) {
+                    mListener.onItemClick(mPillsAfternoon.get(index - sizeOfMorning).getMedicine_name(), mPillsAfternoon.get(index - sizeOfMorning).getPicture_path());
+                } else {
+                    mListener.onItemClick(mPillsEvening.get(index - sizeOfMorning - sizeOfAfternoon).getMedicine_name(), mPillsEvening.get(index - sizeOfMorning - sizeOfAfternoon).getPicture_path());
+                }
             }
         });
-
-        // Getting the images
-        Glide.with(mContext)
-                .asBitmap()
-                .load(mImage.get(index))
-                .into(viewHolder.recyclerImage);
     }
 
     @Override
     public int getItemCount() {
-        return mImageNames.size(); // How many items are in the list !
+        return this.sizeOfMorning + this.sizeOfAfternoon + this.sizeOfEvening; // How many items are in the list !
     }
 
     public void setItemClickListener(OnItemClickListener listener) {
         this.mListener = listener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        // Recycler view items
+    public void setDataSet(ArrayList<Medicines> newMorning, ArrayList<Medicines> newAfternoon, ArrayList<Medicines> newEvening) {
+        this.mPillsMorning = newMorning;
+        this.mPillsAfternoon = newAfternoon;
+        this.mPillsEvening = newEvening;
+        this.sizeOfMorning = newMorning.size();
+        this.sizeOfAfternoon = newAfternoon.size();
+        this.sizeOfEvening = newEvening.size();
+
+        notifyDataSetChanged();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
         CircleImageView recyclerImage;
         TextView recyclerImageName;
         RelativeLayout recyclerLayout;
 
-        public ViewHolder(View itemView){
+        ViewHolder(View itemView){
             super(itemView);
 
             recyclerImage = (CircleImageView) itemView.findViewById(R.id.recyclerImage);
