@@ -62,9 +62,6 @@ public class EmergencyFragment extends Fragment {
         final Button btnSaveEmergency = (Button) rootView.findViewById(R.id.btn_saveEmergency);
         final ImageView ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
 
-        btnSaveEmergency.setOnClickListener(btnSaveEmergencyClickListener);
-        callButton.setOnClickListener(callButtonClickListener);
-        ivEmergency.setOnClickListener(emergencyImageClickListener);
         this.ivEmergency = ivEmergency;
 
         // Creation of appDatabase instance
@@ -72,6 +69,9 @@ public class EmergencyFragment extends Fragment {
 
         // Admin user can edit info and picture, normal user is not able to edit anything.
         if(isAdmin) {
+            btnSaveEmergency.setOnClickListener(btnSaveEmergencyClickListener);
+            ivEmergency.setOnClickListener(emergencyImageClickListener);
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -109,6 +109,7 @@ public class EmergencyFragment extends Fragment {
         } else {
             final TextView tvPersonName = rootView.findViewById(R.id.name_field);
             final TextView tvPersonPhone = rootView.findViewById(R.id.number_field);
+            callButton.setOnClickListener(callButtonClickListener);
 
             new Thread(new Runnable() {
                 @Override
@@ -180,6 +181,7 @@ public class EmergencyFragment extends Fragment {
         public void onClick(View v) {
             final EditText etPersonName = getActivity().findViewById(R.id.name_field);
             final EditText etPersonPhone = getActivity().findViewById(R.id.number_field);
+            Toast.makeText(getContext(), "Contact is saved!", Toast.LENGTH_SHORT).show();
 
             new Thread(new Runnable() {
                 @Override
@@ -193,14 +195,7 @@ public class EmergencyFragment extends Fragment {
 
                     try{
                         DataHolder.getInstance().getAppDatabase().emergencySettingsInterface().insertEmergencyContact(emergencyContact);
-                        Toast.makeText(getContext(), "Contact is saved!", Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getContext(), "Contact phone number already exists", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    } catch (Exception e){
                         e.printStackTrace();
                     }
                 }
