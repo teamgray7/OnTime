@@ -192,14 +192,17 @@ public class AdminMainActivity extends AppCompatActivity
         }
     }
 
-    /*
-    public void pillDelete() {
+    @Override
+    public void pillDelete(final String pillName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminMainActivity.this);
         builder.setTitle(getResources().getString(R.string.pillDeleteDialogTitle));
         builder.setMessage(R.string.pillDeleteDialogMessage)
                 .setPositiveButton(R.string.pillDeleteConfirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Do positive things here..
+                        AddPillScreenFragment fragment = (AddPillScreenFragment) getSupportFragmentManager()
+                                .findFragmentByTag("android:switcher:" + mViewPager.getId() + ":" + mViewPager.getCurrentItem());
+
+                        fragment.pillDeleteConfirmed(pillName);
                     }
                 })
                 .setNegativeButton(R.string.pillDeleteCancel, new DialogInterface.OnClickListener() {
@@ -209,10 +212,10 @@ public class AdminMainActivity extends AppCompatActivity
                 });
 
         builder.create().show();
-    } */
+    }
 
     @Override
-    public void viewEditPill(String pillName, String pillImage) {
+    public void viewEditPill(String pillName, String pillImage, String pillAmount, int morning, int afternoon, int evening) {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
         TabLayout.Tab tabSettings = tabLayout.getTabAt(1);
 
@@ -222,7 +225,7 @@ public class AdminMainActivity extends AppCompatActivity
             AddPillScreenFragment fragment = (AddPillScreenFragment) getSupportFragmentManager()
                     .findFragmentByTag("android:switcher:" + mViewPager.getId() + ":" + mViewPager.getCurrentItem());
 
-            fragment.setFragmentDetails(pillName, pillImage);
+            fragment.setFragmentDetails(pillName, pillImage, pillAmount, morning, afternoon, evening);
         }
     }
 

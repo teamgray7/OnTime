@@ -52,6 +52,7 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
         pillsAfternoon.clear();
         pillsEvening.clear();
 
+        // TODO: on swipe update?, Also when added a pill, not shown...
         dbThread.start();
 
         nextPillsRV = rootView.findViewById(R.id.rv_pillList);
@@ -115,8 +116,8 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
     });
 
     @Override
-    public void onItemClick(String pillName, String pillImage) {
-        mListener.viewEditPill(pillName, pillImage);
+    public void onItemClick(String pillName, String pillImage, String pillAmount, int morning, int afternoon, int evening) {
+        mListener.viewEditPill(pillName, pillImage, pillAmount, morning, afternoon, evening);
     }
 
     /**
@@ -130,6 +131,6 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void viewEditPill(String pillName, String pillImage);
+        void viewEditPill(String pillName, String pillImage, String pillAmount, int morning, int afternoon, int evening);
     }
 }

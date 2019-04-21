@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void viewEditPill(String pillName, String pillImage) {
+    public void viewEditPill(String pillName, String pillImage, String pillAmount, int morning, int afternoon, int evening) {
         // This will not be implemented for normal user.
     }
 
