@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
-import com.bumptech.glide.Glide;
 import com.unioulu.ontime.R;
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
@@ -58,6 +56,9 @@ public class AddPillScreenFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pill, container, false);
 
+        etPill = (EditText) rootView.findViewById(R.id.et_pill);
+        etPillAmount = (EditText) rootView.findViewById(R.id.et_pillAmount);
+
         btnPillSave = (Button) rootView.findViewById(R.id.btnPillSave);
         btnPillSave.setOnClickListener(btnPillSaveClickListener);
 
@@ -70,12 +71,14 @@ public class AddPillScreenFragment extends Fragment {
         ivPill = (ImageView) rootView.findViewById(R.id.iv_pill);
         ivPill.setOnClickListener(pillImageClickListener);
 
-        etPill = (EditText) rootView.findViewById(R.id.et_pill);
-        etPillAmount = (EditText) rootView.findViewById(R.id.et_pillAmount);
-
         rbMorning = (RadioButton) rootView.findViewById(R.id.rb_pillMorning);
+        rbMorning.setOnClickListener(radioButtonMorningClickListener);
+
         rbAfternoon = (RadioButton) rootView.findViewById(R.id.rb_pillAfternoon);
+        rbAfternoon.setOnClickListener(radioButtonAfternoonClickListener);
+
         rbEvening = (RadioButton) rootView.findViewById(R.id.rb_pillEvening);
+        rbEvening.setOnClickListener(radioButtonEveningClickListener);
 
         return rootView;
     }
@@ -98,37 +101,23 @@ public class AddPillScreenFragment extends Fragment {
         mListener = null;
     }
 
-    public void setFragmentDetails(String pillName, String pillImage) {
-        this.imgPill = pillImage;
-        etPill.setText(pillName);
-
-        btnPillCancel.setVisibility(View.GONE);
-        btnPillDelete.setVisibility(View.VISIBLE);
-    }
-
     private View.OnClickListener btnPillSaveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             final EditText etPill_th = etPill;
             final EditText etPillAmount_th = etPillAmount;
-            final RadioButton rbMorning_th = rbMorning, rbAfternoon_th = rbAfternoon, rbEvening_th = rbEvening;
+            final RadioButton rbMorning_th = rbMorning;
+            final RadioButton rbAfternoon_th = rbAfternoon;
+            final RadioButton rbEvening_th = rbEvening;
             final String imgPill_th = imgPill;
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    // TODO : Use this three lines below for SERVICES
                     final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
 
                     List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
                     final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size() - 1)); // ID of last active user
-
-                    List<Medicines> all_medicines = appDatabase.medicineDBInterface().fetchAllMedicines(active_user_id);
-                    int nextMedicineID = all_medicines.size() + 1;
-
-                    Log.d("NEXT PILL ID : ", String.valueOf(nextMedicineID));
-                    Log.d("NEXT PILL NAME: ", etPill_th.getText().toString());
-                    Log.d("NEXT PILL AMOUNT: ", etPillAmount.getText().toString());
 
                     Medicines newPill = new Medicines(
                             active_user_id,
@@ -142,30 +131,22 @@ public class AddPillScreenFragment extends Fragment {
                     );
 
                     try {
-                        Log.d("BERKE: ", newPill.toString());
                         DataHolder.getInstance().getAppDatabase().medicineDBInterface().insertOnlySingleMedicine(newPill);
                     } catch (Exception e) {
-                        Log.v("ERROR on saving pill", "There is an error... God knows what..");
-                        Log.v("ERROR: ", e.getMessage());
-                    }
-
-                    // TODO: For SERVICES
-                    List<String> all_medicines2 = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
-                    long morning = appDatabase.otherSettingsInterface().fetchMorningTime(active_user_id);
-                    for(String medicines: all_medicines2) {
-                        Log.d("Medicine: ", medicines);
+                        e.printStackTrace();
                     }
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             // Cleaning the data
-                            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
                             etPill.setText("");
                             etPillAmount.setText("");
                             rbMorning.setChecked(false);
                             rbAfternoon.setChecked(false);
                             rbEvening.setChecked(false);
+                            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
+                            imgPill = "";
 
                             mListener.pillSaved();
                         }
@@ -179,12 +160,12 @@ public class AddPillScreenFragment extends Fragment {
         @Override
         public void onClick(View v) {
             // Cleaning the data
-            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
             etPill.setText("");
             etPillAmount.setText("");
             rbMorning.setChecked(false);
             rbAfternoon.setChecked(false);
             rbEvening.setChecked(false);
+            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
 
             mListener.pillCancel();
         }
@@ -193,7 +174,40 @@ public class AddPillScreenFragment extends Fragment {
     private View.OnClickListener btnPillDeleteClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: Remove the pill from database.
+            mListener.pillDelete(etPill.getText().toString());
+        }
+    };
+
+    private View.OnClickListener radioButtonMorningClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(rbMorning.isChecked()) {
+                rbMorning.setChecked(false);
+            } else {
+                rbMorning.setChecked(true);
+            }
+        }
+    };
+
+    private View.OnClickListener radioButtonAfternoonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(rbAfternoon.isChecked()) {
+                rbAfternoon.setChecked(false);
+            } else {
+                rbAfternoon.setChecked(true);
+            }
+        }
+    };
+
+    private View.OnClickListener radioButtonEveningClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(rbEvening.isChecked()) {
+                rbEvening.setChecked(false);
+            } else {
+                rbEvening.setChecked(true);
+            }
         }
     };
 
@@ -220,6 +234,64 @@ public class AddPillScreenFragment extends Fragment {
         }
     }
 
+    public void pillDeleteConfirmed(final String pillName) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    DataHolder.getInstance().getAppDatabase().medicineDBInterface().deleteMedicineByName(pillName);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Cleaning the data
+                        etPill.setText("");
+                        etPillAmount.setText("");
+                        rbMorning.setChecked(false);
+                        rbAfternoon.setChecked(false);
+                        rbEvening.setChecked(false);
+                        ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
+                        imgPill = "";
+
+                        mListener.pillCancel();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void setFragmentDetails(String pillName, String pillImage, String pillAmount, int morning, int afternoon, int evening) {
+        etPill.setText(pillName);
+        etPillAmount.setText(pillAmount);
+
+        if(morning == 1) {
+            rbMorning.setChecked(true);
+        }
+
+        if(afternoon == 1) {
+            rbAfternoon.setChecked(true);
+        }
+
+        if(evening == 1) {
+            rbEvening.setChecked(true);
+        }
+
+        if(pillImage != null && !pillImage.equals("")) {
+            imgPill = pillImage;
+            ivPill.setImageURI(Uri.parse(pillImage));
+        } else {
+            imgPill = "";
+            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
+        }
+
+        btnPillCancel.setVisibility(View.GONE);
+        btnPillDelete.setVisibility(View.VISIBLE);
+    }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -233,5 +305,6 @@ public class AddPillScreenFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void pillSaved();
         void pillCancel();
+        void pillDelete(String pillName);
     }
 }

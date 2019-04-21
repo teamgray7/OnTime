@@ -35,29 +35,50 @@
             android:inputType="text"
             android:hint="@string/pillAmountHint" />
 
-        <RadioButton
-            android:id="@+id/rb_pillMorning"
+        <RadioGroup
+            android:id="@+id/rg_pillMorning"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/marginL"
-            android:text="@string/radioMorning"
-            android:checked="false" />
+            android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/rb_pillAfternoon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/marginS"
-            android:text="@string/radioAfternoon"
-            android:checked="false" />
+            <RadioButton
+                android:id="@+id/rb_pillMorning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginL"
+                android:text="@string/radioMorning"
+                android:checked="false" />
 
-        <RadioButton
-            android:id="@+id/rb_pillEvening"
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rg_pillAfternoon"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/marginS"
-            android:text="@string/radioEvening"
-            android:checked="false" />
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_pillAfternoon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginS"
+                android:text="@string/radioAfternoon"
+                android:checked="false" />
+
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rg_pillEvening"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_pillEvening"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginS"
+                android:text="@string/radioEvening"
+                android:checked="false" />
+
+        </RadioGroup>
 
         <LinearLayout
             android:layout_width="match_parent"
