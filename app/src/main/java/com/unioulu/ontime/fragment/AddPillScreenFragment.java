@@ -26,6 +26,7 @@ public class AddPillScreenFragment extends Fragment {
 
     private static final int GALLERY_REQUEST = 1;
     private String imgPill;
+    private String imgName;
 
     private ImageView ivPill;
     private EditText etPill;
@@ -34,6 +35,7 @@ public class AddPillScreenFragment extends Fragment {
     private RadioButton rbAfternoon;
     private RadioButton rbEvening;
     private Button btnPillSave;
+    private Button btnPillEdit;
     private Button btnPillCancel;
     private Button btnPillDelete;
 
@@ -62,6 +64,9 @@ public class AddPillScreenFragment extends Fragment {
         btnPillSave = (Button) rootView.findViewById(R.id.btnPillSave);
         btnPillSave.setOnClickListener(btnPillSaveClickListener);
 
+        btnPillEdit = (Button) rootView.findViewById(R.id.btnPillEdit);
+        btnPillEdit.setOnClickListener(btnPillEditClickListener);
+
         btnPillCancel = (Button) rootView.findViewById(R.id.btnPillCancel);
         btnPillCancel.setOnClickListener(btnPillCancelClickListener);
 
@@ -72,13 +77,8 @@ public class AddPillScreenFragment extends Fragment {
         ivPill.setOnClickListener(pillImageClickListener);
 
         rbMorning = (RadioButton) rootView.findViewById(R.id.rb_pillMorning);
-        rbMorning.setOnClickListener(radioButtonMorningClickListener);
-
         rbAfternoon = (RadioButton) rootView.findViewById(R.id.rb_pillAfternoon);
-        rbAfternoon.setOnClickListener(radioButtonAfternoonClickListener);
-
         rbEvening = (RadioButton) rootView.findViewById(R.id.rb_pillEvening);
-        rbEvening.setOnClickListener(radioButtonEveningClickListener);
 
         return rootView;
     }
@@ -156,6 +156,68 @@ public class AddPillScreenFragment extends Fragment {
         }
     };
 
+    private View.OnClickListener btnPillEditClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final EditText etPill_th = etPill;
+            final EditText etPillAmount_th = etPillAmount;
+            final RadioButton rbMorning_th = rbMorning;
+            final RadioButton rbAfternoon_th = rbAfternoon;
+            final RadioButton rbEvening_th = rbEvening;
+            final String imgPill_th = imgPill;
+            final String imgName_th = imgName;
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
+
+                    List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
+                    final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size() - 1)); // ID of last active user
+
+                    Medicines newPill = new Medicines(
+                            active_user_id,
+                            etPill_th.getText().toString(),
+                            etPillAmount_th.getText().toString(),
+                            imgPill_th,
+                            rbMorning_th.isChecked() ? 1:0,
+                            rbAfternoon_th.isChecked() ? 1:0,
+                            rbEvening_th.isChecked() ? 1:0,
+                            0
+                    );
+
+                    try {
+                        DataHolder.getInstance().getAppDatabase().medicineDBInterface().deleteMedicineByName(imgName_th);
+                        DataHolder.getInstance().getAppDatabase().medicineDBInterface().insertOnlySingleMedicine(newPill);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Cleaning the data
+                            etPill.setText("");
+                            etPillAmount.setText("");
+                            rbMorning.setChecked(false);
+                            rbAfternoon.setChecked(false);
+                            rbEvening.setChecked(false);
+                            ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
+                            imgPill = "";
+
+                            mListener.pillSaved();
+                        }
+                    });
+                }
+            }).start();
+
+            btnPillSave.setVisibility(View.VISIBLE);
+            btnPillEdit.setVisibility(View.GONE);
+            btnPillCancel.setVisibility(View.VISIBLE);
+            btnPillDelete.setVisibility(View.GONE);
+        }
+    };
+
     private View.OnClickListener btnPillCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -175,39 +237,6 @@ public class AddPillScreenFragment extends Fragment {
         @Override
         public void onClick(View v) {
             mListener.pillDelete(etPill.getText().toString());
-        }
-    };
-
-    private View.OnClickListener radioButtonMorningClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if(rbMorning.isChecked()) {
-                rbMorning.setChecked(false);
-            } else {
-                rbMorning.setChecked(true);
-            }
-        }
-    };
-
-    private View.OnClickListener radioButtonAfternoonClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if(rbAfternoon.isChecked()) {
-                rbAfternoon.setChecked(false);
-            } else {
-                rbAfternoon.setChecked(true);
-            }
-        }
-    };
-
-    private View.OnClickListener radioButtonEveningClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if(rbEvening.isChecked()) {
-                rbEvening.setChecked(false);
-            } else {
-                rbEvening.setChecked(true);
-            }
         }
     };
 
@@ -261,9 +290,16 @@ public class AddPillScreenFragment extends Fragment {
                 });
             }
         }).start();
+
+        btnPillSave.setVisibility(View.VISIBLE);
+        btnPillEdit.setVisibility(View.GONE);
+        btnPillCancel.setVisibility(View.VISIBLE);
+        btnPillDelete.setVisibility(View.GONE);
     }
 
     public void setFragmentDetails(String pillName, String pillImage, String pillAmount, int morning, int afternoon, int evening) {
+        this.imgName = pillName;
+
         etPill.setText(pillName);
         etPillAmount.setText(pillAmount);
 
@@ -287,6 +323,8 @@ public class AddPillScreenFragment extends Fragment {
             ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
         }
 
+        btnPillSave.setVisibility(View.GONE);
+        btnPillEdit.setVisibility(View.VISIBLE);
         btnPillCancel.setVisibility(View.GONE);
         btnPillDelete.setVisibility(View.VISIBLE);
     }

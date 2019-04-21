@@ -96,6 +96,15 @@
                 android:text="@string/btnPillSave" />
 
             <Button
+                android:id="@+id/btnPillEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/btnPillEdit"
+                android:visibility="gone"/>
+
+            <Button
                 android:id="@+id/btnPillCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
