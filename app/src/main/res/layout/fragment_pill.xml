@@ -1,92 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <ImageView
-        android:id="@+id/iv_pill"
-        android:layout_width="@dimen/logoSize"
-        android:layout_height="@dimen/logoSize"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/marginXL"
-        android:src="@drawable/pill_icon"
-        android:contentDescription="@string/pillContentDescription" />
-
-    <EditText
-        android:id="@+id/et_pill"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginXL"
-        android:inputType="text"
-        android:hint="@string/pillNameHint" />
-
-    <EditText
-        android:id="@+id/et_pillAmount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginS"
-        android:inputType="text"
-        android:hint="@string/pillAmountHint" />
-
-    <RadioButton
-        android:id="@+id/rb_pillMorning"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginL"
-        android:text="@string/radioMorning"
-        android:checked="false" />
-
-    <RadioButton
-        android:id="@+id/rb_pillAfternoon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginS"
-        android:text="@string/radioAfternoon"
-        android:checked="false" />
-
-    <RadioButton
-        android:id="@+id/rb_pillEvening"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginS"
-        android:text="@string/radioEvening"
-        android:checked="false" />
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/marginXXL"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnPillSave"
+        <ImageView
+            android:id="@+id/iv_pill"
+            android:layout_width="@dimen/logoSize"
+            android:layout_height="@dimen/logoSize"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/marginXL"
+            android:src="@drawable/pill_icon"
+            android:contentDescription="@string/pillContentDescription" />
+
+        <EditText
+            android:id="@+id/et_pill"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/btnPillSave" />
+            android:layout_marginTop="@dimen/marginXL"
+            android:inputType="text"
+            android:hint="@string/pillNameHint" />
 
-        <Button
-            android:id="@+id/btnPillCancel"
+        <EditText
+            android:id="@+id/et_pillAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/btnPillCancel" />
+            android:layout_marginTop="@dimen/marginS"
+            android:inputType="text"
+            android:hint="@string/pillAmountHint" />
 
-        <Button
-            android:id="@+id/btnPillDelete"
+        <RadioButton
+            android:id="@+id/rb_pillMorning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/btnPillDelete"
-            android:visibility="gone" />
+            android:layout_marginTop="@dimen/marginL"
+            android:text="@string/radioMorning"
+            android:checked="false" />
+
+        <RadioButton
+            android:id="@+id/rb_pillAfternoon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginS"
+            android:text="@string/radioAfternoon"
+            android:checked="false" />
+
+        <RadioButton
+            android:id="@+id/rb_pillEvening"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginS"
+            android:text="@string/radioEvening"
+            android:checked="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginXL"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btnPillSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/btnPillSave" />
+
+            <Button
+                android:id="@+id/btnPillCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/btnPillCancel" />
+
+            <Button
+                android:id="@+id/btnPillDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/btnPillDelete"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
