@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,9 +60,11 @@ public class EmergencyFragment extends Fragment {
 
         final ImageButton callButton = (ImageButton) rootView.findViewById(R.id.callButton);
         final Button btnSaveEmergency = (Button) rootView.findViewById(R.id.btn_saveEmergency);
-
-        // TODO : Replace static image with the one saved into database...
         final ImageView ivEmergency = (ImageView) rootView.findViewById(R.id.iv_emergency);
+
+        btnSaveEmergency.setOnClickListener(btnSaveEmergencyClickListener);
+        callButton.setOnClickListener(callButtonClickListener);
+        ivEmergency.setOnClickListener(emergencyImageClickListener);
         this.ivEmergency = ivEmergency;
 
         // Creation of appDatabase instance
@@ -71,107 +72,76 @@ public class EmergencyFragment extends Fragment {
 
         // Admin user can edit info and picture, normal user is not able to edit anything.
         if(isAdmin) {
-
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
-                    // Priting emergency contacts
-                    // Getting active user
                     List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
-
                     final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size()-1)); // ID of last active user
 
                     List<EmergencySettingsTable> emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(active_user_id);
-                    Log.d("OtherSettings", "Contact size " + emergencySettingsContacts.size());
                     if (emergencySettingsContacts.size() == 0){
                         emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(appDatabase.usersTableInterface().getUserIdByName(active_user.get(0)));
                     }
-                    // TODO: think of a better emergency contact retrieval mechanism
+
                     final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size()-1);
-
-
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
                             EditText etPersonName = (EditText) rootView.findViewById(R.id.name_field);
                             EditText etPersonPhone = (EditText) rootView.findViewById(R.id.number_field);
 
-                            // TODO : Replace static information with ones retrieved from database...
                             etPersonName.setText(contact.getContact_name());
                             etPersonPhone.setText(contact.getPhone_number());
+
                             String picture_path = contact.getPicture_url();
-                            if ( picture_path.equals("NULL") ){
+                            if (picture_path == null || picture_path.equals("NULL")) {
                                 ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
-                            }else{
-                                // TODO: Replace the drawable with picture using the picture_path variable
+                            } else {
                                 ivUri = picture_path;
-                                Log.d("Image pat: ", picture_path);
                                 ivEmergency.setImageURI(Uri.parse(picture_path));
                             }
 
                             callButton.setVisibility(View.GONE);
-                            btnSaveEmergency.setOnClickListener(btnSaveEmergencyClickListener);
-
-                            ivEmergency.setOnClickListener(emergencyImageClickListener);
-
                         }
                     });
-
                 }
             }).start();
-
         } else {
-
             final TextView tvPersonName = rootView.findViewById(R.id.name_field);
             final TextView tvPersonPhone = rootView.findViewById(R.id.number_field);
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
-                    // Priting emergency contacts
-                    // Getting active user
                     List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
                     final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size()-1)); // ID of last active user
 
                     List<EmergencySettingsTable> emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(active_user_id);
                     if (emergencySettingsContacts.size() == 0)
                         emergencySettingsContacts = appDatabase.emergencySettingsInterface().fetchAllEmergencyContacts(appDatabase.usersTableInterface().getUserIdByName(active_user.get(0)));
-                    Log.d("OtherSettings", "Nbr of emergency contacts : "+ emergencySettingsContacts.size());
-                    // TODO: think of a better emergency contact retrieval mechanism
+
                     final EmergencySettingsTable contact = emergencySettingsContacts.get(emergencySettingsContacts.size()-1);
-
-
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d("EMERGTAG", "From emergency thread !");
-
-                            // TODO : Replace static information with ones retrieved from database...
                             tvPersonName.setText(contact.getContact_name());
                             tvPersonPhone.setText(contact.getPhone_number());
+
                             String picture_path = contact.getPicture_url();
-                            if ( picture_path.equals("NULL") ){
+                            if (picture_path == null || picture_path.equals("NULL") ){
                                 ivEmergency.setImageDrawable(getResources().getDrawable(R.drawable.avatar_icon));
                             }else{
-                                // TODO: Replace the drawable with picture using the picture_path variable
                                 ivUri = picture_path;
                                 ivEmergency.setImageURI(Uri.parse(picture_path));
                             }
 
                             tvPersonName.setEnabled(false);
                             tvPersonPhone.setEnabled(false);
-
                             btnSaveEmergency.setVisibility(View.GONE);
-                            callButton.setOnClickListener(callButtonClickListener);
                         }
                     });
-
                 }
             }).start();
-
         }
 
         return rootView;
@@ -208,15 +178,12 @@ public class EmergencyFragment extends Fragment {
     private View.OnClickListener btnSaveEmergencyClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO : Fill here with the function that would save data (both image and info) into database..
+            final EditText etPersonName = getActivity().findViewById(R.id.name_field);
+            final EditText etPersonPhone = getActivity().findViewById(R.id.number_field);
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    final EditText etPersonName =  getActivity().findViewById(R.id.name_field);
-                    final EditText etPersonPhone = getActivity().findViewById(R.id.number_field);
-                    final ImageView ivEmergency = getActivity().findViewById(R.id.iv_emergency);
-
-                    // TODO: Get image URI from imageView .. doable ?
                     EmergencySettingsTable emergencyContact = new EmergencySettingsTable(
                             DataHolder.getInstance().getUser_id(),
                             etPersonName.getText().toString(),
@@ -225,10 +192,8 @@ public class EmergencyFragment extends Fragment {
                     );
 
                     try{
-                        int a = DataHolder.getInstance().getAppDatabase().usersTableInterface().usersCount();
-                        Log.d("OtherSettings", "To add: "+ emergencyContact.toString());
-                        Log.d("OtherSettings", "There are : "+ a + " users! ");
                         DataHolder.getInstance().getAppDatabase().emergencySettingsInterface().insertEmergencyContact(emergencyContact);
+                        Toast.makeText(getContext(), "Contact is saved!", Toast.LENGTH_SHORT).show();
                     }catch (Exception e){
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -259,7 +224,6 @@ public class EmergencyFragment extends Fragment {
 
         if(resultCode == Activity.RESULT_OK) {
             if(requestCode == 1) {
-                // TODO: Ask storage permission..
                 final Uri imgSelected = data.getData();
                 ivUri = imgSelected.toString();
                 ivEmergency.setImageURI(imgSelected);

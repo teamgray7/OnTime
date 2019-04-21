@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity
                             default_user_id,
                             "Emergency",
                             "112",
-                            "https://www.112.fi/download/e8f93e2ae7498f3f197dd7fd2424d152ed4c4ab7.jpg"
+                            "NULL"
                     );
 
                     try {
