@@ -1,29 +1,27 @@
 package com.unioulu.ontime.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
 import com.unioulu.ontime.R;
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.OtherSettingsTable;
+import com.unioulu.ontime.helper.DateTimeConverter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,8 +33,8 @@ import java.util.Locale;
  */
 public class OtherSettingsFragment extends Fragment {
 
-    // Fragment's buttons !
-    private Button morningBtn, afternoonBtn, eveningBtn, customBtn, saveBtn, cancelBtn;
+    // Fragment's buttons
+    private Button morningBtn, afternoonBtn, eveningBtn, saveBtn, cancelBtn;
 
     // Fragment's radioButtons
     private RadioButton[] snoozeRbtn; // 5 buttons in total
@@ -67,12 +65,11 @@ public class OtherSettingsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_other_settings, container, false);
 
         // Initialization of buttons
-        morningBtn   = rootView.findViewById(R.id.morningBtn);
+        morningBtn = rootView.findViewById(R.id.morningBtn);
         afternoonBtn = rootView.findViewById(R.id.afternoonBtn);
-        eveningBtn   = rootView.findViewById(R.id.eveningBtn);
-        customBtn    = rootView.findViewById(R.id.customBtn);
-        saveBtn      = rootView.findViewById(R.id.saveBtn);
-        cancelBtn    = rootView.findViewById(R.id.cancelBtn);
+        eveningBtn = rootView.findViewById(R.id.eveningBtn);
+        saveBtn = rootView.findViewById(R.id.saveBtn);
+        cancelBtn = rootView.findViewById(R.id.cancelBtn);
 
         // Initialization of radio buttons
         snoozeRbtn = new RadioButton[]{
@@ -97,11 +94,8 @@ public class OtherSettingsFragment extends Fragment {
                 if(user_settingsList.size() == 0) {
                     // Getting active user's settings list.
                     List<String> active_users = appDatabase.usersTableInterface().getActiveUsers(true);
-                    Log.v("AMK: ", String.valueOf(active_users.size()));
                     user_settingsList = appDatabase.otherSettingsInterface().fetchAllOtherSettings(
                             appDatabase.usersTableInterface().getUserIdByName(active_users.get(0)));
-
-                    Log.v("AMK: ", String.valueOf(user_settingsList.size()));
                 }
 
                 // Retrieving latest user settings
@@ -112,26 +106,15 @@ public class OtherSettingsFragment extends Fragment {
                     @Override
                     public void run() {
                         // Parsing data
-                        final String morningTime = parseLongTime(user_settings.getMorning());
-                        final String afternoonTime = parseLongTime(user_settings.getAfternoon());
-                        final String eveningTime = parseLongTime(user_settings.getEverning());
-                        final String customTime = parseLongTime(user_settings.getCustom());
+                        final Date morningTime = DateTimeConverter.fromTimestamp(user_settings.getMorning());
+                        final Date afternoonTime = DateTimeConverter.fromTimestamp(user_settings.getAfternoon());
+                        final Date eveningTime = DateTimeConverter.fromTimestamp(user_settings.getEvening());
                         final int snoozeTime = Integer.valueOf(user_settings.getSnooze_time());
 
-                        morningBtn.setText(morningTime);
-                        afternoonBtn.setText(afternoonTime);
-                        eveningBtn.setText(eveningTime);
-                        customBtn.setText(customTime);
-
+                        morningBtn.setText(DateTimeConverter.fromDateToStringHoursMinutes(morningTime));
+                        afternoonBtn.setText(DateTimeConverter.fromDateToStringHoursMinutes(afternoonTime));
+                        eveningBtn.setText(DateTimeConverter.fromDateToStringHoursMinutes(eveningTime));
                         snoozeRbtn[(snoozeTime / 5) - 1].toggle();
-                    }
-
-                    @SuppressLint("DefaultLocale")
-                    private String parseLongTime(Long time) {
-                        long m = (time / 60) % 60;
-                        long h = (time / (60 * 60)) % 24;
-
-                        return String.format("%d:%02d", h, m);
                     }
                 });
             }
@@ -141,8 +124,6 @@ public class OtherSettingsFragment extends Fragment {
         morningBtn.setOnClickListener(timeBtnOnClickListener);
         afternoonBtn.setOnClickListener(timeBtnOnClickListener);
         eveningBtn.setOnClickListener(timeBtnOnClickListener);
-        customBtn.setOnClickListener(timeBtnOnClickListener);
-
         saveBtn.setOnClickListener(save_cancel_Clicked);
         cancelBtn.setOnClickListener(save_cancel_Clicked);
 
@@ -167,21 +148,21 @@ public class OtherSettingsFragment extends Fragment {
             TimePickerDialog mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, final int selectedHour, int selectedMinute) {
-                    String sTime = selectedHour + ":" + selectedMinute;
+                    Date sDate = new Date();
+                    sDate.setHours(selectedHour);
+                    sDate.setMinutes(selectedMinute);
 
                     if (R.id.morningBtn == view.getId() ) {
-                        morningBtn.setText(sTime);
+                        morningBtn.setText(DateTimeConverter.fromDateToStringHoursMinutes(sDate));
                     } else if (R.id.afternoonBtn == view.getId()) {
-                        afternoonBtn.setText(sTime);
+                        afternoonBtn.setText(DateTimeConverter.fromDateToStringHoursMinutes(sDate));
                     } else if (R.id.eveningBtn == view.getId()){
-                        eveningBtn.setText(sTime);
-                    } else if (R.id.customBtn == view.getId()){
-                        customBtn.setText(sTime);
+                        eveningBtn.setText(DateTimeConverter.fromDateToStringHoursMinutes(sDate));
                     }
                 }
             }, hour, minute, true); // Yes 24h time
 
-            mTimePicker.setTitle(R.string.SelectMorningTime);
+            mTimePicker.setTitle(R.string.selectTime);
             mTimePicker.show();
         }
     };
@@ -194,24 +175,10 @@ public class OtherSettingsFragment extends Fragment {
                     @Override
                     public void run() {
                         // Getting selected time
-                        String[] string_time = new String[4];
+                        String[] string_time = new String[3];
                         string_time[0] = morningBtn.getText().toString();
                         string_time[1] = afternoonBtn.getText().toString();
                         string_time[2] = eveningBtn.getText().toString();
-                        string_time[3] = customBtn.getText().toString();
-
-                        // Parsing selected time to Long
-                        Long[] long_time = new Long[4];
-                        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-
-                        try {
-                            for (int i = 0; i < string_time.length; i++) {
-                                Date date = sdf.parse(string_time[i]);
-                                long_time[i] = date.getTime();
-                            }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
 
                         // Default snoozeTime is 5.
                         String snoozeTime = "5";
@@ -225,21 +192,27 @@ public class OtherSettingsFragment extends Fragment {
 
                         OtherSettingsTable settings = new OtherSettingsTable (
                             DataHolder.getInstance().getUser_id(),
-                            long_time[0],
-                            long_time[1],
-                            long_time[2],
-                            long_time[3],
-                            snoozeTime
+                                string_time[0],
+                                string_time[1],
+                                string_time[2],
+                                snoozeTime
                         );
-
-                        Log.d("OtherSettings", settings.toString());
 
                         try {
                             DataHolder.getInstance().getAppDatabase().otherSettingsInterface().insertOtherSettings(settings);
                         } catch (Exception e) {
-                            Log.v("AMK", "Senin amk");
                             e.printStackTrace();
                         }
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String message = "Settings are saved!";
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                                mListener.settingsAsAdmin();
+                            }
+                        });
                     }
                 }).start();
             } else if (R.id.cancelBtn == v.getId()){
