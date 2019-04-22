@@ -23,6 +23,10 @@ public interface UsersTableInterface {
     @Query("SELECT * FROM UsersTable WHERE email = :email")
     UsersTable fetchUserByEmail(String email);
 
+    // Used with forgotten password and username
+    @Query("SELECT * FROM UsersTable WHERE username = :username")
+    UsersTable fetchUserByUsername(String username);
+
     @Query("SELECT * FROM UsersTable WHERE username = :username AND email = :email")
     UsersTable fetchUserByUsernameAndEmail(String username, String email);
 
