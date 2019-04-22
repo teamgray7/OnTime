@@ -24,6 +24,7 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
     private ArrayList<Medicines> pillsMorning = new ArrayList<>();
     private ArrayList<Medicines> pillsAfternoon = new ArrayList<>();
     private ArrayList<Medicines> pillsEvening = new ArrayList<>();
+    private boolean fistRun = true;
 
     RecyclerView nextPillsRV;
     RecyclerViewAdapter nextPillsAdapter;
@@ -47,20 +48,53 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_today, container, false);
 
-        // Clearing so that there won't be duplicate items.
-        pillsMorning.clear();
-        pillsAfternoon.clear();
-        pillsEvening.clear();
-
-        // TODO: on swipe update?, Also when added a pill, not shown...
-        dbThread.start();
-
         nextPillsRV = rootView.findViewById(R.id.rv_pillList);
         nextPillsAdapter = new RecyclerViewAdapter(getContext(), pillsMorning, pillsAfternoon, pillsEvening);
 
         nextPillsRV.setAdapter(nextPillsAdapter);
         nextPillsRV.setLayoutManager(new LinearLayoutManager(getContext()));
         nextPillsAdapter.setItemClickListener(this);
+
+        if(fistRun) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Creation of appDatabase instance
+                    final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
+
+                    List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
+                    final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size() - 1)); // ID of last active user
+
+                    List<String> medsMorning = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
+                    List<String> medsAfternoon = appDatabase.medicineDBInterface().fetchAfternoonPills(active_user_id);
+                    List<String> medsEvening = appDatabase.medicineDBInterface().fetchEveningPills(active_user_id);
+
+                    for(String pillName: medsMorning) {
+                        Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
+                        pillsMorning.add(med);
+                    }
+
+                    for(String pillName: medsAfternoon) {
+                        Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
+                        pillsAfternoon.add(med);
+                    }
+
+                    for(String pillName: medsEvening) {
+                        Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
+                        pillsEvening.add(med);
+                    }
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            nextPillsAdapter.setDataSet(pillsMorning, pillsAfternoon, pillsEvening);
+                        }
+                    });
+                }
+            }).start();
+
+            fistRun = false;
+        }
 
         return rootView;
     }
@@ -83,41 +117,52 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
         mListener = null;
     }
 
-    private Thread dbThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            // Creation of appDatabase instance
-            final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
-
-            List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
-            final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size() - 1)); // ID of last active user
-
-            List<String> medsMorning = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
-            List<String> medsAfternoon = appDatabase.medicineDBInterface().fetchAfternoonPills(active_user_id);
-            List<String> medsEvening = appDatabase.medicineDBInterface().fetchEveningPills(active_user_id);
-
-            for(String pillName: medsMorning) {
-                Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
-                pillsMorning.add(med);
-            }
-
-            for(String pillName: medsAfternoon) {
-                Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
-                pillsAfternoon.add(med);
-            }
-
-            for(String pillName: medsEvening) {
-                Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
-                pillsEvening.add(med);
-            }
-
-            nextPillsAdapter.setDataSet(pillsMorning, pillsAfternoon, pillsEvening);
-        }
-    });
-
     @Override
     public void onItemClick(String pillName, String pillImage, String pillAmount, int morning, int afternoon, int evening) {
         mListener.viewEditPill(pillName, pillImage, pillAmount, morning, afternoon, evening);
+    }
+
+    public void refreshData() {
+        pillsMorning.clear();
+        pillsAfternoon.clear();
+        pillsEvening.clear();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Creation of appDatabase instance
+                final AppDatabase appDatabase = DataHolder.getInstance().getAppDatabase();
+
+                List<String> active_user = appDatabase.usersTableInterface().getActiveUsers(true);
+                final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size() - 1)); // ID of last active user
+
+                List<String> medsMorning = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
+                List<String> medsAfternoon = appDatabase.medicineDBInterface().fetchAfternoonPills(active_user_id);
+                List<String> medsEvening = appDatabase.medicineDBInterface().fetchEveningPills(active_user_id);
+
+                for(String pillName: medsMorning) {
+                    Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
+                    pillsMorning.add(med);
+                }
+
+                for(String pillName: medsAfternoon) {
+                    Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
+                    pillsAfternoon.add(med);
+                }
+
+                for(String pillName: medsEvening) {
+                    Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(pillName, active_user_id);
+                    pillsEvening.add(med);
+                }
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        nextPillsAdapter.setDataSet(pillsMorning, pillsAfternoon, pillsEvening);
+                    }
+                });
+            }
+        }).start();
     }
 
     /**

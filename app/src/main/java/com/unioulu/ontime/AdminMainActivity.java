@@ -189,6 +189,11 @@ public class AdminMainActivity extends AppCompatActivity
 
         if(tabOtherSettings != null) {
             tabOtherSettings.select();
+
+            TodayFragment fragment = (TodayFragment) getSupportFragmentManager()
+                    .findFragmentByTag("android:switcher:" + mViewPager.getId() + ":" + mViewPager.getCurrentItem());
+
+            fragment.refreshData();
         }
     }
 
