@@ -1,26 +1,23 @@
 package com.unioulu.ontime.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.unioulu.ontime.R;
 
 import java.util.ArrayList;
 
 public class StatisticsScreenFragment extends Fragment {
-
-    private static final String ARG_SECTION_NUMBER = "section_number";
-    private PieChart pieChart;
 
     public StatisticsScreenFragment() {
         // Empty constructor
@@ -30,40 +27,46 @@ public class StatisticsScreenFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static StatisticsScreenFragment newInstance(int sectionNumber) {
-        StatisticsScreenFragment fragment = new StatisticsScreenFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
+    public static StatisticsScreenFragment newInstance() {
+        return new StatisticsScreenFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
         setPieChart(rootView);
+        setDate(rootView);
 
         return rootView;
     }
 
-    /*
-        This functions set statistical data and assign them into a pie chart.
-        TODO : Retrieve data from database and place them into pieEntries arrayList.
-     */
     private void setPieChart(View rootView) {
         ArrayList<PieEntry> pieEntries = new ArrayList<PieEntry>();
-        pieEntries.add(new PieEntry(81f, "Success"));
-        pieEntries.add(new PieEntry(18f, "Danger"));
-        pieEntries.add(new PieEntry(1f, "Fail"));
+        pieEntries.add(new PieEntry(32f, "Success"));
+        pieEntries.add(new PieEntry(13f, "Delayed"));
+        pieEntries.add(new PieEntry(8f, "Not taken"));
 
-        PieDataSet dataSet = new PieDataSet(pieEntries, "Statistics");
+        PieDataSet dataSet = new PieDataSet(pieEntries, "");
         PieData data = new PieData(dataSet);
 
-        pieChart = (PieChart) rootView.findViewById(R.id.pie_chart);
+        PieChart pieChart = (PieChart) rootView.findViewById(R.id.pie_chart);
         pieChart.setData(data);
+        pieChart.animateXY(1300,1300);
 
-        dataSet.setColors(new int[]{Color.GREEN, Color.YELLOW, Color.RED});
+        Description description = new Description();
+        description.setText("Statistics");
+        pieChart.setDescription(description);
+
+        dataSet.setColors(getResources().getColor(R.color.colorGreen),
+                getResources().getColor(R.color.colorOrange),
+                getResources().getColor(R.color.colorRed));
         dataSet.setValueTextSize(18f);
-        pieChart.animateXY(2000,2000);
+    }
+
+    private void setDate(View rootView) {
+        String date = "May, 2019";
+
+        TextView tvDate = (TextView) rootView.findViewById(R.id.pie_tvDate);
+        tvDate.setText(date);
     }
 }

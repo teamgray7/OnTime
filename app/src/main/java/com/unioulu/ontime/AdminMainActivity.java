@@ -246,9 +246,9 @@ public class AdminMainActivity extends AppCompatActivity
             } else if(position == 1) {
                 return AddPillScreenFragment.newInstance();
             } else if(position == 2) {
-                return StatisticsScreenFragment.newInstance(position + 1);
+                return StatisticsScreenFragment.newInstance();
             } else if(position == 3) {
-                return SettingsFragment.newInstance(position + 1);
+                return SettingsFragment.newInstance();
             } else if(position == 4) {
                 return EmergencyFragment.newInstance(true);
             } else if(position == 5) {
