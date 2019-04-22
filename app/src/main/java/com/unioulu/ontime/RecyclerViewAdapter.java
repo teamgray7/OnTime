@@ -10,9 +10,15 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.unioulu.ontime.database_classes.AppDatabase;
+import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.Medicines;
+import com.unioulu.ontime.database_classes.OtherSettingsTable;
+import com.unioulu.ontime.helper.DateTimeConverter;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -27,9 +33,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private int sizeOfAfternoon;
     private int sizeOfEvening;
 
+    private Date morningTime;
+    private Date afternoonTime;
+    private Date eveningTime;
+
+    private int colorSuccess;
+
     private OnItemClickListener mListener;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<Medicines> mPillsMorning, ArrayList<Medicines> mPillsAfternoon, ArrayList<Medicines> mPillsEvening) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<Medicines> mPillsMorning, ArrayList<Medicines> mPillsAfternoon, ArrayList<Medicines> mPillsEvening, int colorSuccess) {
         this.mContext = mContext;
         this.mPillsMorning = mPillsMorning;
         this.mPillsAfternoon = mPillsAfternoon;
@@ -37,6 +49,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.sizeOfMorning = mPillsMorning.size();
         this.sizeOfAfternoon = mPillsAfternoon.size();
         this.sizeOfEvening = mPillsEvening.size();
+        this.colorSuccess = colorSuccess;
+
+        // Creation of appDatabase instance
+        final DataHolder holder = DataHolder.getInstance();
+        final AppDatabase appDatabase = holder.getAppDatabase();
+
+        // Fetching from database
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int user_id = holder.getUser_id();
+
+                List<OtherSettingsTable> user_settingsList = appDatabase.otherSettingsInterface().fetchAllOtherSettings(user_id);
+                if(user_settingsList.size() == 0) {
+                    // Getting active user's settings list.
+                    List<String> active_users = appDatabase.usersTableInterface().getActiveUsers(true);
+                    user_settingsList = appDatabase.otherSettingsInterface().fetchAllOtherSettings(
+                            appDatabase.usersTableInterface().getUserIdByName(active_users.get(0)));
+                }
+
+                // Retrieving latest user settings
+                final OtherSettingsTable user_settings = user_settingsList.get(user_settingsList.size() - 1);
+
+                // Updating time settings
+                morningTime = DateTimeConverter.fromTimestamp(user_settings.getMorning());
+                afternoonTime = DateTimeConverter.fromTimestamp(user_settings.getAfternoon());
+                eveningTime = DateTimeConverter.fromTimestamp(user_settings.getEvening());
+            }
+        }).start();
     }
 
     @NonNull
@@ -51,16 +92,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int index) {
         Medicines med;
         String text;
+        Date currentTime = new Date();
 
         if(index + 1 <= sizeOfMorning) {
             med = mPillsMorning.get(index);
             text = med.getMedicine_name() + " - " + med.getMedicine_amount() + " pills" + " (Morning)";
+
+            if(currentTime.getHours() > morningTime.getHours() ||
+                    (currentTime.getHours() == morningTime.getHours() &&
+                            currentTime.getMinutes() > morningTime.getMinutes())) {
+                viewHolder.recyclerLayout.setBackgroundColor(colorSuccess);
+            }
         } else if(index + 1 > sizeOfMorning && index + 1 <= sizeOfMorning + sizeOfAfternoon) {
             med = mPillsAfternoon.get(index - sizeOfMorning);
             text = med.getMedicine_name() + " - " + med.getMedicine_amount() + " pills" + " (Afternoon)";
+
+            if(currentTime.getHours() > afternoonTime.getHours() ||
+                    (currentTime.getHours() == afternoonTime.getHours() &&
+                            currentTime.getMinutes() > afternoonTime.getMinutes())) {
+                viewHolder.recyclerLayout.setBackgroundColor(colorSuccess);
+            }
         } else {
             med = mPillsEvening.get(index - sizeOfMorning - sizeOfAfternoon);
             text = med.getMedicine_name() + " - " + med.getMedicine_amount() + " pills" + " (Evening)";
+
+            if(currentTime.getHours() > eveningTime.getHours() ||
+                    (currentTime.getHours() == eveningTime.getHours() &&
+                            currentTime.getMinutes() > eveningTime.getMinutes())) {
+                viewHolder.recyclerLayout.setBackgroundColor(colorSuccess);
+            }
         }
 
         viewHolder.recyclerImageName.setText(text);

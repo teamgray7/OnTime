@@ -49,7 +49,7 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
         final View rootView = inflater.inflate(R.layout.fragment_today, container, false);
 
         nextPillsRV = rootView.findViewById(R.id.rv_pillList);
-        nextPillsAdapter = new RecyclerViewAdapter(getContext(), pillsMorning, pillsAfternoon, pillsEvening);
+        nextPillsAdapter = new RecyclerViewAdapter(getContext(), pillsMorning, pillsAfternoon, pillsEvening, getResources().getColor(R.color.pillTaken));
 
         nextPillsRV.setAdapter(nextPillsAdapter);
         nextPillsRV.setLayoutManager(new LinearLayoutManager(getContext()));
