@@ -14,8 +14,6 @@ import com.unioulu.ontime.R;
 
 public class SettingsFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
-
     // The interaction listener is defined.
     private OnFragmentInteractionListener mListener;
 
@@ -23,16 +21,8 @@ public class SettingsFragment extends Fragment {
         // Empty constructor
     }
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
-    public static SettingsFragment newInstance(int sectionNumber) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
+    public static SettingsFragment newInstance() {
+        return new SettingsFragment();
     }
 
     @Override
