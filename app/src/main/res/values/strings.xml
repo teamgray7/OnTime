@@ -99,8 +99,5 @@
     <string name="_15_minutes">15 minutes</string>
     <string name="_20_minutes">20 minutes</string>
     <string name="_25_minutes">25 minutes</string>
-    <string name="SelectMorningTime">Select morning time</string>
-    <string name="SelectAfternoonTime">Select afternoon time</string>
-    <string name="SelectEveningTime">Select evening time</string>
-    <string name="SelectCustomTime">Select custom time</string>
+    <string name="selectTime">Select time</string>
 </resources>
