@@ -175,10 +175,10 @@ public class AdminMainActivity extends AppCompatActivity
     @Override
     public void pillCancel() {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
-        TabLayout.Tab tabOtherSettings = tabLayout.getTabAt(0);
+        TabLayout.Tab tabToday = tabLayout.getTabAt(0);
 
-        if(tabOtherSettings != null) {
-            tabOtherSettings.select();
+        if(tabToday != null) {
+            tabToday.select();
         }
     }
 
@@ -233,6 +233,17 @@ public class AdminMainActivity extends AppCompatActivity
             fragment.setFragmentDetails(pillName, pillImage, pillAmount, morning, afternoon, evening);
         }
     }
+
+    @Override
+    public void emergencyContactSaved() {
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.admin_tabs);
+        TabLayout.Tab tabOtherSettings = tabLayout.getTabAt(3);
+
+        if(tabOtherSettings != null) {
+            tabOtherSettings.select();
+        }
+    }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

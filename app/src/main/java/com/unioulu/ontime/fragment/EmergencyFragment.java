@@ -198,6 +198,13 @@ public class EmergencyFragment extends Fragment {
                     } catch (Exception e){
                         e.printStackTrace();
                     }
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mListener.emergencyContactSaved();
+                        }
+                    });
                 }
             }).start();
         }
@@ -238,5 +245,6 @@ public class EmergencyFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void makeCall(String phoneNumber);
+        void emergencyContactSaved();
     }
 }
