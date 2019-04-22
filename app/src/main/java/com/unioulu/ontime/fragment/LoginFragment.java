@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +32,7 @@ public class LoginFragment extends Fragment {
     }
 
     public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
-        return fragment;
+        return new LoginFragment();
     }
 
     @Override
@@ -50,6 +48,7 @@ public class LoginFragment extends Fragment {
         tvRegister.setOnClickListener(registerClickListener);
         tvForgetPassword.setOnClickListener(forgetPasswordClickListener);
         btnLogin.setOnClickListener(btnLoginClickListener);
+
         return rootView;
     }
 
@@ -77,36 +76,30 @@ public class LoginFragment extends Fragment {
             final String username = etUsername.getText().toString();
             final String password = etPassword.getText().toString();
 
-            // user : DataHolder.getInstance().getAppDatabase().usersTableInterface()...
-
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    final UsersTable user = DataHolder.getInstance().getAppDatabase().usersTableInterface().fetchUserByUsernameAndPassword(username, password);
 
-
-                    final UsersTable user = DataHolder.getInstance().getAppDatabase().usersTableInterface().fetchUserByUsernameAndPassword(username,password);
-
-                    if(user!=null){
+                    if(user != null){
                         DataHolder.getInstance().setUsername(username);
                         DataHolder.getInstance().setUser_id(DataHolder.getInstance().getAppDatabase().usersTableInterface().getUserIdByName(username));
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
-                            public void run() {mListener.proceedLogin(username, password);
-
+                            public void run() {
+                                mListener.proceedLogin(username, password);
                             }
                         });
                     } else {
-
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getActivity().getApplicationContext(), "User doesn't exist !", Toast.LENGTH_SHORT).show();
+                                String message = "User does not exist!";
+                                Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                             }
                         });
-                        Log.d("Logging fragment", "User doesn't exist !");
                     }
-
                 }
             }).start();
         }
@@ -115,8 +108,6 @@ public class LoginFragment extends Fragment {
     private View.OnClickListener registerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // final String username = etUsername.getText().toString();
-            // final String password = etPassword.getText().toString();
             mListener.registerAccountClicked();
         }
     };
@@ -124,7 +115,6 @@ public class LoginFragment extends Fragment {
     private View.OnClickListener forgetPasswordClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: implement a forget password mechanism
             mListener.forgetPasswordClicked();
         }
     };

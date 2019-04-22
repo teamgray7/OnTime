@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView
-
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,67 +14,67 @@
         android:layout_marginBottom="@dimen/marginXL"
         android:orientation="vertical" >
 
-    <ImageView
-        android:layout_width="@dimen/logoSize"
-        android:layout_height="@dimen/logoSize"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/marginL"
-        android:src="@drawable/pill_icon"
-        android:contentDescription="@string/logoContentDescription" />
+        <ImageView
+            android:layout_width="@dimen/logoSize"
+            android:layout_height="@dimen/logoSize"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/marginL"
+            android:src="@drawable/pill_icon"
+            android:contentDescription="@string/logoContentDescription" />
 
-    <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginXXL"
-        android:inputType="text"
-        android:hint="@string/usernameHint" />
-
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginL"
-        android:inputType="textPassword"
-        android:hint="@string/passwordHint" />
-
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/marginL"
-        android:text="@string/btnLogin" />
-
-        <!--This is for Forgot Password and Register puttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/marginL"
-        android:orientation="horizontal"
-        android:gravity="bottom" >
-
-        <TextView
-            android:id="@+id/tv_forgetPassword"
+        <EditText
+            android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textStyle="bold"
-            android:textSize="@dimen/loginTextSize"
-            android:text="@string/btnForgetPassword" />
+            android:layout_marginTop="@dimen/marginXXL"
+            android:inputType="text"
+            android:hint="@string/usernameHint" />
 
-        <TextView
-            android:id="@+id/tv_registerAccount"
+        <EditText
+            android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textStyle="bold"
-            android:textSize="@dimen/loginTextSize"
-            android:text="@string/btnRegister" />
+            android:layout_marginTop="@dimen/marginL"
+            android:inputType="textPassword"
+            android:hint="@string/passwordHint" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/marginL"
+            android:text="@string/btnLogin" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginXXL"
+            android:orientation="horizontal"
+            android:gravity="bottom" >
+
+            <TextView
+                android:id="@+id/tv_forgetPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="@dimen/loginTextSize"
+                android:text="@string/btnForgetPassword" />
+
+            <TextView
+                android:id="@+id/tv_registerAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="@dimen/loginTextSize"
+                android:text="@string/btnRegister" />
+
+        </LinearLayout>
 
     </LinearLayout>
-    </LinearLayout>
+
 </ScrollView>
