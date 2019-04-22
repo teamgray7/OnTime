@@ -2,6 +2,7 @@ package com.unioulu.ontime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.Medicines;
@@ -122,6 +124,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 viewHolder.recyclerLayout.setBackgroundColor(colorSuccess);
             }
         }
+
+        Glide.with(viewHolder.itemView)
+                .load(Uri.parse(med.getPicture_path()))
+                .into(viewHolder.recyclerImage);
 
         viewHolder.recyclerImageName.setText(text);
         viewHolder.recyclerLayout.setOnClickListener(new View.OnClickListener(){
