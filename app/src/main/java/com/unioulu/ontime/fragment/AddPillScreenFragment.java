@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.unioulu.ontime.R;
 import com.unioulu.ontime.database_classes.AppDatabase;
@@ -148,6 +149,8 @@ public class AddPillScreenFragment extends Fragment {
                             ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
                             imgPill = "";
 
+                            String message = "New pill is saved.";
+                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                             mListener.pillSaved();
                         }
                     });
@@ -205,6 +208,8 @@ public class AddPillScreenFragment extends Fragment {
                             ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
                             imgPill = "";
 
+                            String message = "The pill is edited.";
+                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                             mListener.pillSaved();
                         }
                     });
@@ -285,7 +290,9 @@ public class AddPillScreenFragment extends Fragment {
                         ivPill.setImageDrawable(getResources().getDrawable(R.drawable.ic_pill_icon));
                         imgPill = "";
 
-                        mListener.pillCancel();
+                        String message = "The pill is deleted.";
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        mListener.pillSaved();
                     }
                 });
             }
