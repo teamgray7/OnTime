@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
 
     RecyclerView nextPillsRV;
     RecyclerViewAdapter nextPillsAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     // The interaction listener is defined.
     private OnFragmentInteractionListener mListener;
@@ -54,6 +56,15 @@ public class TodayFragment extends Fragment implements RecyclerViewAdapter.OnIte
         nextPillsRV.setAdapter(nextPillsAdapter);
         nextPillsRV.setLayoutManager(new LinearLayoutManager(getContext()));
         nextPillsAdapter.setItemClickListener(this);
+
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         if(fistRun) {
             new Thread(new Runnable() {
