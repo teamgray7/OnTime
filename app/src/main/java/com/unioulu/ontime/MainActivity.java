@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
 
     // Admin user and permission numbers.
     private final boolean ADMIN_USER = false;
-    private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 0;
+    private final int MY_PERMISSIONS_REQUEST = 0;
 
     // Variables used for application Database
     private static final String TAG_DB = "Database_TAG";
@@ -116,6 +116,13 @@ public class MainActivity extends AppCompatActivity
 
         // Default user initialization
         databaseDefaultInitialization(holder);
+
+        if ((ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) ||
+        (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST);
+        }
     }
 
     void databaseDefaultInitialization(final DataHolder holder) {
@@ -224,7 +231,7 @@ public class MainActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.CALL_PHONE},
-                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                    MY_PERMISSIONS_REQUEST);
         } else {
             Intent callIntent = new Intent(Intent.ACTION_CALL);
             callIntent.setData(Uri.parse("tel:" + phoneNumber));
@@ -235,6 +242,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void viewEditPill(String pillName, String pillImage, String pillAmount, int morning, int afternoon, int evening) {
+        // This will not be implemented for normal user.
+    }
+
+    @Override
+    public void emergencyContactSaved() {
         // This will not be implemented for normal user.
     }
 
