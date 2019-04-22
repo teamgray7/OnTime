@@ -33,11 +33,7 @@ import com.unioulu.ontime.database_classes.UsersTable;
 import com.unioulu.ontime.fragment.EmergencyFragment;
 import com.unioulu.ontime.fragment.TodayFragment;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -173,34 +169,18 @@ public class MainActivity extends AppCompatActivity
                     // ---------------------------------- Generating some fake settings time -----------------
                     // Vars only for testing purposes
                     String[] strings_time = {
-                            "07:00",
-                            "12:30",
-                            "18:00",
-                            "22:30"
+                            "08:00",
+                            "14:00",
+                            "20:00"
                     };
-
-                    // TODO : This parsing implementation of string to long time causes some troubles !
-                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm", Locale.getDefault());
-
-                    Long[] long_time = new Long[4];
-
-                    try {
-                        for(int i = 0; i < strings_time.length; i++){
-                            Date date = sdf.parse(strings_time[i]);
-                            long_time[i] = date.getTime();
-                        }
-                    } catch (ParseException e){
-                        e.printStackTrace();
-                    }
                     // --------------------------------- End of fake settings time generation --------------------------
 
                     // Inserting new settings only if no previous settings are found in the table (Otherwise use update)
                     OtherSettingsTable otherSettings = new OtherSettingsTable(
                             default_user_id,
-                            long_time[0],
-                            long_time[1],
-                            long_time[2],
-                            long_time[3],
+                            strings_time[0],
+                            strings_time[1],
+                            strings_time[2],
                             "10"
                     );
 
