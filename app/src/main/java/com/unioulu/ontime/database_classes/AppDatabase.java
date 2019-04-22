@@ -9,7 +9,7 @@ import android.arch.persistence.room.RoomDatabase;
         EmergencySettingsTable.class,
         OtherSettingsTable.class,
         Medicines.class,
-        MedicineStatistics.class}, version = 9, exportSchema = false)
+        MedicineStatistics.class}, version = 10, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UsersTableInterface usersTableInterface();
     public abstract MedicineDBInterface medicineDBInterface();
