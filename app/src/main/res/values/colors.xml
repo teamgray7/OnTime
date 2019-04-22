@@ -14,4 +14,6 @@
     <color name="colorGreenMD">#388E3C</color>
     <color name="colorYellowMD">#FBC02D</color>
 
+    <color name="pillTaken">#4fffa7</color>
+
 </resources>
