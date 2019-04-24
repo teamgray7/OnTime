@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.unioulu.ontime.R;
+import com.unioulu.ontime.helper.AlarmSharedData;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,8 +50,8 @@ public class PillAlarmFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_pills_alarm, container, false);
 
         // Initialization of the variables
-        snoozeSpinner = (Spinner) rootView.findViewById(R.id.snoozeSpinner);
-        snoozeButton  = (Button) rootView.findViewById(R.id.snoozeButton );
+        snoozeSpinner = rootView.findViewById(R.id.snoozeSpinner);
+        snoozeButton  = rootView.findViewById(R.id.snoozeButton );
 
 
         // --------------------------------------- Spinner implementation ---------------------------------
@@ -93,6 +94,30 @@ public class PillAlarmFragment extends Fragment {
         });
 
         // ------------------------------------ End of snooze button implementation --------------------------------------------
+
+        // ------------------------------------ Text view text update from shared preferences -------------------------------
+
+        medicineTime = rootView.findViewById(R.id.medicineTime);
+        switch (AlarmSharedData.getInstance().getPillTime())
+        {
+            case 0:
+                {
+                    medicineTime.setText(AlarmSharedData.getInstance().getMorningTime().getHours()+":"+AlarmSharedData.getInstance().getMorningTime().getMinutes());
+                    break;
+                }
+            case 1:
+            {
+                medicineTime.setText(AlarmSharedData.getInstance().getAfternoonTime().getHours()+":"+AlarmSharedData.getInstance().getAfternoonTime().getMinutes());
+                break;
+            }
+            case 2:
+            {
+                medicineTime.setText(AlarmSharedData.getInstance().getEveningTime().getHours()+":"+AlarmSharedData.getInstance().getEveningTime().getMinutes());
+                break;
+            }
+
+            default: medicineTime.setText("");
+        }
 
         return rootView;
     }

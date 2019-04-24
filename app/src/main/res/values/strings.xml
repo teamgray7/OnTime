@@ -81,6 +81,7 @@
     <string name="otherSettings_other">Other settings</string>
 
     <string name="medicineNameAlarm">Medicine Name</string>
+    <string name="medicineTimeAlarm">Medicine Time</string>
 
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
@@ -100,4 +101,5 @@
     <string name="_20_minutes">20 minutes</string>
     <string name="_25_minutes">25 minutes</string>
     <string name="selectTime">Select time</string>
+
 </resources>

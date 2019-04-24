@@ -17,6 +17,7 @@ import com.unioulu.ontime.R;
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.OtherSettingsTable;
+import com.unioulu.ontime.helper.AlarmSharedData;
 import com.unioulu.ontime.helper.DateTimeConverter;
 
 import java.util.Calendar;
@@ -171,6 +172,9 @@ public class OtherSettingsFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (R.id.saveBtn == v.getId()) {
+                // Informing the shared preferences that the alarm service is checking that otherSettings data has been changed
+                AlarmSharedData.getInstance().setIsDataChanged(true);
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

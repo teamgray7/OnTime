@@ -16,6 +16,7 @@ import android.util.Log;
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.Medicines;
+import com.unioulu.ontime.helper.AlarmSharedData;
 import com.unioulu.ontime.helper.DateTimeConverter;
 
 import java.time.LocalDate;
@@ -168,10 +169,32 @@ class UpdateAlarmsThread extends Thread {
                 Date cDateAfternoon = new Date();
                 Date cDateEvening = new Date();
                 Date currentTime = new Date();
+                Date morningTime, afternoonTime, eveningTime;
+                // If the data is not yet retrieved from DB or it was changed, get it again from DB and update the shared preferences
+                if (AlarmSharedData.getInstance().getIsDataChanged() || !(AlarmSharedData.getInstance().getIsDataRetrieved()))
+                {
 
-                Date morningTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchMorningTime(active_user_id));
-                Date afternoonTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchAfternoonTime(active_user_id));
-                Date eveningTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchEveningTime(active_user_id));
+                    Log.d(TAG, "Retrieving data from DB: changed: "+
+                            String.valueOf(AlarmSharedData.getInstance().getIsDataChanged()) +
+                            " Data retrieved: " + String.valueOf(AlarmSharedData.getInstance().getIsDataRetrieved()));
+
+                    morningTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchMorningTime(active_user_id));
+                    afternoonTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchAfternoonTime(active_user_id));
+                    eveningTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchEveningTime(active_user_id));
+                    // Update the shared preferences
+                    AlarmSharedData.getInstance().setMorningTime(morningTime);
+                    AlarmSharedData.getInstance().setAfternoonTime(afternoonTime);
+                    AlarmSharedData.getInstance().setEveningTime(eveningTime);
+                    AlarmSharedData.getInstance().setIsDataChanged(false);
+                    AlarmSharedData.getInstance().setIsDataRetrieved(true);
+                }
+                else // Data is retrieved from DB, had not been changed and a snooze might be set !
+                {
+                    Log.d(TAG, "Retrieving data from shared preferences");
+                    morningTime = AlarmSharedData.getInstance().getMorningTime();
+                    afternoonTime = AlarmSharedData.getInstance().getAfternoonTime();
+                    eveningTime = AlarmSharedData.getInstance().getEveningTime();
+                }
 
                 // Shield against non-existant user settings
                 if (morningTime != null && afternoonTime != null && eveningTime != null) {
@@ -193,39 +216,55 @@ class UpdateAlarmsThread extends Thread {
                     // Serves as requestcode for PendingIntent
                     int requestCode;
 
-                    Log.d("time", cDateEvening.toString());
+                    Log.d(TAG, cDateEvening.toString());
 
                     if (currentTime.getHours() < morningTime.getHours() ||
                             (currentTime.getHours() == morningTime.getHours() &&
                                     currentTime.getMinutes() < morningTime.getMinutes())) {
                         requestCode = 0;
                         alarmTime = cDateMorning.getTime();
+                        // Update shared preferences with pill time
+                        AlarmSharedData.getInstance().setPillTime(requestCode);
                     } else if (currentTime.getHours() < afternoonTime.getHours() ||
                             (currentTime.getHours() == afternoonTime.getHours() &&
                                     currentTime.getMinutes() < afternoonTime.getMinutes())) {
                         requestCode = 1;
                         alarmTime = cDateAfternoon.getTime();
+                        // Update shared preferences with pill time
+                        AlarmSharedData.getInstance().setPillTime(requestCode);
                     } else if (currentTime.getHours() < eveningTime.getHours() ||
                             (currentTime.getHours() == eveningTime.getHours() &&
                                     currentTime.getMinutes() < eveningTime.getMinutes())) {
                         requestCode = 2;
                         alarmTime = cDateEvening.getTime();
+                        // Update shared preferences with pill time
+                        AlarmSharedData.getInstance().setPillTime(requestCode);
                     } else {
                         requestCode = 3;
                         alarmTime = 0;
                         Log.d(TAG, "No alarms for this day.");
                     }
 
+
                     String medicineName;
 
                     List<String> medicines;
                     if (requestCode == 0) {
                         medicines = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
-                        Log.d("AMOUNT: ", String.valueOf(medicines.size()));
+                        // Set the shared preferences
+                        AlarmSharedData.getInstance().setMedicineName(medicines);
+
+                        Log.d(TAG, "Amount : " + String.valueOf(medicines.size()));
                     } else if (requestCode == 1) {
                         medicines = appDatabase.medicineDBInterface().fetchAfternoonPills(active_user_id);
+                        // Set the shared preferences
+                        AlarmSharedData.getInstance().setMedicineName(medicines);
+
                     } else if (requestCode == 2) {
                         medicines = appDatabase.medicineDBInterface().fetchEveningPills(active_user_id);
+                        // Set the shared preferences
+                        AlarmSharedData.getInstance().setMedicineName(medicines);
+
                     } else {
                         // Initialize list in any case
                         medicines = Arrays.asList(new String("Emptylist"));
