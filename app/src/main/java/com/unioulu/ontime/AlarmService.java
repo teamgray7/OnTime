@@ -15,6 +15,7 @@ import android.util.Log;
 import com.unioulu.ontime.database_classes.AppDatabase;
 import com.unioulu.ontime.database_classes.DataHolder;
 import com.unioulu.ontime.database_classes.Medicines;
+import com.unioulu.ontime.helper.DateTimeConverter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -128,7 +129,7 @@ class UpdateAlarmsThread extends Thread {
 
         while (true) {
             try {
-                UpdateAlarmsThread.sleep(60000);
+                UpdateAlarmsThread.sleep(10000);
             }
             catch (InterruptedException ie) {
                 Log.d(TAG, "Interrupt received.");
@@ -142,15 +143,26 @@ class UpdateAlarmsThread extends Thread {
             if (active_user.size() > 0) {
                 final int active_user_id = appDatabase.usersTableInterface().getUserIdByName(active_user.get(active_user.size() - 1));
 
-                long currentTime = System.currentTimeMillis();
-                long startOfDay = getStartofDay();
-                long morningTime = appDatabase.otherSettingsInterface().fetchMorningTime(active_user_id) + startOfDay;
-                long afternoonTime = appDatabase.otherSettingsInterface().fetchAfternoonTime(active_user_id) + startOfDay;
-                long eveningTime = appDatabase.otherSettingsInterface().fetchEveningTime(active_user_id) + startOfDay;
+                Date cDateMorning = new Date();
+                Date cDateAfternoon = new Date();
+                Date cDateEvening = new Date();
+                Date currentTime = new Date();
+
+                Date morningTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchMorningTime(active_user_id));
+                Date afternoonTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchAfternoonTime(active_user_id));
+                Date eveningTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchEveningTime(active_user_id));
+
+                cDateMorning.setHours(morningTime.getHours());
+                cDateMorning.setMinutes(morningTime.getMinutes());
+                cDateAfternoon.setHours(afternoonTime.getHours());
+                cDateAfternoon.setMinutes(afternoonTime.getMinutes());
+                cDateEvening.setHours(eveningTime.getHours());
+                cDateEvening.setMinutes(eveningTime.getMinutes());
+
                 long alarmTime;
 
                 // Time for testing
-/*                Date date = new GregorianCalendar(2019, Calendar.APRIL, 24, 13, 49).getTime();
+               /* Date date = new GregorianCalendar(2019, Calendar.APRIL, 24, 13, 49).getTime();
                 morningTime = date.getTime();
                 afternoonTime = morningTime + 120000;
                 eveningTime = afternoonTime + 120000;*/
@@ -158,15 +170,23 @@ class UpdateAlarmsThread extends Thread {
                 // Serves as requestcode for PendingIntent
                 int requestCode;
 
-                if (currentTime < morningTime) {
+                Log.d("time", cDateEvening.toString());
+
+                if(currentTime.getHours() < morningTime.getHours() ||
+                        (currentTime.getHours() == morningTime.getHours() &&
+                                currentTime.getMinutes() < morningTime.getMinutes())) {
                     requestCode = 0;
-                    alarmTime = morningTime;
-                } else if (currentTime > morningTime && currentTime < afternoonTime) {
+                    alarmTime = cDateMorning.getTime();
+                } else if(currentTime.getHours() < afternoonTime.getHours() ||
+                        (currentTime.getHours() == afternoonTime.getHours() &&
+                                currentTime.getMinutes() < afternoonTime.getMinutes())) {
                     requestCode = 1;
-                    alarmTime = afternoonTime;
-                } else if (currentTime > afternoonTime && currentTime < eveningTime) {
+                    alarmTime = cDateAfternoon.getTime();
+                } else if(currentTime.getHours() < eveningTime.getHours() ||
+                        (currentTime.getHours() == eveningTime.getHours() &&
+                                currentTime.getMinutes() < eveningTime.getMinutes())) {
                     requestCode = 2;
-                    alarmTime = eveningTime;
+                    alarmTime = cDateEvening.getTime();
                 } else {
                     requestCode = 3;
                     alarmTime = 0;
@@ -178,6 +198,7 @@ class UpdateAlarmsThread extends Thread {
                 List<String> medicines;
                 if (requestCode == 0) {
                     medicines = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
+                    Log.d("AMOUNT: ", String.valueOf(medicines.size()));
                 } else if (requestCode == 1) {
                     medicines = appDatabase.medicineDBInterface().fetchAfternoonPills(active_user_id);
                 } else if (requestCode == 2) {
@@ -206,7 +227,10 @@ class UpdateAlarmsThread extends Thread {
                     msg.what = 0;
                     msg.setData(bundle);
                     messageHandler.sendMessage(msg);
+
                 }
+
+
             }
         }
     }
