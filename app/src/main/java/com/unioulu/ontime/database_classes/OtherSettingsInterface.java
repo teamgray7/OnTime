@@ -24,13 +24,13 @@ public interface OtherSettingsInterface {
     List<OtherSettingsTable> fetchAllOtherSettings(int user_id);
 
     @Query("SELECT morning FROM OtherSettingsTable WHERE user_id = :user_id")
-    long fetchMorningTime(int user_id);
+    String fetchMorningTime(int user_id);
 
     @Query("SELECT afternoon FROM OtherSettingsTable WHERE user_id = :user_id")
-    long fetchAfternoonTime(int user_id);
+    String fetchAfternoonTime(int user_id);
 
     @Query("SELECT evening FROM OtherSettingsTable WHERE user_id = :user_id")
-    long fetchEveningTime(int user_id);
+    String fetchEveningTime(int user_id);
 
     @Query("DELETE FROM OtherSettingsTable")
     void deleteAllOtherSettings();
