@@ -2,6 +2,7 @@ package com.unioulu.ontime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -40,10 +41,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Date eveningTime;
 
     private int colorSuccess;
+    private Drawable pillIcon;
 
     private OnItemClickListener mListener;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<Medicines> mPillsMorning, ArrayList<Medicines> mPillsAfternoon, ArrayList<Medicines> mPillsEvening, int colorSuccess) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<Medicines> mPillsMorning, ArrayList<Medicines> mPillsAfternoon, ArrayList<Medicines> mPillsEvening, int colorSuccess, Drawable pillIcon) {
         this.mContext = mContext;
         this.mPillsMorning = mPillsMorning;
         this.mPillsAfternoon = mPillsAfternoon;
@@ -52,6 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.sizeOfAfternoon = mPillsAfternoon.size();
         this.sizeOfEvening = mPillsEvening.size();
         this.colorSuccess = colorSuccess;
+        this.pillIcon = pillIcon;
 
         // Creation of appDatabase instance
         final DataHolder holder = DataHolder.getInstance();
@@ -125,9 +128,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         }
 
-        Glide.with(viewHolder.itemView)
-                .load(Uri.parse(med.getPicture_path()))
-                .into(viewHolder.recyclerImage);
+        if(med.getPicture_path() == null) {
+            viewHolder.recyclerImage.setImageDrawable(pillIcon);
+        } else {
+            Glide.with(viewHolder.itemView)
+                    .load(Uri.parse(med.getPicture_path()))
+                    .into(viewHolder.recyclerImage);
+        }
 
         viewHolder.recyclerImageName.setText(text);
         viewHolder.recyclerLayout.setOnClickListener(new View.OnClickListener(){
