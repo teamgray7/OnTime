@@ -52,6 +52,37 @@ public class AlarmService extends Service {
         return classFound;
     }
 
+    /* Set alarm that launches AlarmActivity.
+     * alarmTime sets when alarm goes off. Times pointing to the past goes off immediately.
+     * requestCode differentiates between alarms, 0, 1, 2 are reserved for morning, afternoon and evening. */
+    private boolean setAlarm(long alarmTime, int requestCode) {
+        Intent intent = new Intent(getApplicationContext(), AlarmActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        AlarmManager alarmMgr = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+        long diff = alarmTime-System.currentTimeMillis();
+        Log.d(TAG, "TIMEDIFF: " + String.valueOf(diff));
+
+        boolean alarmSet = (PendingIntent.getActivity(getApplicationContext(), requestCode, intent, PendingIntent.FLAG_NO_CREATE) != null);
+
+        if (!alarmSet) {
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), requestCode, intent, 0);
+
+            if (Build.VERSION.SDK_INT < 23)
+                alarmMgr.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+            else
+                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+
+            Log.d(TAG, "Alarm has been set.");
+        }
+        else {
+            Log.d(TAG, "Alarm already set!");
+        }
+
+        return alarmSet;
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -62,29 +93,10 @@ public class AlarmService extends Service {
                     case 0:
                         Bundle bundle = msg.getData();
                         Log.d(TAG, "longtime: " + bundle.getLong("AlarmTime") + " request: " + bundle.getInt("RequestCode"));
-                        Intent intent = new Intent(getApplicationContext(), AlarmActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        AlarmManager alarmMgr = (AlarmManager)getSystemService(ALARM_SERVICE);
-
-                        long diff = bundle.getLong("AlarmTime")-System.currentTimeMillis();
-                        Log.d(TAG, "TIMEDIFF: " + String.valueOf(diff));
-
+                        long alarmTime = bundle.getLong("AlarmTime");
                         int requestCode = bundle.getInt("RequestCode");
-                        boolean alarmSet = (PendingIntent.getActivity(getApplicationContext(), requestCode, intent, PendingIntent.FLAG_NO_CREATE) != null);
 
-                        if (!alarmSet) {
-                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), requestCode, intent, 0);
-
-                            if (Build.VERSION.SDK_INT < 23)
-                                alarmMgr.setExact(AlarmManager.RTC_WAKEUP, bundle.getLong("AlarmTime"), pendingIntent);
-                            else
-                                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, bundle.getLong("AlarmTime"), pendingIntent);
-                            Log.d(TAG, "Alarm has been set.");
-                        }
-                        else {
-                            Log.d(TAG, "Alarm already set!");
-                        }
+                        setAlarm(alarmTime, requestCode);
                         break;
                     default:
                         Log.d(TAG, "Unhandled message!");
