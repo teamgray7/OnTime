@@ -103,8 +103,7 @@ public class AlarmService extends Service {
                         Log.d(TAG, "longtime: " + bundle.getLong("AlarmTime") + " request: " + bundle.getInt("RequestCode"));
                         long alarmTime = bundle.getLong("AlarmTime");
                         int requestCode = bundle.getInt("RequestCode");
-                        Date date = new GregorianCalendar(2019, Calendar.APRIL, 24, 18, 54).getTime();
-                        alarmTime = date.getTime();
+
                         setAlarm(alarmTime, requestCode);
                         break;
                     default:
