@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,7 +34,14 @@ import androidx.annotation.Nullable;
 
 public class AlarmService extends Service {
     final private static String TAG = "AlarmService";
+    private final IBinder binder = new AlarmServiceBinder();
     Handler handler;
+
+    class AlarmServiceBinder extends Binder {
+        AlarmService getService() {
+            return AlarmService.this;
+        }
+    }
 
     public AlarmService() {
     }
@@ -55,7 +63,7 @@ public class AlarmService extends Service {
     /* Set alarm that launches AlarmActivity.
      * alarmTime sets when alarm goes off. Times pointing to the past goes off immediately.
      * requestCode differentiates between alarms, 0, 1, 2 are reserved for morning, afternoon and evening. */
-    private boolean setAlarm(long alarmTime, int requestCode) {
+    public boolean setAlarm(long alarmTime, int requestCode) {
         Intent intent = new Intent(getApplicationContext(), AlarmActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -95,7 +103,8 @@ public class AlarmService extends Service {
                         Log.d(TAG, "longtime: " + bundle.getLong("AlarmTime") + " request: " + bundle.getInt("RequestCode"));
                         long alarmTime = bundle.getLong("AlarmTime");
                         int requestCode = bundle.getInt("RequestCode");
-
+                        Date date = new GregorianCalendar(2019, Calendar.APRIL, 24, 18, 54).getTime();
+                        alarmTime = date.getTime();
                         setAlarm(alarmTime, requestCode);
                         break;
                     default:
@@ -113,7 +122,7 @@ public class AlarmService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        throw new UnsupportedOperationException("Not implemented");
+        return binder;
     }
 }
 
