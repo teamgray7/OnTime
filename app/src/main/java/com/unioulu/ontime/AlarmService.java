@@ -152,84 +152,87 @@ class UpdateAlarmsThread extends Thread {
                 Date afternoonTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchAfternoonTime(active_user_id));
                 Date eveningTime = DateTimeConverter.fromTimestamp(appDatabase.otherSettingsInterface().fetchEveningTime(active_user_id));
 
-                cDateMorning.setHours(morningTime.getHours());
-                cDateMorning.setMinutes(morningTime.getMinutes());
-                cDateAfternoon.setHours(afternoonTime.getHours());
-                cDateAfternoon.setMinutes(afternoonTime.getMinutes());
-                cDateEvening.setHours(eveningTime.getHours());
-                cDateEvening.setMinutes(eveningTime.getMinutes());
+                // Shield against non-existant user settings
+                if (morningTime != null && afternoonTime != null && eveningTime != null) {
+                    cDateMorning.setHours(morningTime.getHours());
+                    cDateMorning.setMinutes(morningTime.getMinutes());
+                    cDateAfternoon.setHours(afternoonTime.getHours());
+                    cDateAfternoon.setMinutes(afternoonTime.getMinutes());
+                    cDateEvening.setHours(eveningTime.getHours());
+                    cDateEvening.setMinutes(eveningTime.getMinutes());
 
-                long alarmTime;
+                    long alarmTime;
 
-                // Time for testing
+                    // Time for testing
                /* Date date = new GregorianCalendar(2019, Calendar.APRIL, 24, 13, 49).getTime();
                 morningTime = date.getTime();
                 afternoonTime = morningTime + 120000;
                 eveningTime = afternoonTime + 120000;*/
 
-                // Serves as requestcode for PendingIntent
-                int requestCode;
+                    // Serves as requestcode for PendingIntent
+                    int requestCode;
 
-                Log.d("time", cDateEvening.toString());
+                    Log.d("time", cDateEvening.toString());
 
-                if(currentTime.getHours() < morningTime.getHours() ||
-                        (currentTime.getHours() == morningTime.getHours() &&
-                                currentTime.getMinutes() < morningTime.getMinutes())) {
-                    requestCode = 0;
-                    alarmTime = cDateMorning.getTime();
-                } else if(currentTime.getHours() < afternoonTime.getHours() ||
-                        (currentTime.getHours() == afternoonTime.getHours() &&
-                                currentTime.getMinutes() < afternoonTime.getMinutes())) {
-                    requestCode = 1;
-                    alarmTime = cDateAfternoon.getTime();
-                } else if(currentTime.getHours() < eveningTime.getHours() ||
-                        (currentTime.getHours() == eveningTime.getHours() &&
-                                currentTime.getMinutes() < eveningTime.getMinutes())) {
-                    requestCode = 2;
-                    alarmTime = cDateEvening.getTime();
-                } else {
-                    requestCode = 3;
-                    alarmTime = 0;
-                    Log.d(TAG, "No alarms for this day.");
-                }
-
-                String medicineName;
-
-                List<String> medicines;
-                if (requestCode == 0) {
-                    medicines = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
-                    Log.d("AMOUNT: ", String.valueOf(medicines.size()));
-                } else if (requestCode == 1) {
-                    medicines = appDatabase.medicineDBInterface().fetchAfternoonPills(active_user_id);
-                } else if (requestCode == 2) {
-                    medicines = appDatabase.medicineDBInterface().fetchEveningPills(active_user_id);
-                }
-                else {
-                    // Initialize list in any case
-                    medicines = Arrays.asList(new String("Emptylist"));
-                }
-
-                // Execute only if alarms left for the day
-                if (requestCode < 3 && alarmTime >= 0) {
-                    // Print meds
-                    for (String medicine : medicines) {
-                        Log.d(TAG, "MED: " + medicine);
-
-                        Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(medicine, active_user_id);
-                        int morning = med.getMorningAt();
-
-                        Log.d(TAG, "Morning int: " + morning + " Alarmtime: " + String.valueOf(alarmTime));
+                    if (currentTime.getHours() < morningTime.getHours() ||
+                            (currentTime.getHours() == morningTime.getHours() &&
+                                    currentTime.getMinutes() < morningTime.getMinutes())) {
+                        requestCode = 0;
+                        alarmTime = cDateMorning.getTime();
+                    } else if (currentTime.getHours() < afternoonTime.getHours() ||
+                            (currentTime.getHours() == afternoonTime.getHours() &&
+                                    currentTime.getMinutes() < afternoonTime.getMinutes())) {
+                        requestCode = 1;
+                        alarmTime = cDateAfternoon.getTime();
+                    } else if (currentTime.getHours() < eveningTime.getHours() ||
+                            (currentTime.getHours() == eveningTime.getHours() &&
+                                    currentTime.getMinutes() < eveningTime.getMinutes())) {
+                        requestCode = 2;
+                        alarmTime = cDateEvening.getTime();
+                    } else {
+                        requestCode = 3;
+                        alarmTime = 0;
+                        Log.d(TAG, "No alarms for this day.");
                     }
-                    Bundle bundle = new Bundle();
-                    bundle.putLong("AlarmTime", alarmTime);
-                    bundle.putInt("RequestCode", requestCode);
-                    Message msg = new Message();
-                    msg.what = 0;
-                    msg.setData(bundle);
-                    messageHandler.sendMessage(msg);
 
+                    String medicineName;
+
+                    List<String> medicines;
+                    if (requestCode == 0) {
+                        medicines = appDatabase.medicineDBInterface().fetchMorningPills(active_user_id);
+                        Log.d("AMOUNT: ", String.valueOf(medicines.size()));
+                    } else if (requestCode == 1) {
+                        medicines = appDatabase.medicineDBInterface().fetchAfternoonPills(active_user_id);
+                    } else if (requestCode == 2) {
+                        medicines = appDatabase.medicineDBInterface().fetchEveningPills(active_user_id);
+                    } else {
+                        // Initialize list in any case
+                        medicines = Arrays.asList(new String("Emptylist"));
+                    }
+
+                    // Execute only if alarms left for the day
+                    if (requestCode < 3 && alarmTime >= 0) {
+                        // Print meds
+                        for (String medicine : medicines) {
+                            Log.d(TAG, "MED: " + medicine);
+
+                            Medicines med = appDatabase.medicineDBInterface().fetchOneMedicineByName(medicine, active_user_id);
+                            int morning = med.getMorningAt();
+
+                            Log.d(TAG, "Morning int: " + morning + " Alarmtime: " + String.valueOf(alarmTime));
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putLong("AlarmTime", alarmTime);
+                        bundle.putInt("RequestCode", requestCode);
+                        Message msg = new Message();
+                        msg.what = 0;
+                        msg.setData(bundle);
+                        messageHandler.sendMessage(msg);
+
+                    }
                 }
-
+                else
+                    Log.d(TAG, "BUG! User has no default morning, afternoon or evening times.");
 
             }
         }
