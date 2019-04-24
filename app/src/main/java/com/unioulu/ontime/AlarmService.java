@@ -86,9 +86,9 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        handler = new Handler() {
+        handler = new Handler(new Handler.Callback() {
             @Override
-            public void handleMessage(Message msg) {
+            public boolean handleMessage(Message msg) {
                 switch (msg.what) {
                     case 0:
                         Bundle bundle = msg.getData();
@@ -101,8 +101,9 @@ public class AlarmService extends Service {
                     default:
                         Log.d(TAG, "Unhandled message!");
                 }
+                return false;
             }
-        };
+        });
 
         final UpdateAlarmsThread updateThread = new UpdateAlarmsThread(handler);
         updateThread.start();
