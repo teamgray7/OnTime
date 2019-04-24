@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.unioulu.ontime.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PillAlarmFragment extends Fragment {
 
@@ -81,6 +82,11 @@ public class PillAlarmFragment extends Fragment {
             public void onClick(View v) {
                 String selectedSnoozeTime = snoozeSpinner.getSelectedItem().toString();
                 Toast.makeText(getContext(), selectedSnoozeTime + " Snooze time selected !", Toast.LENGTH_SHORT).show();
+
+                // FIXME: Now 60 s hardcoded snooze, use snoozeSpinner instead.
+                Date now = new Date();
+                long snoozeAlarm = now.getTime() + 60000;
+                mListener.snooze(snoozeAlarm);
                 // Will change alarm fragment to taken fragment..
                 getActivity().finish();
             }
@@ -124,5 +130,6 @@ public class PillAlarmFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         // Define functions to make snooze and everything...
+        void snooze(long snoozeDate);
     }
 }
