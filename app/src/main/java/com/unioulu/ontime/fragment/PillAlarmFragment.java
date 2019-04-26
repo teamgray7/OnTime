@@ -21,6 +21,7 @@ import com.unioulu.ontime.helper.AlarmSharedData;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PillAlarmFragment extends Fragment {
 
@@ -98,21 +99,26 @@ public class PillAlarmFragment extends Fragment {
         // ------------------------------------ Text view text update from shared preferences -------------------------------
 
         medicineTime = rootView.findViewById(R.id.medicineTime);
+        medicineName = rootView.findViewById(R.id.medicineName);
+
         switch (AlarmSharedData.getInstance().getPillTime())
         {
             case 0:
                 {
                     medicineTime.setText(AlarmSharedData.getInstance().getMorningTime().getHours()+":"+AlarmSharedData.getInstance().getMorningTime().getMinutes());
+                    medicineName.setText(medicineNameText(AlarmSharedData.getInstance().getMedicineName()));
                     break;
                 }
             case 1:
             {
                 medicineTime.setText(AlarmSharedData.getInstance().getAfternoonTime().getHours()+":"+AlarmSharedData.getInstance().getAfternoonTime().getMinutes());
+                medicineName.setText(medicineNameText(AlarmSharedData.getInstance().getMedicineName()));
                 break;
             }
             case 2:
             {
                 medicineTime.setText(AlarmSharedData.getInstance().getEveningTime().getHours()+":"+AlarmSharedData.getInstance().getEveningTime().getMinutes());
+                medicineName.setText(medicineNameText(AlarmSharedData.getInstance().getMedicineName()));
                 break;
             }
 
@@ -122,7 +128,16 @@ public class PillAlarmFragment extends Fragment {
         return rootView;
     }
 
+    private String medicineNameText(List<String> medicineNames)
+    {
+        String appended_names = "";
+        for (String name: medicineNames)
+        {
+            appended_names+= name + "\n";
+        }
 
+        return appended_names;
+    }
 
     @Override
     public void onAttach(Context context) {
