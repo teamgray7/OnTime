@@ -174,7 +174,7 @@ class UpdateAlarmsThread extends Thread {
                 if (AlarmSharedData.getInstance().getIsDataChanged() || !(AlarmSharedData.getInstance().getIsDataRetrieved()))
                 {
 
-                    Log.d(TAG, "Retrieving data from DB: changed: "+
+                    Log.d("AlarmActivity", "Retrieving data from DB: changed: "+
                             String.valueOf(AlarmSharedData.getInstance().getIsDataChanged()) +
                             " Data retrieved: " + String.valueOf(AlarmSharedData.getInstance().getIsDataRetrieved()));
 
@@ -190,11 +190,13 @@ class UpdateAlarmsThread extends Thread {
                 }
                 else // Data is retrieved from DB, had not been changed and a snooze might be set !
                 {
-                    Log.d(TAG, "Retrieving data from shared preferences");
+                    Log.d("AlarmActivity", "Retrieving data from shared preferences");
                     morningTime = AlarmSharedData.getInstance().getMorningTime();
                     afternoonTime = AlarmSharedData.getInstance().getAfternoonTime();
                     eveningTime = AlarmSharedData.getInstance().getEveningTime();
                 }
+
+                Log.d("AlarmActivity", "From Alarm service: Evening at: " + AlarmSharedData.getInstance().getEveningTime().toString());
 
                 // Shield against non-existant user settings
                 if (morningTime != null && afternoonTime != null && eveningTime != null) {
@@ -245,8 +247,6 @@ class UpdateAlarmsThread extends Thread {
                         Log.d(TAG, "No alarms for this day.");
                     }
 
-
-                    String medicineName;
 
                     List<String> medicines;
                     if (requestCode == 0) {
