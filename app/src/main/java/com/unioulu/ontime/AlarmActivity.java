@@ -8,7 +8,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.ParcelUuid;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +56,24 @@ public class AlarmActivity extends AppCompatActivity
         }
         bindService(alarmSrvIntent, connection, Context.BIND_AUTO_CREATE);
 
+        Handler handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                switch (msg.what)
+                {
+                    case 110:
+                        Log.d("ALARMACTIVITY","Success with msg");
+                        PillTakenFragment fragment = PillTakenFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.alarm_content, fragment)
+                                .commit();
+                        return true;
+                    default:
+                        Log.d("ALARMACTIVITY", "Not handled msg");
+                        return false;
+                }
+            }
+        });
         final int REQUEST_ENABLE_BT = 1;
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -69,7 +89,7 @@ public class AlarmActivity extends AppCompatActivity
                 for (BluetoothDevice device: paired) {
                     Log.d("ALARMACTIVITY", "DEVNAME: " + device.getName());
                     Log.d("ALARMACTIVITY", "DEVADDR: " + device.getAddress());
-                    thread = new PushButtonThread(bluetoothAdapter, device);
+                    thread = new PushButtonThread(bluetoothAdapter, device, handler);
                     thread.start();
                     break;
                 }
@@ -121,6 +141,12 @@ public class AlarmActivity extends AppCompatActivity
             alarmSrv.setAlarm(snoozeDate, 3);
     }
 
+    @Override
+    public void onBackPressed() {
+// super.onBackPressed();
+// Not calling **super**, disables back button in current screen.
+    }
+
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -133,6 +159,12 @@ public class AlarmActivity extends AppCompatActivity
             alarmSrv = null;
         }
     };
+
+    @Override
+    public void pillTaken() {
+
+        finish();
+    }
 }
 
 class PushButtonThread extends Thread {
@@ -141,11 +173,13 @@ class PushButtonThread extends Thread {
     //private BluetoothDevice device;
     private BluetoothSocket sck;
     private final String uuidStr;
+    private Handler handler;
 
-    public PushButtonThread(BluetoothAdapter adapter, BluetoothDevice device) {
+    public PushButtonThread(BluetoothAdapter adapter, BluetoothDevice device, Handler handler) {
 
         uuidStr = "080aefda-617e-4972-a257-a6cfa0e1c33b";
 
+        this.handler = handler;
         //this.device = device;
         this.adapter = adapter;
 
@@ -230,8 +264,10 @@ class PushButtonThread extends Thread {
                 int value = in.read();
 
                 Log.d(TAG, "Received something.");
-                if (value == 1)
+                if (value == 1) {
                     Log.d(TAG, "Button pressed!");
+                    handler.sendEmptyMessage(110);
+                }
             }
             catch (IOException ioe) {
                 Log.d(TAG, "Error while reading.");

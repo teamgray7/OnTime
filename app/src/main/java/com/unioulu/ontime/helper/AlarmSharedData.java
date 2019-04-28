@@ -5,9 +5,10 @@ import java.util.List;
 
 public class AlarmSharedData {
     private List<String> medicine_name;
-    private boolean isDataChanged = false, isDataRetrieved=false;
+    private boolean isDataChanged = false, isDataRetrieved=false, isSnoozeSet=false;
     private int pillTime = 4; // 0: morning, 1: afternoon, 2: evening
     private Date morningTime, afternoonTime, eveningTime;
+
 
     public int getPillTime() {
         return pillTime;

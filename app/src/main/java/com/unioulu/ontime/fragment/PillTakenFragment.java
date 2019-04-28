@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.unioulu.ontime.R;
 
@@ -14,6 +15,7 @@ public class PillTakenFragment extends Fragment {
 
     // The interaction listener is defined.
     private OnFragmentInteractionListener mListener;
+    private Button btnTaken;
 
     public PillTakenFragment() {
         // Empty constructor
@@ -27,6 +29,14 @@ public class PillTakenFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pills_taken, container, false);
+
+        btnTaken = rootView.findViewById(R.id.okButton);
+        btnTaken.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.pillTaken();
+            }
+        });
         return rootView;
     }
 
@@ -45,6 +55,7 @@ public class PillTakenFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+
         mListener = null;
     }
 
@@ -61,5 +72,6 @@ public class PillTakenFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         // Define functions to make snooze and everything...
+        void pillTaken();
     }
 }

@@ -64,32 +64,30 @@ public class AlarmService extends Service {
     /* Set alarm that launches AlarmActivity.
      * alarmTime sets when alarm goes off. Times pointing to the past goes off immediately.
      * requestCode differentiates between alarms, 0, 1, 2 are reserved for morning, afternoon and evening. */
-    public boolean setAlarm(long alarmTime, int requestCode) {
+    public void setAlarm(long alarmTime, int requestCode) {
         Intent intent = new Intent(getApplicationContext(), AlarmActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         AlarmManager alarmMgr = (AlarmManager)getSystemService(ALARM_SERVICE);
 
+        Date date = new Date();
+        date.setTime(alarmTime);
+        date.setSeconds(0);
+        alarmTime = date.getTime();
+
         long diff = alarmTime-System.currentTimeMillis();
         Log.d(TAG, "TIMEDIFF: " + String.valueOf(diff));
 
-        boolean alarmSet = (PendingIntent.getActivity(getApplicationContext(), requestCode, intent, PendingIntent.FLAG_NO_CREATE) != null);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), requestCode, intent, 0);
 
-        if (!alarmSet) {
-            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), requestCode, intent, 0);
+        if (Build.VERSION.SDK_INT < 23)
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+        else
+            alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
 
-            if (Build.VERSION.SDK_INT < 23)
-                alarmMgr.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
-            else
-                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+        Log.d(TAG, "Alarm has been set.");
 
-            Log.d(TAG, "Alarm has been set.");
-        }
-        else {
-            Log.d(TAG, "Alarm already set!");
-        }
-
-        return alarmSet;
+        return;
     }
 
     @Override

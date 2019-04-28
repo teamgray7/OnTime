@@ -96,11 +96,11 @@ public class PillAlarmFragment extends Fragment {
                 //Toast.makeText(getContext(), selectedSnoozePosition + " Snooze time selected !", Toast.LENGTH_SHORT).show();
                 Log.d("AlarmActivity", "Selected snooze option: " + String.valueOf(selectedSnoozePosition));
                 Log.d("AlarmActivity", "New date value: " + new Date().toString());
-                // FIXME: Now 60 s hardcoded snooze, use snoozeSpinner instead.
+
 
                 long snoozeAlarm;
                 Date date = new Date();
-                date.setTime(date.getTime() + (long)(selectedSnoozePosition*5*60000));
+                date.setTime(date.getTime() + (long)(selectedSnoozePosition*60000));
                 Log.d("AlarmActivity", "New time after snoozing: "+date.toString());
                 snoozeAlarm = date.getTime();
 
@@ -108,31 +108,35 @@ public class PillAlarmFragment extends Fragment {
                 {
                     case 0: // Morning
                     {
-                        AlarmSharedData.getInstance().getMorningTime().setHours(date.getHours());
-                        AlarmSharedData.getInstance().getMorningTime().setMinutes(date.getMinutes());
+                        //AlarmSharedData.getInstance().getMorningTime().setHours(date.getHours());
+                        //AlarmSharedData.getInstance().getMorningTime().setMinutes(date.getMinutes());
+                        //snoozeAlarm = AlarmSharedData.getInstance().getMorningTime().getTime();
                         Log.d("AlarmActivity", "Morning set at: " + AlarmSharedData.getInstance().getMorningTime().toString());
                         break;
                     }
                     case 1: // Afternoon
                     {
-                        AlarmSharedData.getInstance().getAfternoonTime().setHours(date.getHours());
-                        AlarmSharedData.getInstance().getAfternoonTime().setMinutes(date.getMinutes());
+                        //AlarmSharedData.getInstance().getAfternoonTime().setHours(date.getHours());
+                        //AlarmSharedData.getInstance().getAfternoonTime().setMinutes(date.getMinutes());
+                        //snoozeAlarm = AlarmSharedData.getInstance().getAfternoonTime().getTime();
                         Log.d("AlarmActivity", "Afternoon set at: " + AlarmSharedData.getInstance().getAfternoonTime().toString());
                         break;
                     }
                     case 2: // Evening
                     {
-                        AlarmSharedData.getInstance().getEveningTime().setHours(date.getHours());
-                        AlarmSharedData.getInstance().getEveningTime().setMinutes(date.getMinutes());
+                        //AlarmSharedData.getInstance().getEveningTime().setHours(date.getHours());
+                        //AlarmSharedData.getInstance().getEveningTime().setMinutes(date.getMinutes());
+                        //snoozeAlarm = AlarmSharedData.getInstance().getEveningTime().getTime();
                         Log.d("AlarmActivity", "Evening set at: " + AlarmSharedData.getInstance().getEveningTime().toString());
                         break;
                     }
 
-                    default: snoozeAlarm = date.getTime() + 300000; // should never trigger this state
+                    default: snoozeAlarm = date.getTime() + selectedSnoozePosition*/*5**/60000; // should never trigger this state
                 }
 
                 Toast.makeText(getContext(),"Alarm at: " + AlarmSharedData.getInstance().getEveningTime().toString(), Toast.LENGTH_SHORT).show();
                 mediaPlayer.stop();
+                snoozeAlarm = date.getTime() + selectedSnoozePosition*5*60000;
                 mListener.snooze(snoozeAlarm);
                 // Will change alarm fragment to taken fragment..
                 getActivity().finish();
@@ -199,6 +203,7 @@ public class PillAlarmFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        mediaPlayer.stop();
         mListener = null;
     }
 
