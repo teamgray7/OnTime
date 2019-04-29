@@ -285,14 +285,16 @@ class UpdateAlarmsThread extends Thread {
 
                                 Log.d(TAG, "Morning int: " + morning + " Alarmtime: " + String.valueOf(alarmTime));
                             }
-                            Bundle bundle = new Bundle();
-                            bundle.putLong("AlarmTime", alarmTime);
-                            bundle.putInt("RequestCode", requestCode);
-                            Message msg = new Message();
-                            msg.what = 0;
-                            msg.setData(bundle);
-                            messageHandler.sendMessage(msg);
-
+                            // Check if there are medicines for the alarmtime, and set alarm if there is.
+                            if (medicines.size() > 0) {
+                                Bundle bundle = new Bundle();
+                                bundle.putLong("AlarmTime", alarmTime);
+                                bundle.putInt("RequestCode", requestCode);
+                                Message msg = new Message();
+                                msg.what = 0;
+                                msg.setData(bundle);
+                                messageHandler.sendMessage(msg);
+                            }
                         }
                     } else
                         Log.d(TAG, "BUG! User has no default morning, afternoon or evening times.");
