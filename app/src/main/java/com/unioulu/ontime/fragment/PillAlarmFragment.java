@@ -100,43 +100,11 @@ public class PillAlarmFragment extends Fragment {
 
                 long snoozeAlarm;
                 Date date = new Date();
-                date.setTime(date.getTime() + (long)(selectedSnoozePosition*60000));
-                Log.d("AlarmActivity", "New time after snoozing: "+date.toString());
-                snoozeAlarm = date.getTime();
 
-                switch (AlarmSharedData.getInstance().getPillTime())
-                {
-                    case 0: // Morning
-                    {
-                        //AlarmSharedData.getInstance().getMorningTime().setHours(date.getHours());
-                        //AlarmSharedData.getInstance().getMorningTime().setMinutes(date.getMinutes());
-                        //snoozeAlarm = AlarmSharedData.getInstance().getMorningTime().getTime();
-                        Log.d("AlarmActivity", "Morning set at: " + AlarmSharedData.getInstance().getMorningTime().toString());
-                        break;
-                    }
-                    case 1: // Afternoon
-                    {
-                        //AlarmSharedData.getInstance().getAfternoonTime().setHours(date.getHours());
-                        //AlarmSharedData.getInstance().getAfternoonTime().setMinutes(date.getMinutes());
-                        //snoozeAlarm = AlarmSharedData.getInstance().getAfternoonTime().getTime();
-                        Log.d("AlarmActivity", "Afternoon set at: " + AlarmSharedData.getInstance().getAfternoonTime().toString());
-                        break;
-                    }
-                    case 2: // Evening
-                    {
-                        //AlarmSharedData.getInstance().getEveningTime().setHours(date.getHours());
-                        //AlarmSharedData.getInstance().getEveningTime().setMinutes(date.getMinutes());
-                        //snoozeAlarm = AlarmSharedData.getInstance().getEveningTime().getTime();
-                        Log.d("AlarmActivity", "Evening set at: " + AlarmSharedData.getInstance().getEveningTime().toString());
-                        break;
-                    }
-
-                    default: snoozeAlarm = date.getTime() + selectedSnoozePosition*/*5**/60000; // should never trigger this state
-                }
-
-                Toast.makeText(getContext(),"Alarm at: " + AlarmSharedData.getInstance().getEveningTime().toString(), Toast.LENGTH_SHORT).show();
                 mediaPlayer.stop();
                 snoozeAlarm = date.getTime() + selectedSnoozePosition*5*60000;
+                Date setTime =  new Date(snoozeAlarm);
+                Toast.makeText(getContext(),"Alarm at: " + setTime.toString(), Toast.LENGTH_SHORT).show();
                 mListener.snooze(snoozeAlarm);
                 // Will change alarm fragment to taken fragment..
                 getActivity().finish();
